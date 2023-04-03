@@ -11,7 +11,7 @@ class Line(Primitive):
         self.end_point = self.params[1]
 
         (self.x1, self.y1, self.z1) = self.start_point
-        (self.x2, self.y2, self.z2) = self.end_point 
+        (self.x2, self.y2, self.z2) = self.end_point
 
     def plot(self, ax, canvas):
         try:

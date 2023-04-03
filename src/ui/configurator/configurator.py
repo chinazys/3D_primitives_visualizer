@@ -4,15 +4,17 @@ CONFIGURATOR_TYPE_LINE = 'Line'
 CONFIGURATOR_TYPE_CURVE = 'Curve'
 CONFIGURATOR_TYPES = [CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE]
 
+CONFIGURATOR_LAYOUT_RELATIVE_WIDTH = 25
+
 class Configurator:
     def __init__(self, window):
-        self.combo = QComboBox()
-        self.combo.addItems(CONFIGURATOR_TYPES)
+        self.primitive_type_selector = QComboBox()
+        self.primitive_type_selector.addItems(CONFIGURATOR_TYPES)
         
-        rlayout = QVBoxLayout()
-        window.layout.addLayout(rlayout, 30)
-        rlayout.setContentsMargins(1, 1, 1, 1)
-        rlayout.addWidget(QLabel("Plot type:"))
-        rlayout.addWidget(self.combo)
+        self.vertical_layout = QVBoxLayout()
+        window.horizontal_layout.addLayout(self.vertical_layout, CONFIGURATOR_LAYOUT_RELATIVE_WIDTH)
+        self.vertical_layout.setContentsMargins(1, 1, 1, 1)
+        self.vertical_layout.addWidget(QLabel("Plot type:"))
+        self.vertical_layout.addWidget(self.primitive_type_selector)
 
-        self.combo.currentTextChanged.connect(window.on_primitive_type_changed)
+        self.primitive_type_selector.currentTextChanged.connect(window.on_primitive_type_changed)

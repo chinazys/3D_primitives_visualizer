@@ -1,19 +1,21 @@
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from mpl_toolkits.mplot3d import axes3d
 
-from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QMainWindow, QWidget)
+from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget)
 
-from primitives.surface.surface import Surface
 from primitives.line.line import Line
 from primitives.curve.curve import Curve
-from ui.menu_bar.menu_bar import MenuBar
 from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE
+from ui.canvas.canvas import Canvas
+
+AXIS_MAX_SIZE = 100
+
+APP_WINDOW_ABSOLUTE_WIDTH = 1920
+APP_WINDOW_ABSOLUTE_HEIGHT = 1080
 
 class AppWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
-        self.window_width, self.window_height = 1700, 800
+        self.window_width, self.window_height = APP_WINDOW_ABSOLUTE_WIDTH, APP_WINDOW_ABSOLUTE_HEIGHT
         
         self.setMinimumSize(self.window_width, self.window_height)
         self.setStyleSheet('''
@@ -23,16 +25,13 @@ class AppWindow(QMainWindow):
         ''')        
 
         self.figure = Figure(figsize=(20, 20))
-        self.canvas = FigureCanvas(self.figure)
         self.central_widget = QWidget()
         
         self.setCentralWidget(self.central_widget)
-        self.layout = QHBoxLayout(self.central_widget)
-        self.layout.addWidget(self.canvas, 88)
+        self.horizontal_layout = QHBoxLayout(self.central_widget)
 
-        MenuBar(self, app)
-
-        Configurator(self)
+        self.canvas_layout = Canvas(self)
+        self.configurator_layout = Configurator(self)
 
         self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINE)
         self.ax.view_init(30, 30)
@@ -45,5 +44,9 @@ class AppWindow(QMainWindow):
 
         self.active_primitive.build()
 
-        self.ax = self.canvas.figure.add_subplot(projection="3d")
-        self.active_primitive.plot(self.ax, self.canvas)
+        self.ax = self.canvas_layout.canvas.figure.add_subplot(projection="3d")
+        self.ax.set_xlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
+        self.ax.set_ylim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
+        self.ax.set_zlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
+        
+        self.active_primitive.plot(self.ax, self.canvas_layout.canvas)
