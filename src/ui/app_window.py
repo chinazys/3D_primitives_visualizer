@@ -8,8 +8,7 @@ from primitives.lineFixedMove.lineFixedMove import lineFixedMove
 
 from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE
 from ui.canvas.canvas import Canvas
-
-AXIS_MAX_SIZE = 100
+from ui.settings import AXIS_MAX_SIZE
 
 APP_WINDOW_ABSOLUTE_WIDTH = 1920
 APP_WINDOW_ABSOLUTE_HEIGHT = 1080
@@ -48,6 +47,12 @@ class AppWindow(QMainWindow):
             self.active_primitive = lineFixedMove(curve, [0,0,60])
 
         self.active_primitive.build()
+
+        # to avoid plots stacking
+        try: 
+            self.ax.clear()
+        except:
+            pass
 
         self.ax = self.canvas_layout.canvas.figure.add_subplot(projection="3d")
         self.ax.set_xlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
