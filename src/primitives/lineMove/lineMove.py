@@ -1,6 +1,7 @@
 from primitives.curve.curve import Curve
 from primitives.primitive import Primitive
 from primitives.line.line import Line
+import numpy as np
 
 
 
@@ -21,7 +22,7 @@ class curve_line(Primitive):
         self.dot=dot
         curve_line.dot_in_curve(self)
         self.vector=vector
-        self.main_line = Line(dot, vector+dot)
+        # self.main_line = Line(dot, vector+dot)
 
 
     def build(self):
@@ -30,10 +31,17 @@ class curve_line(Primitive):
     def plot(self, ax, canvas):
         try:
 
-            for i in range(len(self.base.x_list)):  # (change) ->   for i in range(dot P.x_param,len(self.base.x_list)):
+            x=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] for i in range(len(self.base.x_list))])
 
-                ax.plot([self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] ,[self.base.y_list[i] , self.base.y_list[i] + self.vector[1]] ,[self.base.z_list[i] , self.base.z_list[i] + self.vector[2]])
 
+            y = np.array([[self.base.y_list[i], self.base.y_list[i] + self.vector[1]] for i in range(len(self.base.x_list))])
+
+            z = np.array([[self.base.z_list[i], self.base.z_list[i] + self.vector[2]] for i in range(len(self.base.x_list))])
+
+            # for i in range(len(self.base.x_list)):  # (change) ->   for i in range(dot P.x_param,len(self.base.x_list)):
+                # ax.plot_surface(X=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]]for i in range(len(self.base.x_list))),Y=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]),Z=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]) )
+                # ax.plot([self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] ,[self.base.y_list[i] , self.base.y_list[i] + self.vector[1]] ,[self.base.z_list[i] , self.base.z_list[i] + self.vector[2]])
+            ax.plot_surface(x,y,z)
 
             canvas.draw()
 
