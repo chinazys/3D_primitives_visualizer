@@ -4,10 +4,12 @@ from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget)
 
 from primitives.line.line import Line
 from primitives.curve.curve import Curve
-from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE
-from ui.canvas.canvas import Canvas
+from primitives.lineFixedMove.lineFixedMove import lineFixedMove
+from primitives.linesByCurve.lineByCurve import LineByCurve
 
-AXIS_MAX_SIZE = 100
+from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE, CONFIGURATOR_TYPE_LINEBYCURVE
+from ui.canvas.canvas import Canvas
+from ui.settings import AXIS_MAX_SIZE
 
 APP_WINDOW_ABSOLUTE_WIDTH = 1920
 APP_WINDOW_ABSOLUTE_HEIGHT = 1080
@@ -41,8 +43,21 @@ class AppWindow(QMainWindow):
             self.active_primitive = Line([(0, 0, 0), [10, 10, 10]])
         elif configurator_type == CONFIGURATOR_TYPE_CURVE:
             self.active_primitive = Curve([1.5, 2, 1])
+        elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
+            curve = Curve([1.5, 2, 1])
+            self.active_primitive = lineFixedMove(curve, [0,0,60])
+        elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
+            curve = Curve([1.5, 2, 1])
+            line = Line([(0, 0, 0), [0.5, 0.5, 0.5]])
+            self.active_primitive = LineByCurve(curve,line)
 
         self.active_primitive.build()
+
+        # to avoid plots stacking
+        try: 
+            self.ax.clear()
+        except:
+            pass
 
         self.ax = self.canvas_layout.canvas.figure.add_subplot(projection="3d")
         self.ax.set_xlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
