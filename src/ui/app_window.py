@@ -48,13 +48,13 @@ class AppWindow(QMainWindow):
         elif configurator_type == CONFIGURATOR_TYPE_LINEMOVE:
             curve = Curve([1, 2, 3])
             self.active_primitive = curve_line(curve, [1, 1, 1], [1, 1, 1])
+        elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
+            curve = Curve([1.5, 2, 1])
+            line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
+            self.active_primitive = LineByCurve(curve,line)
         elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
             curve = Curve([1.5, 2, 1])
             self.active_primitive = lineFixedMove(curve, [0,0,60])
-        elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
-            curve = Curve([1.5, 2, 1])
-            line = Line([(0, 0, 0), [0.5, 0.5, 0.5]])
-            self.active_primitive = LineByCurve(curve,line)
 
         self.active_primitive.build()
 
