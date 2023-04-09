@@ -6,8 +6,10 @@ from primitives.line.line import Line
 from primitives.curve.curve import Curve
 from primitives.lineMove.lineMove import curve_line
 from primitives.lineFixedMove.lineFixedMove import lineFixedMove
+from primitives.linesByCurve.lineByCurve import LineByCurve
 
-from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE
+
+from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE, CONFIGURATOR_TYPE_LINEBYCURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
 
@@ -49,6 +51,10 @@ class AppWindow(QMainWindow):
         elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
             curve = Curve([1.5, 2, 1])
             self.active_primitive = lineFixedMove(curve, [0,0,60])
+        elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
+            curve = Curve([1.5, 2, 1])
+            line = Line([(0, 0, 0), [0.5, 0.5, 0.5]])
+            self.active_primitive = LineByCurve(curve,line)
 
         self.active_primitive.build()
 
