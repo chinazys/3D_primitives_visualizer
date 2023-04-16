@@ -1,6 +1,7 @@
 from matplotlib.figure import Figure
 
-from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget)
+from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget, QVBoxLayout)
+from PyQt5.QtCore import Qt
 
 from primitives.line.line import Line
 from primitives.curve.curve import Curve
@@ -13,6 +14,7 @@ from primitives.plane.plane import Plane
 from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE, CONFIGURATOR_TYPE_LINEBYCURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE, CONFIGURATOR_TYPE_PLANE
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
+from ui.text_field.text_field import TextField
 
 APP_WINDOW_ABSOLUTE_WIDTH = 1920
 APP_WINDOW_ABSOLUTE_HEIGHT = 1080
@@ -36,10 +38,15 @@ class AppWindow(QMainWindow):
         self.horizontal_layout = QHBoxLayout(self.central_widget)
 
         self.canvas_layout = Canvas(self)
+        self.text_field_layout=TextField(self)
+        self.text_field_layout.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.configurator_layout = Configurator(self)
+        self.configurator_layout.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
 
         self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINE)
         self.ax.view_init(30, 30)
+
+
 
     def on_primitive_type_changed(self, configurator_type):
         if configurator_type == CONFIGURATOR_TYPE_LINE:
