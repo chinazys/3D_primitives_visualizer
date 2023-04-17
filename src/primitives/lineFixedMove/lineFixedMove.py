@@ -27,11 +27,26 @@ class lineFixedMove(Primitive):
     def plot(self, ax, canvas):
         try:
             self.base.build()
+            ax.scatter(self.fixdot[0], self.fixdot[1], self.fixdot[2], color='red', s=10)
+
+            ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5)
+
+            _x = []
+            _y = []
+            _z = []
 
             for i in range(len(self.base.x_list)):
-                #xs, ys, zs = boundCoordinates(self.fixdot, (xl[i], yl[i], zl[i]))
                 xs, ys, zs = boundCoordinates(self.fixdot, (self.base.x_list[i], self.base.y_list[i], self.base.z_list[i]))
-                ax.plot(xs, ys, zs)
+                xx = np.linspace(xs[0], xs[1], 5)
+                yy = np.linspace(ys[0], ys[1], 5)
+                zz = np.linspace(zs[0], zs[1], 5)
+                _x.append(xx)
+                _y.append(yy)
+                _z.append(zz)
+            x = np.array(_x)
+            y = np.array(_y)
+            z = np.array(_z)
+            ax.plot_surface(x, y, z, alpha=.85, color='#579def')
             canvas.draw()
         except:
             print('Surface is invalid => cannot plot')
