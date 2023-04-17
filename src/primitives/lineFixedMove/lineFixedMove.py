@@ -13,7 +13,7 @@ def boundCoordinates(fixdot, dot):
 
     return [[x0+v[0]*k, x1-v[0]*k], [y0+v[1]*k, y1-v[1]*k], [z0+v[2]*k, z1-v[2]*k]]
 
-# conical surface class
+# class defining fixed move of a line
 # 2 input params: curve 'base' and fixation dot 'fixdot'
 class lineFixedMove(Primitive):
     def __init__(self, base: Curve, fixdot: list):
@@ -31,22 +31,9 @@ class lineFixedMove(Primitive):
 
             ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5)
 
-            _x = []
-            _y = []
-            _z = []
-
             for i in range(len(self.base.x_list)):
                 xs, ys, zs = boundCoordinates(self.fixdot, (self.base.x_list[i], self.base.y_list[i], self.base.z_list[i]))
-                xx = np.linspace(xs[0], xs[1], 5)
-                yy = np.linspace(ys[0], ys[1], 5)
-                zz = np.linspace(zs[0], zs[1], 5)
-                _x.append(xx)
-                _y.append(yy)
-                _z.append(zz)
-            x = np.array(_x)
-            y = np.array(_y)
-            z = np.array(_z)
-            ax.plot_surface(x, y, z, alpha=.85, color='#579def')
+                ax.plot(xs, ys, zs, color='#579def', linewidth=3, alpha=.05)
             canvas.draw()
         except:
             print('Surface is invalid => cannot plot')
