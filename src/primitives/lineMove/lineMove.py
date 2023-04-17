@@ -29,7 +29,7 @@ class curve_line(Primitive):
         pass
 
     def plot(self, ax, canvas):
-        try:
+
 
             x=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] for i in range(len(self.base.x_list))])
 
@@ -38,12 +38,13 @@ class curve_line(Primitive):
 
             z = np.array([[self.base.z_list[i], self.base.z_list[i] + self.vector[2]] for i in range(len(self.base.x_list))])
 
+            Z = np.outer(z, np.ones_like(x))
             # for i in range(len(self.base.x_list)):  # (change) ->   for i in range(dot P.x_param,len(self.base.x_list)):
                 # ax.plot_surface(X=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]]for i in range(len(self.base.x_list))),Y=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]),Z=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]) )
                 # ax.plot([self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] ,[self.base.y_list[i] , self.base.y_list[i] + self.vector[1]] ,[self.base.z_list[i] , self.base.z_list[i] + self.vector[2]])
-            ax.plot_surface(x,y,z)
+            X, Y = np.meshgrid(x, y)
+            ax.plot_surface(X,Y,Z)
 
             canvas.draw()
 
-        except:
-            print('Surface is invalid => cannot plot')
+
