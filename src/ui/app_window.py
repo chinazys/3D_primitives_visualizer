@@ -45,16 +45,16 @@ class AppWindow(QMainWindow):
         if configurator_type == CONFIGURATOR_TYPE_LINE:
             self.active_primitive = Line([(0, 0, 0), (10, 10, 10)])
         elif configurator_type == CONFIGURATOR_TYPE_CURVE:
-            self.active_primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't'])
+            self.active_primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't', '-4', '12'])
         elif configurator_type == CONFIGURATOR_TYPE_LINEMOVE:
-            curve = Curve(['t', 'sin(t)', '5'])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
             self.active_primitive = curve_line(curve, [1, 1, 1], [1, 1, 1])
         elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
-            curve = Curve(['t', 'sin(t)', '5'])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
             line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
             self.active_primitive = LineByCurve(curve,line)
         elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            curve = Curve(['t', 'sin(t)', '5'])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
             self.active_primitive = lineFixedMove(curve, [0,0,60])
         elif configurator_type == CONFIGURATOR_TYPE_PLANE:
             self.active_primitive = Plane((5, 2, 0), (0, 0, 50))

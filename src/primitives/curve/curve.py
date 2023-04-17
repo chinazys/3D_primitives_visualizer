@@ -1,6 +1,8 @@
 from primitives.primitive import Primitive
 from util.expression_parser import string_to_expression, evaluate_parametric_expression
 
+CURVE_POINTS_QUANTITY = 100
+
 # Curve is built as a dense consequence of points, which are generated for each possible ti: xi = x(ti), yi = y(ti), zi = z(ti).
 class Curve(Primitive):
     def _fill_points_list(self):
@@ -8,33 +10,41 @@ class Curve(Primitive):
         self.y_list = []
         self.z_list = []
 
-        for t in range(1000):
+        t = self.t_min
+        step = (self.t_max - self.t_min) / CURVE_POINTS_QUANTITY
+        while t < self.t_max:
             try:
-                self.x_list.append(evaluate_parametric_expression(self.x_expression, t/100))
+                self.x_list.append(evaluate_parametric_expression(self.x_expression, t))
             except:
                 pass
 
             try:
-                self.y_list.append(evaluate_parametric_expression(self.y_expression, t/100))
+                self.y_list.append(evaluate_parametric_expression(self.y_expression, t))
             except:
                 self.x_list.pop()
 
             try:
-                self.z_list.append(evaluate_parametric_expression(self.z_expression, t/100))
+                self.z_list.append(evaluate_parametric_expression(self.z_expression, t))
             except:
                 self.x_list.pop()
                 self.y_list.pop()
+            
+            t += step
 
     def build(self):
-        assert len(self.params) == 3, "Curve params are invalid"
+        assert len(self.params) == 5, "Curve params are invalid"
 
         try:
             self.x_expression = string_to_expression(self.params[0])
             self.y_expression = string_to_expression(self.params[1])
             self.z_expression = string_to_expression(self.params[2])
+            self.t_min = float(self.params[3])
+            self.t_max = float(self.params[4])
         except:
             print('Invalid input')
             return
+
+        assert self.t_min < self.t_max, 'Invalid t limits'
         
         self._fill_points_list()
     
