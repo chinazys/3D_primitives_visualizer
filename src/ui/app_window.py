@@ -37,8 +37,8 @@ class AppWindow(QMainWindow):
 
         self.canvas_layout = Canvas(self)
         self.configurator_layout = Configurator(self)
-
-        self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINE)
+        # ACHTUNG!!!!!!!!!! CHANGE BACK TO 'LINE' OPTION!!!!!!!!
+        self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINEFIXEDMOVE)
         self.ax.view_init(30, 30)
 
     def on_primitive_type_changed(self, configurator_type):
@@ -54,8 +54,8 @@ class AppWindow(QMainWindow):
             line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
             self.active_primitive = LineByCurve(curve,line)
         elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
-            self.active_primitive = lineFixedMove(curve, [0,0,60])
+            curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29'])
+            self.active_primitive = lineFixedMove(curve, [0,0,100])
         elif configurator_type == CONFIGURATOR_TYPE_PLANE:
             self.active_primitive = Plane((5, 2, 0), (0, 0, 50))
 
@@ -72,4 +72,4 @@ class AppWindow(QMainWindow):
         self.ax.set_ylim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         self.ax.set_zlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         
-        self.active_primitive.plot(self.ax, self.canvas_layout.canvas)
+        self.active_primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
