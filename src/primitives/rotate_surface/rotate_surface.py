@@ -15,7 +15,7 @@ class rotate_surface(Primitive):
         self.base.build()
         self.dot = dot
         self.vector = vector
-        self.main_line = Line(dot, vector + dot)
+        self.main_line = Line([dot, vector + dot])
         self.main_line.build()
         self.x_list, self.y_list, self.z_list = [], [], []
 
@@ -53,7 +53,7 @@ class rotate_surface(Primitive):
         x_new, y_new, z_new = [], [], []
         x_, y_, z_ = [], [], []
         for i in range(0, len(x)):
-            for j in range(0, 360):
+            for j in range(0, 360, 36):
                 theta = j
                 x_rot, y_rot, z_rot = rotate_around_line(np.array([x[i], y[i], z[i]]), np.array([a, b, c]),
                                                          np.array([m, n, p]), theta)
@@ -68,6 +68,8 @@ class rotate_surface(Primitive):
         self.z_list = np.array(z_)
 
     def plot(self, ax, canvas):
+
+        self.build()
         self.main_line.plot()
         self.base.plot()
 
