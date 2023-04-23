@@ -7,19 +7,27 @@ import numpy as np
 class rotate_surface(Primitive):
 
     def __init__(self, base: Curve, dot: list, vector: list):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
+
         if vector == [0, 0, 0]:
             raise Exception('vector is invalid = [0,0,0]')
         assert len(dot) == 3, "dot is invalid"
         assert len(vector) == 3, "vector is invalid"
+
         self.base = base
         self.base.build()
+
         self.dot = dot
+
         self.vector = vector
-        self.main_line = Line([dot, vector + dot])
-        self.main_line.build()
+
+        #self.main_line = Line([dot, vector + dot])
+
+        #self.main_line.build()
+
         self.x_list, self.y_list, self.z_list = [], [], []
 
     def build(self):
+
         def rotate_around_line(point, line_point, line_direction, angle):
 
             shifted_point = point - line_point
@@ -44,16 +52,22 @@ class rotate_surface(Primitive):
 
             return rotated_point
 
+
+
         a, b, c = self.dot
         m, n, p = self.vector
-        self.main_line.plot()
+        #ax=self.main_line.plot(ax)
+
         x = self.base.x_list
         y = self.base.y_list
         z = self.base.z_list
+
+
+
         x_new, y_new, z_new = [], [], []
         x_, y_, z_ = [], [], []
-        for i in range(0, len(x)):
-            for j in range(0, 360, 36):
+        for i in range(len(x)):
+            for j in range(0, 366,36):
                 theta = j
                 x_rot, y_rot, z_rot = rotate_around_line(np.array([x[i], y[i], z[i]]), np.array([a, b, c]),
                                                          np.array([m, n, p]), theta)
@@ -63,15 +77,35 @@ class rotate_surface(Primitive):
             x_.append(x_new)
             y_.append(y_new)
             z_.append(z_new)
+            x_new, y_new, z_new = [], [], []
+
+
         self.x_list = np.array(x_)
         self.y_list = np.array(y_)
         self.z_list = np.array(z_)
 
-    def plot(self, ax, canvas):
 
-        self.build()
-        self.main_line.plot()
-        self.base.plot()
 
-        ax.plot_surface(self.x_list, self.y_list, self.z_list)
+
+    def plot(self, ax, canvas, fig):
+        from matplotlib.animation import FuncAnimation
+
+        #self.main_line.plot()
+        #self.base.plot()
+
+
+        #self.build()
+
+        t = np.linspace(-5, 5, 100)
+        a, b, c = self.dot
+        m, n, p = self.vector
+        x_line = a + m * t
+        y_line = b + n * t
+        z_line = c + p * t
+        ax.plot(x_line, y_line, z_line)
+        print(self.x_list,self.z_list,self.y_list)
+        ax.plot(self.base.x_list, self.base.y_list, self.base.z_list)
+        ax.plot_surface(self.x_list, self.y_list, self.z_list, color='b')
+        #anim = FuncAnimation(fig, animate, frames=self.LENGTH + 1, repeat=False, interval=self.INTERVAL)
+
         canvas.draw()
