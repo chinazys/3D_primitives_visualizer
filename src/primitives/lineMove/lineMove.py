@@ -28,7 +28,7 @@ class curve_line(Primitive):
     def build(self):
         pass
 
-    def plot(self, ax, canvas):
+    def plot(self, ax, canvas, fig):
 
 
             x=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] for i in range(len(self.base.x_list))])
