@@ -48,7 +48,7 @@ class AppWindow(QMainWindow):
             self.active_primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't', '-4', '12'])
         elif configurator_type == CONFIGURATOR_TYPE_LINEMOVE:
             curve = Curve(['t', 'sin(t)', '5', '1', '10'])
-            self.active_primitive = curve_line(curve, [1, 1, 1], [1, 1, 1])
+            self.active_primitive = curve_line(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
         elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
             curve = Curve(['t', 'sin(t)', '5', '1', '10'])
             line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
