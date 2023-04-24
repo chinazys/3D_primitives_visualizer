@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import (QComboBox, QLabel, QVBoxLayout)
+from ui.text_field.text_field import TextField
+from PyQt5.QtCore import Qt
 
 CONFIGURATOR_TYPE_LINE = 'Line'
 CONFIGURATOR_TYPE_CURVE = 'Curve'
@@ -20,6 +22,9 @@ class Configurator:
         self.vertical_layout = QVBoxLayout()
         window.horizontal_layout.addLayout(self.vertical_layout, CONFIGURATOR_LAYOUT_RELATIVE_WIDTH)
         self.vertical_layout.setContentsMargins(1, 1, 1, 1)
+        self.text_field_layout = TextField(self)
+        self.vertical_layout.addWidget(self.text_field_layout.label)
+        self.vertical_layout.addWidget(self.text_field_layout.text_field)
         self.vertical_layout.addWidget(QLabel("Plot type:"))
         self.vertical_layout.addWidget(self.primitive_type_selector)
 

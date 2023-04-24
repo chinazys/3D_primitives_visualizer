@@ -1,6 +1,6 @@
 from matplotlib.figure import Figure
 
-from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget, QVBoxLayout)
+from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget)
 from PyQt5.QtCore import Qt
 
 from primitives.line.line import Line
@@ -38,8 +38,7 @@ class AppWindow(QMainWindow):
         self.horizontal_layout = QHBoxLayout(self.central_widget)
 
         self.canvas_layout = Canvas(self)
-        self.text_field_layout=TextField(self)
-        self.text_field_layout.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+
         self.configurator_layout = Configurator(self)
         self.configurator_layout.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
 
