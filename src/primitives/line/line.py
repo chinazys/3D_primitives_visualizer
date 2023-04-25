@@ -41,7 +41,7 @@ class Line(Primitive):
         self.a_end_point = Line._get_end_point(self.a_point, self.b_point)
         self.b_end_point = Line._get_end_point(self.b_point, self.a_point)
 
-    def plot(self, ax, canvas):
+    def plot(self, ax, canvas, figure):
         try:
             ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]])
             canvas.draw()

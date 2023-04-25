@@ -1,26 +1,33 @@
 from PyQt5.QtWidgets import (QComboBox, QLabel, QVBoxLayout)
-
-CONFIGURATOR_TYPE_LINE = 'Line'
-CONFIGURATOR_TYPE_CURVE = 'Curve'
-CONFIGURATOR_TYPE_LINEMOVE = 'Line move'
-CONFIGURATOR_TYPE_LINEFIXEDMOVE = 'Fixed move of line'
-CONFIGURATOR_TYPE_LINEBYCURVE = 'Line by curve'
-CONFIGURATOR_TYPE_PLANE = 'Plane'
-CONFIGURATOR_TYPES = [CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE,
-                      CONFIGURATOR_TYPE_LINEBYCURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE, CONFIGURATOR_TYPE_PLANE]
-
+from ui.configurator.primitives_list import PrimitivesList
+from ui.configurator.primitive_editor import PrimitiveEditor
 
 CONFIGURATOR_LAYOUT_RELATIVE_WIDTH = 25
 
 class Configurator:
     def __init__(self, window):
-        self.primitive_type_selector = QComboBox()
-        self.primitive_type_selector.addItems(CONFIGURATOR_TYPES)
-        
-        self.vertical_layout = QVBoxLayout()
-        window.horizontal_layout.addLayout(self.vertical_layout, CONFIGURATOR_LAYOUT_RELATIVE_WIDTH)
-        self.vertical_layout.setContentsMargins(1, 1, 1, 1)
-        self.vertical_layout.addWidget(QLabel("Plot type:"))
-        self.vertical_layout.addWidget(self.primitive_type_selector)
+        self.window = window
+        self.primitives_list = PrimitivesList(self)
+        self.active_configurator = self.primitives_list
+        self.window.horizontal_layout.addLayout(self.active_configurator.vertical_layout, CONFIGURATOR_LAYOUT_RELATIVE_WIDTH)
+    
+    def on_configurator_state_changed(self, isEditor):
+        self.window.horizontal_layout.itemAt(1).layout().deleteLater()
 
-        self.primitive_type_selector.currentTextChanged.connect(window.on_primitive_type_changed)
+        Configurator.clear_layout(self.active_configurator.vertical_layout)
+
+        if isEditor:
+            self.active_configurator = PrimitiveEditor(self)
+        else:
+            self.active_configurator = PrimitivesList(self)
+
+        self.window.horizontal_layout.addLayout(self.active_configurator.vertical_layout, CONFIGURATOR_LAYOUT_RELATIVE_WIDTH)
+    
+    def clear_layout(layout):
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                Configurator.clear_layout(item.layout())

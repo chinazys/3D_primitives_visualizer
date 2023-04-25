@@ -7,10 +7,11 @@ from primitives.curve.curve import Curve
 from primitives.lineMove.lineMove import curve_line
 from primitives.lineFixedMove.lineFixedMove import lineFixedMove
 from primitives.linesByCurve.lineByCurve import LineByCurve
+from primitives.rotate_surface.rotate_surface import rotate_surface
 from primitives.plane.plane import Plane
 
-
-from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE, CONFIGURATOR_TYPE_LINEBYCURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE, CONFIGURATOR_TYPE_PLANE
+from ui.configurator.configurator import Configurator 
+from ui.configurator.configurator_types import *
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
 
@@ -37,8 +38,7 @@ class AppWindow(QMainWindow):
 
         self.canvas_layout = Canvas(self)
         self.configurator_layout = Configurator(self)
-        # ACHTUNG!!!!!!!!!! CHANGE BACK TO 'LINE' OPTION!!!!!!!!
-        self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINEFIXEDMOVE)
+        self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINE)
         self.ax.view_init(30, 30)
 
     def on_primitive_type_changed(self, configurator_type):
@@ -56,6 +56,9 @@ class AppWindow(QMainWindow):
         elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
             curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29'])
             self.active_primitive = lineFixedMove(curve, [0,0,100])
+        elif configurator_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
+            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
+            self.active_primitive = rotate_surface(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
         elif configurator_type == CONFIGURATOR_TYPE_PLANE:
             self.active_primitive = Plane((5, 2, 0), (0, 0, 50))
 

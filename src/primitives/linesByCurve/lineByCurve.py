@@ -7,7 +7,7 @@ class LineByCurve(Primitive):
         self.curve = curve
         self.line = line
 
-    def plot(self, ax, canvas):
+    def plot(self, ax, canvas, curve):
         try:
             self.curve.build()
             self.line.build()
