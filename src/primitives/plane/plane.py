@@ -22,7 +22,7 @@ class Plane(Primitive):
         self._fill_points_list()
         pass
 
-    def plot(self, ax, canvas):
+    def plot(self, ax, canvas, figure):
         try:
             label = "M: ({}; {}; {})".format(self.M[0], self.M[1], self.M[2])
             ax.scatter(self.M[0], self.M[1], self.M[2], s=15, color='red')

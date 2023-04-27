@@ -8,10 +8,11 @@ from primitives.curve.curve import Curve
 from primitives.lineMove.lineMove import curve_line
 from primitives.lineFixedMove.lineFixedMove import lineFixedMove
 from primitives.linesByCurve.lineByCurve import LineByCurve
+from primitives.rotate_surface.rotate_surface import rotate_surface
 from primitives.plane.plane import Plane
 
-
-from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE, CONFIGURATOR_TYPE_LINEBYCURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE, CONFIGURATOR_TYPE_PLANE
+from ui.configurator.configurator import Configurator 
+from ui.configurator.configurator_types import *
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
 
@@ -50,17 +51,20 @@ class AppWindow(QMainWindow):
         if configurator_type == CONFIGURATOR_TYPE_LINE:
             self.active_primitive = Line([(0, 0, 0), (10, 10, 10)])
         elif configurator_type == CONFIGURATOR_TYPE_CURVE:
-            self.active_primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't'])
+            self.active_primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't', '-4', '12'])
         elif configurator_type == CONFIGURATOR_TYPE_LINEMOVE:
-            curve = Curve(['t', 'sin(t)', '5'])
-            self.active_primitive = curve_line(curve, [1, 1, 1], [1, 1, 1])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
+            self.active_primitive = curve_line(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
         elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
-            curve = Curve(['t', 'sin(t)', '5'])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
             line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
             self.active_primitive = LineByCurve(curve,line)
         elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            curve = Curve(['t', 'sin(t)', '5'])
-            self.active_primitive = lineFixedMove(curve, [0,0,60])
+            curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29'])
+            self.active_primitive = lineFixedMove(curve, [0,0,100])
+        elif configurator_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
+            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
+            self.active_primitive = rotate_surface(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
         elif configurator_type == CONFIGURATOR_TYPE_PLANE:
             self.active_primitive = Plane((5, 2, 0), (0, 0, 50))
 
@@ -77,4 +81,4 @@ class AppWindow(QMainWindow):
         self.ax.set_ylim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         self.ax.set_zlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         
-        self.active_primitive.plot(self.ax, self.canvas_layout.canvas)
+        self.active_primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
