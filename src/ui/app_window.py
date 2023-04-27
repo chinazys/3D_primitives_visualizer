@@ -27,7 +27,7 @@ class AppWindow(QMainWindow):
         self.setMinimumSize(self.window_width, self.window_height)
         self.setStyleSheet('''
             QWidget {
-                font-size: 25px;
+                font-size: 32px;
             }
         ''')        
 
@@ -40,11 +40,9 @@ class AppWindow(QMainWindow):
         self.canvas_layout = Canvas(self)
 
         self.configurator_layout = Configurator(self)
-        self.configurator_layout.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
 
         self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINE)
         self.ax.view_init(30, 30)
-
 
 
     def on_primitive_type_changed(self, configurator_type):

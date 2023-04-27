@@ -1,9 +1,7 @@
 from PyQt5.QtWidgets import (QComboBox, QLabel, QVBoxLayout)
 
-from ui.configurator.widgets.text_field.text_field import TextField
-from ui.configurator.widgets.primitives_info import PrimitivInfo
-from ui.configurator.primitives_list import PrimitivesList
-from ui.configurator.primitive_editor import PrimitiveEditor
+from ui.configurator.states.primitives_list.primitives_list import PrimitivesList
+from ui.configurator.states.primitive_editor.primitive_editor import PrimitiveEditor
 
 CONFIGURATOR_LAYOUT_RELATIVE_WIDTH = 25
 
