@@ -14,7 +14,6 @@ from primitives.plane.plane import Plane
 from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE, CONFIGURATOR_TYPE_LINEBYCURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE, CONFIGURATOR_TYPE_PLANE
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
-from ui.text_field.text_field import TextField
 
 APP_WINDOW_ABSOLUTE_WIDTH = 1920
 APP_WINDOW_ABSOLUTE_HEIGHT = 1080
