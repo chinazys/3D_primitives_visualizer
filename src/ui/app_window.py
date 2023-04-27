@@ -1,6 +1,7 @@
 from matplotlib.figure import Figure
 
 from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget)
+from PyQt5.QtCore import Qt
 
 from primitives.line.line import Line
 from primitives.curve.curve import Curve
@@ -37,9 +38,14 @@ class AppWindow(QMainWindow):
         self.horizontal_layout = QHBoxLayout(self.central_widget)
 
         self.canvas_layout = Canvas(self)
+
         self.configurator_layout = Configurator(self)
+        self.configurator_layout.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
+
         self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINE)
         self.ax.view_init(30, 30)
+
+
 
     def on_primitive_type_changed(self, configurator_type):
         if configurator_type == CONFIGURATOR_TYPE_LINE:

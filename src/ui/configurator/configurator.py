@@ -1,4 +1,7 @@
 from PyQt5.QtWidgets import (QComboBox, QLabel, QVBoxLayout)
+
+from ui.configurator.widgets.text_field.text_field import TextField
+from ui.configurator.widgets.primitives_info import PrimitivInfo
 from ui.configurator.primitives_list import PrimitivesList
 from ui.configurator.primitive_editor import PrimitiveEditor
 
