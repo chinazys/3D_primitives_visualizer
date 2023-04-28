@@ -1,8 +1,6 @@
 from primitives.primitive import Primitive
 from util.expression_parser import string_to_expression, evaluate_parametric_expression
 
-CURVE_POINTS_QUANTITY = 100
-
 # Curve is built as a dense consequence of points, which are generated for each possible ti: xi = x(ti), yi = y(ti), zi = z(ti).
 class Curve(Primitive):
     def _fill_points_list(self):
@@ -11,7 +9,7 @@ class Curve(Primitive):
         self.z_list = []
 
         t = self.t_min
-        step = (self.t_max - self.t_min) / CURVE_POINTS_QUANTITY
+        step = (self.t_max - self.t_min) / self.points_quantity
         while t < self.t_max:
             try:
                 self.x_list.append(evaluate_parametric_expression(self.x_expression, t))
@@ -32,7 +30,7 @@ class Curve(Primitive):
             t += step
 
     def build(self):
-        assert len(self.params) == 5, "Curve params are invalid"
+        assert len(self.params) == 6, "Curve params are invalid"
 
         try:
             self.x_expression = string_to_expression(self.params[0])
@@ -40,6 +38,7 @@ class Curve(Primitive):
             self.z_expression = string_to_expression(self.params[2])
             self.t_min = float(self.params[3])
             self.t_max = float(self.params[4])
+            self.points_quantity = int(self.params[5])
         except:
             print('Invalid input')
             return

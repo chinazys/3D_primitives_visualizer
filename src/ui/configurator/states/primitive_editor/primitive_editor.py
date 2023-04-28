@@ -67,23 +67,23 @@ class PrimitiveEditor(QWidget):
     def on_confirm_button_click(self):
         if len(self.name_text_field.text) < 1:
             return
-        
+                
         if self.primitive_type == CONFIGURATOR_TYPE_LINE:
             primitive = Line([(0, 0, 0), (10, 10, 10)])
         elif self.primitive_type == CONFIGURATOR_TYPE_CURVE:
-            primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't', '-4', '12'])
+            primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't', '-4', '12', '100'])
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
-            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
             primitive = curve_line(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEBYCURVE:
-            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
             line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
             primitive = LineByCurve(curve,line)
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29'])
+            curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29', '100'])
             primitive = lineFixedMove(curve, [0,0,100])
         elif self.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
-            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
+            curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
             primitive = rotate_surface(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
         elif self.primitive_type == CONFIGURATOR_TYPE_PLANE:
             primitive = Plane((5, 2, 0), (0, 0, 50))
