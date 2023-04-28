@@ -3,7 +3,10 @@ from PyQt5.QtGui import QIcon,QPixmap
 from os import getcwd
 
 class PrimitiveInfo:
-    def __init__(self, primitv_type:str="test_type", primitiv_name:str="test"):
+    def __init__(self, primitv_type:str, primitiv_name:str, index:int, primitives_list):
+        self.index = index
+        self.primitives_list = primitives_list
+
         self.base=QHBoxLayout()
         self.base.setSpacing(0)
         self.icon=QPushButton()
@@ -28,5 +31,5 @@ class PrimitiveInfo:
         print('edit')
 
     def delete_buuton_clicl(self):
-        print('delete')
+        self.primitives_list.on_delete_primitive_button_click(self.index)
 

@@ -1,6 +1,7 @@
 class Primitive:
     primitive_name = None
     primitive_type = None
+    
     def __init__(self, params):
         self.params = params
     

@@ -23,8 +23,13 @@ class PrimitivesList(QWidget):
         self.bottom_vertical_layout.setAlignment(Qt.AlignBottom)
 
         self.top_vertical_layout.addWidget(QLabel('Active Primitives List:'))
-        self.primitive_info = PrimitiveInfo(primitiv_name='Some Primitive')
-        self.top_vertical_layout.addLayout(self.primitive_info.base)
+        self.primitive_info_list = []
+
+        for i, primitive in enumerate(self.configurator.window.all_primitives):
+            self.primitive_info_list.append(
+                PrimitiveInfo(primitv_type=primitive.primitive_type, primitiv_name=primitive.primitive_name, index=i, primitives_list=self)
+            )
+            self.top_vertical_layout.addLayout(self.primitive_info_list[-1].base)
 
         self.add_button = QPushButton('Add', self)
         self.add_button.setToolTip('Click to add a new primitive')
@@ -34,3 +39,6 @@ class PrimitivesList(QWidget):
     @pyqtSlot()
     def on_add_button_click(self):
         self.configurator.on_configurator_state_changed(True)
+    
+    def on_delete_primitive_button_click(self, primitive_index):
+        self.configurator.window.on_primitive_removed(primitive_index)
