@@ -1,16 +1,10 @@
 from matplotlib.figure import Figure
 
 from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget)
+from PyQt5.QtCore import Qt
 
-from primitives.line.line import Line
-from primitives.curve.curve import Curve
-from primitives.lineMove.lineMove import curve_line
-from primitives.lineFixedMove.lineFixedMove import lineFixedMove
-from primitives.linesByCurve.lineByCurve import LineByCurve
-from primitives.plane.plane import Plane
-
-
-from ui.configurator.configurator import Configurator, CONFIGURATOR_TYPE_LINE, CONFIGURATOR_TYPE_CURVE, CONFIGURATOR_TYPE_LINEMOVE, CONFIGURATOR_TYPE_LINEBYCURVE, CONFIGURATOR_TYPE_LINEFIXEDMOVE, CONFIGURATOR_TYPE_PLANE
+from ui.configurator.configurator import Configurator 
+from ui.configurator.configurator_types import *
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
 
@@ -25,7 +19,7 @@ class AppWindow(QMainWindow):
         self.setMinimumSize(self.window_width, self.window_height)
         self.setStyleSheet('''
             QWidget {
-                font-size: 25px;
+                font-size: 32px;
             }
         ''')        
 
@@ -35,41 +29,26 @@ class AppWindow(QMainWindow):
         self.setCentralWidget(self.central_widget)
         self.horizontal_layout = QHBoxLayout(self.central_widget)
 
+        self.all_primitives = []
+
         self.canvas_layout = Canvas(self)
+
         self.configurator_layout = Configurator(self)
-        # ACHTUNG!!!!!!!!!! CHANGE BACK TO 'LINE' OPTION!!!!!!!!
-        self.on_primitive_type_changed(CONFIGURATOR_TYPE_LINEFIXEDMOVE)
-        self.ax.view_init(30, 30)
-
-    def on_primitive_type_changed(self, configurator_type):
-        if configurator_type == CONFIGURATOR_TYPE_LINE:
-            self.active_primitive = Line([(0, 0, 0), (10, 10, 10)])
-        elif configurator_type == CONFIGURATOR_TYPE_CURVE:
-            self.active_primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't', '-4', '12'])
-        elif configurator_type == CONFIGURATOR_TYPE_LINEMOVE:
-            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
-            self.active_primitive = curve_line(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
-        elif configurator_type == CONFIGURATOR_TYPE_LINEBYCURVE:
-            curve = Curve(['t', 'sin(t)', '5', '1', '10'])
-            line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
-            self.active_primitive = LineByCurve(curve,line)
-        elif configurator_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29'])
-            self.active_primitive = lineFixedMove(curve, [0,0,100])
-        elif configurator_type == CONFIGURATOR_TYPE_PLANE:
-            self.active_primitive = Plane((5, 2, 0), (0, 0, 50))
-
-        self.active_primitive.build()
-
-        # to avoid plots stacking
-        try: 
-            self.ax.clear()
-        except:
-            pass
 
         self.ax = self.canvas_layout.canvas.figure.add_subplot(projection="3d")
         self.ax.set_xlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         self.ax.set_ylim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         self.ax.set_zlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
+
+        self.ax.view_init(30, 30)
+
+
+    def on_primitive_added(self, primitive):
+        primitive.build()
+        primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
         
-        self.active_primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
+        self.all_primitives.append(primitive)
+
+    def on_primitive_removed(self, index):
+        print('Remove primitive #', index)
+        # smth like self.all_primitives[index].remove() goes here

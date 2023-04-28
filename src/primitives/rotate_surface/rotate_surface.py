@@ -103,7 +103,7 @@ class rotate_surface(Primitive):
         y_line = b + n * t
         z_line = c + p * t
         ax.plot(x_line, y_line, z_line)
-        print(self.x_list,self.z_list,self.y_list)
+        # print(self.x_list,self.z_list,self.y_list)
         ax.plot(self.base.x_list, self.base.y_list, self.base.z_list)
         ax.plot_surface(self.x_list, self.y_list, self.z_list, color='b')
         #anim = FuncAnimation(fig, animate, frames=self.LENGTH + 1, repeat=False, interval=self.INTERVAL)

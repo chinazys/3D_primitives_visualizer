@@ -48,7 +48,7 @@ class Curve(Primitive):
         
         self._fill_points_list()
     
-    def plot(self, ax, canvas):
+    def plot(self, ax, canvas, figure):
         try:
             ax.plot(self.x_list, self.y_list, self.z_list)
             canvas.draw()
