@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (QLabel, QHBoxLayout,QPushButton)
-from PyQt5.QtGui import QIcon,QPixmap
+from PyQt5.QtGui import QIcon
 from os import getcwd
 
 class PrimitivInfo:

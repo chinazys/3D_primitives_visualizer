@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (QComboBox, QLabel, QVBoxLayout)
 from ui.configurator.widgets.text_field.text_field import TextField
 from ui.configurator.widgets.primitives_info import PrimitivInfo
+from ui.configurator.widgets.text_field.point_text_field import PointTextField
 
 CONFIGURATOR_TYPE_LINE = 'Line'
 CONFIGURATOR_TYPE_CURVE = 'Curve'
@@ -24,9 +25,8 @@ class Configurator:
         self.vertical_layout.setContentsMargins(1, 1, 1, 1)
         self.test_info=PrimitivInfo(self)
         self.text_field_layout = TextField(self)
-        #self.vertical_layout.addWidget(self.text_field_layout.label)
-        #self.vertical_layout.addWidget(self.text_field_layout.text_field)
         self.vertical_layout.addWidget(QLabel("Plot type:"))
         self.vertical_layout.addWidget(self.primitive_type_selector)
+        self.test_point_field=PointTextField(self)
 
         self.primitive_type_selector.currentTextChanged.connect(window.on_primitive_type_changed)

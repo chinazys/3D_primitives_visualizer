@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import (QLineEdit,QVBoxLayout,QLabel)
+from PyQt5.QtWidgets import (QLineEdit,QLabel)
 
 
 
