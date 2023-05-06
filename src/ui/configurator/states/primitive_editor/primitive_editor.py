@@ -86,7 +86,7 @@ class PrimitiveEditor(QWidget):
             curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
             primitive = rotate_surface(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
         elif self.primitive_type == CONFIGURATOR_TYPE_PLANE:
-            primitive = Plane((5, 2, 0), (0, 0, 50))
+            primitive = Plane((5, 2, 30), (10, 10, 50))
         else:
             raise Exception('Unknown primitive type')
 
