@@ -48,26 +48,27 @@ class lineFixedMove(Primitive):
             def animate(i):
                 # firstly, plot the fixdot
                 if i == 0:                    
-                    ax.scatter(*self.fixdot, color='red', s=40)
+                    self.plots.append(ax.scatter(*self.fixdot, color='red', s=40))
                     canvas.draw()
                     return
                 # next, plot the base curve                
                 elif i == 1:
-                    ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5)
+                    self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5))
                     canvas.draw()
                     return
                 # then, plot P dot (the first base-curve dot in the list)
                 elif i == 2:
                     x1, y1, z1 = self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]
-                    ax.scatter(x1, y1, z1, color='red', s=40)
+                    self.plots.append(ax.scatter(x1, y1, z1, color='red', s=40))
                     canvas.draw()
                     return
                 # finally, plot connecting line between P dot and fixdot
                 elif i == 3:
                     x0, y0, z0 = self.fixdot
                     x1, y1, z1 = self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]
-                    ax.plot([x0, x1], [y0, y1], [z0, z1], color=_color, linewidth=5)
+                    self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color=_color, linewidth=5))
                     canvas.draw()
+                    self.INTERVAL = 100
                     return
                 # if it's the last dot, unite all the fragments into single surface
                 if (i-self.BIAS)*(self.STEP) >= self.DOTS-1:
@@ -85,6 +86,7 @@ class lineFixedMove(Primitive):
                     Y = np.array(self._y)
                     Z = np.array(self._z)
                     surf = ax.plot_surface(X, Y, Z, color=_color, alpha=self.ALPHA, picker=False)
+                    self.plots.append(surf)
                     self.surfaces.append(surf)
                     self._x.clear()
                     self._y.clear()
@@ -97,6 +99,7 @@ class lineFixedMove(Primitive):
                     lbl = "plot " + _color
                     self.surf = ax.plot_surface(self.X, self.Y, self.Z, label=lbl, alpha=self.ALPHA, color=_color, picker=True, zorder=1)
                     canvas.draw()
+                    self.plots.append(self.surf)
                     return True                
                 # usually, we just add another set of dots to the list
                 else:
@@ -132,6 +135,7 @@ class lineFixedMove(Primitive):
                     Z = np.array(self._z)
                     surf = ax.plot_surface(X, Y, Z, color=_color, alpha=self.ALPHA)
                     self.surfaces.append(surf)
+                    self.plots.append(self.surf)
                     tmp = [self._x[1], self._y[1], self._z[1]]
                     self._x.clear()
                     self._y.clear()

@@ -7,6 +7,8 @@ import numpy as np
 
 
 class curve_line(Primitive):
+    plots = []
+    
     def dot_in_curve(self):
         if self.dot in [[self.base.x_list[i], self.base.y_list[i],self.base.z_list[i]] for i in range(len(self.base.x_list))]:
             pass
@@ -44,9 +46,9 @@ class curve_line(Primitive):
                 # ax.plot_surface(X=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]]for i in range(len(self.base.x_list))),Y=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]),Z=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]) )
                 # ax.plot([self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] ,[self.base.y_list[i] , self.base.y_list[i] + self.vector[1]] ,[self.base.z_list[i] , self.base.z_list[i] + self.vector[2]])
 
-            ax.plot(self.base.x_list,self.base.y_list,self.base.z_list)
-            ax.plot(self.x_list[0], self.y_list[0], self.z_list[0])
-            ax.plot_surface(self.x_list,self.y_list,self.z_list,color='b')
+            self.plots.append(ax.plot(self.base.x_list,self.base.y_list,self.base.z_list))
+            self.plots.append(ax.plot(self.x_list[0], self.y_list[0], self.z_list[0]))
+            self.plots.append(ax.plot_surface(self.x_list,self.y_list,self.z_list,color='b'))
 
 
             canvas.draw()

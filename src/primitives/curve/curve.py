@@ -3,6 +3,8 @@ from util.expression_parser import string_to_expression, evaluate_parametric_exp
 
 # Curve is built as a dense consequence of points, which are generated for each possible ti: xi = x(ti), yi = y(ti), zi = z(ti).
 class Curve(Primitive):
+    plots = []
+
     def _fill_points_list(self):
         self.x_list = []
         self.y_list = []
@@ -49,7 +51,7 @@ class Curve(Primitive):
     
     def plot(self, ax, canvas, figure):
         try:
-            ax.plot(self.x_list, self.y_list, self.z_list)
+            self.plots.append(ax.plot(self.x_list, self.y_list, self.z_list))
             canvas.draw()
         except:
             print('Curve is invalid => cannot plot')

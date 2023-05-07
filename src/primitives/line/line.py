@@ -43,7 +43,7 @@ class Line(Primitive):
 
     def plot(self, ax, canvas, figure):
         try:
-            ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]])
+            self.plots.append(ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]]))
             canvas.draw()
         except Exception as e:
             print(e)
