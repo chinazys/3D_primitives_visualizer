@@ -5,8 +5,6 @@ from matplotlib.animation import FuncAnimation
 
 
 class Plane(Primitive):
-    plots = []
-
     def __init__(self, M: tuple, n: tuple):
         self.M = M
         self.n = n

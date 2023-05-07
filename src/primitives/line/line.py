@@ -41,9 +41,9 @@ class Line(Primitive):
         self.a_end_point = Line._get_end_point(self.a_point, self.b_point)
         self.b_end_point = Line._get_end_point(self.b_point, self.a_point)
 
-    def plot(self, ax, canvas, figure):
+    def plot(self, ax, canvas, figure, _color):
         try:
-            self.plots.append(ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]]))
+            self.plots.append(ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]], color=_color))
             canvas.draw()
         except Exception as e:
             print(e)

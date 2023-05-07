@@ -1,10 +1,10 @@
 class Primitive:
     primitive_name = None
     primitive_type = None
-    plots = []
     
     def __init__(self, params):
         self.params = params
+        self.plots = []
     
     def build(self):
         pass
