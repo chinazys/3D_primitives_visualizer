@@ -5,6 +5,7 @@ import numpy as np
 
 
 class rotate_surface(Primitive):
+    plots = []
 
     def __init__(self, base: Curve, dot: list, vector: list):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
 
@@ -104,9 +105,9 @@ class rotate_surface(Primitive):
         x_line = a + m * t
         y_line = b + n * t
         z_line = c + p * t
-        ax.plot(x_line, y_line, z_line)
-        ax.plot(self.base.x_list, self.base.y_list, self.base.z_list)
-        ax.plot_surface(self.x_list, self.y_list, self.z_list, color='b')
+        self.plots.append(ax.plot(x_line, y_line, z_line))
+        self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list))
+        self.plots.append(ax.plot_surface(self.x_list, self.y_list, self.z_list, color='b'))
         # anim = FuncAnimation(fig, animate, frames=self.LENGTH + 1, repeat=False, interval=self.INTERVAL)
 
         canvas.draw()

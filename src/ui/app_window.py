@@ -51,4 +51,16 @@ class AppWindow(QMainWindow):
 
     def on_primitive_removed(self, index):
         print('Remove primitive #', index)
-        # smth like self.all_primitives[index].remove() goes here
+        for plot in self.all_primitives[index].plots:
+            try:
+                plot.remove()
+            except:
+                try:
+                    plot.pop(0).remove()
+                except:
+                    pass
+                
+        print(len(self.all_primitives))
+        del(self.all_primitives[index])
+        print(len(self.all_primitives))
+        self.figure.canvas.draw()

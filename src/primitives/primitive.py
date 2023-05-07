@@ -1,6 +1,7 @@
 class Primitive:
     primitive_name = None
     primitive_type = None
+    plots = []
     
     def __init__(self, params):
         self.params = params
@@ -12,7 +13,4 @@ class Primitive:
         self.params = params
     
     def plot(self, ax, canvas, figure):
-        pass
-
-    def dispose(self):
         pass

@@ -39,6 +39,22 @@ class PrimitivesList(QWidget):
     @pyqtSlot()
     def on_add_button_click(self):
         self.configurator.on_configurator_state_changed(True)
-    
+
+    def clear_layout(layout):
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                PrimitivesList.clear_layout(item.layout())
+
     def on_delete_primitive_button_click(self, primitive_index):
         self.configurator.window.on_primitive_removed(primitive_index)
+        
+        for i in range(primitive_index + 1, len(self.primitive_info_list)):
+            self.primitive_info_list[i].index = self.primitive_info_list[i].index - 1
+
+        PrimitivesList.clear_layout(self.primitive_info_list[primitive_index].base)
+
+        del(self.primitive_info_list[primitive_index])

@@ -5,6 +5,8 @@ from matplotlib.animation import FuncAnimation
 
 
 class Plane(Primitive):
+    plots = []
+
     def __init__(self, M: tuple, n: tuple):
         self.M = M
         self.n = n
@@ -32,16 +34,16 @@ class Plane(Primitive):
             def animate(i):
                 if i == 0:
                     label = "M: ({}; {}; {})".format(self.M[0], self.M[1], self.M[2])
-                    ax.scatter(self.M[0], self.M[1], self.M[2], s=15, color='red')
-                    ax.text(self.M[0]+3, self.M[1]+3, self.M[2]+3, label, fontsize=15)
+                    self.plots.append(ax.scatter(self.M[0], self.M[1], self.M[2], s=15, color='red'))
+                    self.plots.append(ax.text(self.M[0]+3, self.M[1]+3, self.M[2]+3, label, fontsize=15))
                 elif i == 1:
                     label = "n: ({}; {}; {})".format(self.n[0], self.n[1], self.n[2])
-                    ax.quiver(self.M[0], self.M[1], self.M[2], self.n[0], self.n[1], self.n[2], color='g')
-                    ax.text(self.M[0]+self.n[0]+3, self.M[1]+self.n[1]+3, self.M[2]+self.n[2]+3, label, fontsize=15)
+                    self.plots.append(ax.quiver(self.M[0], self.M[1], self.M[2], self.n[0], self.n[1], self.n[2], color='g'))
+                    self.plots.append(ax.text(self.M[0]+self.n[0]+3, self.M[1]+self.n[1]+3, self.M[2]+self.n[2]+3, label, fontsize=15))
                 elif i == 2:
                     label = "Plane alpha"
-                    ax.plot_surface(self.X_list, self.Y_list, self.Z_list, color='#579def', alpha=.6, picker=True)
-                    ax.text(self.M[0]+20, self.M[1]+20, self.M[2]+20, label, fontsize=15)
+                    self.plots.append(ax.plot_surface(self.X_list, self.Y_list, self.Z_list, color='#579def', alpha=.6, picker=True))
+                    self.plots.append(ax.text(self.M[0]+20, self.M[1]+20, self.M[2]+20, label, fontsize=15))
 
             anim = FuncAnimation(fig, animate, frames=self.FRAMES, repeat=False, interval=self.INTERVAL)
             canvas.draw()

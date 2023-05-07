@@ -4,6 +4,7 @@ from PyQt5.QtCore import pyqtSlot
 
 from ui.configurator.configurator_types import *
 from ui.configurator.states.primitive_editor.text_field.text_field import TextField
+from ui.configurator.states.primitive_editor.point_text_field.point_text_field import PointTextField
 from primitives.line.line import Line
 from primitives.curve.curve import Curve
 from primitives.lineMove.lineMove import curve_line
@@ -42,6 +43,9 @@ class PrimitiveEditor(QWidget):
         
         self.name_text_field = TextField()
         self.center_vertical_layout.addWidget(self.name_text_field.text_field)
+        
+        self.point_text_field = PointTextField()
+        self.center_vertical_layout.addLayout(self.point_text_field.base)
     
         self.bottom_horizontal_layout = QHBoxLayout()
         self.bottom_vertical_layout.addLayout(self.bottom_horizontal_layout)
@@ -75,10 +79,10 @@ class PrimitiveEditor(QWidget):
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
             curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
             primitive = curve_line(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
-        elif self.primitive_type == CONFIGURATOR_TYPE_LINEBYCURVE:
-            curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
-            line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
-            primitive = LineByCurve(curve,line)
+        # elif self.primitive_type == CONFIGURATOR_TYPE_LINEBYCURVE:
+        #     curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
+        #     line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
+        #     primitive = LineByCurve(curve,line)
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
             curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29', '100'])
             primitive = lineFixedMove(curve, [0,0,100])
