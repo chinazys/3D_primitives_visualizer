@@ -37,6 +37,7 @@ class lineFixedMove(Primitive):
         self.INTERVAL = 100
         # bias is required because during first several frames we build fixdot, base curve, P dot and connecting line
         self.BIAS = 4
+        self.plots = []
 
     def build(self):
         pass

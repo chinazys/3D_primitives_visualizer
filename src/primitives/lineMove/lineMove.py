@@ -22,6 +22,7 @@ class curve_line(Primitive):
         self.dot=dot
         curve_line.dot_in_curve(self)
         self.vector=vector
+        self.plane = []
         # self.main_line = Line(dot, vector+dot)
 
 

@@ -25,6 +25,8 @@ class rotate_surface(Primitive):
 
         self.x_list, self.y_list, self.z_list = [], [], []
 
+        self.plots = []
+
     def build(self):
 
         def rotate_point_about_line(point, line_point, line_direction, angle):

@@ -12,6 +12,7 @@ class Plane(Primitive):
         # 3 animation frames for M dot, n vector and the plane itself
         self.FRAMES = 3
         self.INTERVAL = 500
+        self.plots = []
 
     def _fill_points_list(self):
         self.x_list = np.linspace(-100, 100, 2)
