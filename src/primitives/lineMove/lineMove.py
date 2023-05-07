@@ -7,6 +7,8 @@ import numpy as np
 
 
 class curve_line(Primitive):
+    plots = []
+    
     def dot_in_curve(self):
         if self.dot in [[self.base.x_list[i], self.base.y_list[i],self.base.z_list[i]] for i in range(len(self.base.x_list))]:
             pass

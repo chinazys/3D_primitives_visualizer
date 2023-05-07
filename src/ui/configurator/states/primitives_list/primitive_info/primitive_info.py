@@ -24,7 +24,7 @@ class PrimitiveInfo:
         self.button_delete.setFixedWidth(43)
         self.button_delete.setFixedHeight(43)
         self.button_delete.setStyleSheet("QPushButton{background-color: rgb(255,0,0); margin:0px; border:2px solid rgb(0, 0, 0);} QPushButton:hover {background-color: rgb(210,0,0);}")
-        self.button_delete.setIcon(QIcon(getcwd() + "/ui/icons/delete.png"))
+        self.button_delete.setIcon(QIcon(getcwd() + "/src/ui/icons/delete.png"))
         self.button_delete.clicked.connect(self.delete_button_click)
 
     def name_button_click(self):
