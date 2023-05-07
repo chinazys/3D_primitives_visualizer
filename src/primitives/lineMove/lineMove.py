@@ -26,24 +26,28 @@ class curve_line(Primitive):
 
 
     def build(self):
-        pass
+        self.x_list = [[self.base.x_list[i], self.base.x_list[i] + self.vector[0] * 20] for i in range(len(self.base.x_list))]
 
-    def plot(self, ax, canvas):
+        self.y_list = np.array(
+            [[self.base.y_list[i], self.base.y_list[i] + self.vector[1] * 20] for i in range(len(self.base.x_list))])
+
+        self.z_list = np.array(
+            [[self.base.z_list[i], self.base.z_list[i] + self.vector[2] * 20] for i in range(len(self.base.x_list))])
+
+    def plot(self, ax, canvas, fig, _color):
 
 
-            x=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] for i in range(len(self.base.x_list))])
 
 
-            y = np.array([[self.base.y_list[i], self.base.y_list[i] + self.vector[1]] for i in range(len(self.base.x_list))])
 
-            z = np.array([[self.base.z_list[i], self.base.z_list[i] + self.vector[2]] for i in range(len(self.base.x_list))])
-
-            Z = np.outer(z, np.ones_like(x))
             # for i in range(len(self.base.x_list)):  # (change) ->   for i in range(dot P.x_param,len(self.base.x_list)):
                 # ax.plot_surface(X=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]]for i in range(len(self.base.x_list))),Y=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]),Z=np.array([[self.base.x_list[i] , self.base.x_list[i] + self.vector[0] ]for i in range(len(self.base.x_list))]) )
                 # ax.plot([self.base.x_list[i] , self.base.x_list[i] + self.vector[0]] ,[self.base.y_list[i] , self.base.y_list[i] + self.vector[1]] ,[self.base.z_list[i] , self.base.z_list[i] + self.vector[2]])
-            X, Y = np.meshgrid(x, y)
-            ax.plot_surface(X,Y,Z)
+
+            self.plots.append(ax.plot(self.base.x_list,self.base.y_list,self.base.z_list))
+            self.plots.append(ax.plot(self.x_list[0], self.y_list[0], self.z_list[0]))
+            self.plots.append(ax.plot_surface(self.x_list,self.y_list,self.z_list,color=_color))
+
 
             canvas.draw()
 
