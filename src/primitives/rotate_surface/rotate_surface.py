@@ -1,9 +1,8 @@
 from primitives.curve.curve import Curve
 from primitives.primitive import Primitive
-from primitives.line.line import Line
 import numpy as np
-
-
+from matplotlib.animation import FuncAnimation
+import time
 class rotate_surface(Primitive):
     def __init__(self, base: Curve, dot: list, vector: list):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
 
@@ -22,10 +21,23 @@ class rotate_surface(Primitive):
         # self.main_line = Line([dot, vector + dot])
 
         # self.main_line.build()
-
+        self._x=[]
+        self._y=[]
+        self._z=[]
         self.x_list, self.y_list, self.z_list = [], [], []
+        self.build()
 
+        self.DOTS = len(self.x_list)  # sets the number of curve dots
+
+        self.LENGTH = len(self.x_list)  # sets the number of dots we take from the curve to build the conical surface
+        self.STEP = self.DOTS//self.LENGTH  # calculates the step of taking next dot to expand the animated conical surface
+        self.TMP_RESOLUTION = 2  # number of dots each line from curve to fixdot contains
+        self.PAUSE = 1  # sets pause time in seconds between fixdot, base curve and the surface plots
+        self.INTERVAL = 100
+        # bias is required because during first several frames we build fixdot, base curve, P dot and connecting line
+        self.BIAS = 3
         self.plots = []
+
 
     def build(self):
 
@@ -72,7 +84,7 @@ class rotate_surface(Primitive):
         x_new, y_new, z_new = [], [], []
         x_, y_, z_ = [], [], []
 
-        for j in range(0, 366):
+        for j in range(0, 361,10):
             for i in range(0, len(x)):
                 theta = j
                 x_rot, y_rot, z_rot = rotate_point_about_line(np.array([x[i], y[i], z[i]]), np.array([a, b, c]),
@@ -87,27 +99,76 @@ class rotate_surface(Primitive):
 
 
 
-        self.x_list = np.array(x_)
-        self.y_list = np.array(y_)
-        self.z_list = np.array(z_)
+        self.x_list = x_
+        self.y_list = y_
+        self.z_list = z_
 
     def plot(self, ax, canvas, fig, _color):
-        from matplotlib.animation import FuncAnimation
+        
 
-        # self.main_line.plot()
-        # self.base.plot()
-
-        # self.build()
-
-        t = np.linspace(-50, 50, 100)
-        a, b, c = self.dot
-        m, n, p = self.vector
-        x_line = a + m * t
-        y_line = b + n * t
-        z_line = c + p * t
-        self.plots.append(ax.plot(x_line, y_line, z_line))
-        self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list))
-        self.plots.append(ax.plot_surface(self.x_list, self.y_list, self.z_list, color=_color))
-        # anim = FuncAnimation(fig, animate, frames=self.LENGTH + 1, repeat=False, interval=self.INTERVAL)
+        def animate(i):
+                #print(len(self.x_list[i-self.BIAS]),len(self.y_list[i-self.BIAS]),len(self.z_list[i-self.BIAS]))
+                if i==6:
+                    return
+                
+                # firstly, plot the fixdot
+                if i == 0:
+                    self.plots.append(ax.scatter(*self.dot, color='red', s=40))
+                    canvas.draw()
+                    
+                    
+                                  
+                    
+                # next, plot the base curve                
+                elif i == 1:
+                    x0, y0, z0 = [-self.vector[i]*20 +self.dot[i] for i in range(3) ]
+                    x1, y1, z1 = [self.vector[i]*20+self.dot[i] for i in range(3) ]
+                    self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color=_color, linewidth=5))
+                    canvas.draw()
+                    
+                    
+                    
+                    
+                # finally, plot connecting line between P dot and fixdot
+                elif i == 2:
+                    self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5))
+                    canvas.draw()
+                    
+                    
+                # if it's the last dot, unite all the fragments into single surface
+                elif (len(self.x_list)+self.BIAS) ==i:
+                    
+                    self._x.append(self.x_list[-1])
+                    self._y.append(self.y_list[-1])
+                    self._z.append(self.z_list[-1])
+                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color='b'))
+                    canvas.draw()
+                    
+                    
+                else:
+                    
+                # usually, we just add another set of dots to the list
+                    
+                    self._x.append(self.x_list[(i-self.BIAS)])
+                    self._y.append(self.y_list[(i-self.BIAS)])
+                    self._z.append(self.z_list[(i-self.BIAS)])
+                    
+                    
+                    
+                    
+                    if len(self._x)==2:
+                        #print(self._x,self._y,self._z)
+                        #print(self._x,'\n')
+                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color='b'))
+                        self._x.pop(0)
+                        
+                        self._y.pop(0)
+                        self._z.pop(0)
+                        canvas.draw()
+                
+                        
+                
+        
+        anim = FuncAnimation(fig, animate, frames=(len(self.x_list)+self.BIAS), repeat=False, interval=10,cache_frame_data=False, save_count=0)
 
         canvas.draw()
