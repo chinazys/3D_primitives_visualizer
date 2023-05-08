@@ -34,7 +34,7 @@ class lineFixedMove(Primitive):
         self.STEP = self.DOTS//self.LENGTH  # calculates the step of taking next dot to expand the animated conical surface
         self.TMP_RESOLUTION = 2  # number of dots each line from curve to fixdot contains
         self.PAUSE = 1  # sets pause time in seconds between fixdot, base curve and the surface plots
-        self.INTERVAL = 100
+        self.INTERVAL = 750
         # bias is required because during first several frames we build fixdot, base curve, P dot and connecting line
         self.BIAS = 4
         self.plots = []

@@ -169,6 +169,6 @@ class rotate_surface(Primitive):
                         
                 
         
-        anim = FuncAnimation(fig, animate, frames=(len(self.x_list)+self.BIAS), repeat=False, interval=10,cache_frame_data=False, save_count=0)
+        anim = FuncAnimation(fig, animate, frames=(len(self.x_list)+self.BIAS), repeat=False, interval=750,cache_frame_data=False, save_count=0)
 
         canvas.draw()

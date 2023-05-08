@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (QVBoxLayout)
 
-from primitives.rotate_surface.rotate_surface import rotate_surface
+from primitives.lineFixedMove.lineFixedMove import lineFixedMove
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
 from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
 from ui.configurator.states.primitive_editor.separator.separator import PaddedSeparator
@@ -26,6 +26,6 @@ class ConicalSurfaceLayout:
             if curve is None or point is None:
                 return None
             
-            return rotate_surface(curve, [point.x, point.y, point.z])
+            return lineFixedMove(curve, [point.x, point.y, point.z])
         except:
             return None
