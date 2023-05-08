@@ -8,3 +8,4 @@ PARAMETER = symbols('t')
 
 def evaluate_parametric_expression(expression, parameter):
     return float(expression.subs(PARAMETER, parameter))
+

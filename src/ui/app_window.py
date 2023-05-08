@@ -109,14 +109,12 @@ class AppWindow(QMainWindow):
         
         self.all_primitives.append(primitive)
 
-        print(type(primitive))
         if str(type(primitive)) == "<class 'primitives.plane.plane.Plane'>":
             others = [p for p in self.all_primitives if str(type(p)) != "<class 'primitives.plane.plane.Plane'>"]
             for p in others:
                 self.plot_intersection(primitive, p)
 
     def on_primitive_removed(self, index):
-        print('Remove primitive #', index)
         for plot in self.all_primitives[index].plots:
             try:
                 plot.remove()
@@ -126,9 +124,7 @@ class AppWindow(QMainWindow):
                 except:
                     pass
                 
-        print(len(self.all_primitives))
         del(self.all_primitives[index])
-        print(len(self.all_primitives))
         self.figure.canvas.draw()
         
     def plot_intersection(self, plane, prim):

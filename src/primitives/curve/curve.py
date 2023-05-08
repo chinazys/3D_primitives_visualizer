@@ -32,19 +32,15 @@ class Curve(Primitive):
     def build(self):
         assert len(self.params) == 6, "Curve params are invalid"
 
-        try:
-            self.x_expression = string_to_expression(self.params[0])
-            self.y_expression = string_to_expression(self.params[1])
-            self.z_expression = string_to_expression(self.params[2])
-            self.t_min = float(self.params[3])
-            self.t_max = float(self.params[4])
-            self.points_quantity = int(self.params[5])
-        except:
-            print('Invalid input')
-            return
+        self.x_expression = string_to_expression(self.params[0])
+        self.y_expression = string_to_expression(self.params[1])
+        self.z_expression = string_to_expression(self.params[2])
+        self.t_min = float(self.params[3])
+        self.t_max = float(self.params[4])
+        self.points_quantity = int(self.params[5])
 
         assert self.t_min < self.t_max, 'Invalid t limits'
-        
+
         self._fill_points_list()
     
     def plot(self, ax, canvas, figure, _color):
