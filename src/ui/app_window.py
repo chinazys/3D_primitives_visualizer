@@ -41,6 +41,15 @@ class AppWindow(QMainWindow):
         self.ax.set_xlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         self.ax.set_ylim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
         self.ax.set_zlim3d(-AXIS_MAX_SIZE, AXIS_MAX_SIZE)
+        
+        # Added axes labels and colors
+        self.ax.tick_params(axis='x', colors='red')
+        self.ax.tick_params(axis='y', colors='green')
+        self.ax.tick_params(axis='z', colors='blue')
+
+        self.ax.set_xlabel('X', fontsize=17, fontweight='demibold', fontfamily='serif')
+        self.ax.set_ylabel('Y', fontsize=17, fontweight='demibold', fontfamily='serif')
+        self.ax.set_zlabel('Z', fontsize=17, fontweight='demibold', fontfamily='serif')
 
         self.ax.view_init(30, 30)
 
