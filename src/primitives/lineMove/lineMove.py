@@ -20,10 +20,8 @@ class curve_line(Primitive):
         self.base = base
         self.base.build()
 
-        try:
-            flag = self.base.contains_point(dot)
-        except:
-            flag=1
+        
+        flag = self.base.contains_point(dot)
         if flag:
             # do sth
             pass

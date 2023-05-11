@@ -29,6 +29,19 @@ class Curve(Primitive):
             
             t += step
 
+    def contains_point(self, point, eps=1e-6):
+        try:
+            self.build()
+
+            for x, y, z in zip(self.x_list, self.y_list, self.z_list):
+                if abs(point.x - x) <= eps and abs(point.y - y) <= eps and abs(point.z - z) <= eps:
+                    return True
+            
+            return False
+        except:
+            return True
+        
+
     def build(self):
         assert len(self.params) == 6, "Curve params are invalid"
 
