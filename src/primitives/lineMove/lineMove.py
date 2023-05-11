@@ -8,7 +8,7 @@ from matplotlib.animation import FuncAnimation
 
 class curve_line(Primitive):
 
-    def __init__(self, base: Curve, dot , vector,flag_animation=0, flag_text=1):# line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
+    def __init__(self, base: Curve, dot , vector,flag_animation=1, flag_text=1):# line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
         self.flag_animation = flag_animation
         self.flag_text = flag_text
         self.dot = [dot.x, dot.y, dot.z]
@@ -76,7 +76,7 @@ class curve_line(Primitive):
 
 
 
-                elif i == 1:
+                elif i == 2:
                     x2, y2, z2 = self.dot
                     x3, y3, z3 = [self.vector[i] + self.dot[i] for i in range(3)]
                     if self.flag_text:
@@ -85,11 +85,11 @@ class curve_line(Primitive):
                                                   "{}: ({}; {}; {})".format(self.label_vector, self.vector[0],
                                                                             self.vector[1], self.vector[2]),
                                                   (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
-                    self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=9))
+                    self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=7))
                     canvas.draw()
 
                     # next, plot the base curve
-                elif i == 2:
+                elif i == 3:
                     x0, y0, z0 = [-self.vector[i] * 5 + self.dot[i] for i in range(3)]
                     x1, y1, z1 = [self.vector[i] * 5 + self.dot[i] for i in range(3)]
                     if self.flag_text:
@@ -158,31 +158,29 @@ class curve_line(Primitive):
                 x1, y1, z1 = [self.vector[i] * 5 + self.dot[i] for i in range(3)]
                 x2, y2, z2 = self.dot
                 x3, y3, z3 = [self.vector[i] + self.dot[i] for i in range(3)]
-                try:
-                    if self.flag_text:
-                        self.plots.append(ax.text(self.base.x_list[0], self.base.y_list[0], self.base.z_list[0],
-                                                  f"Curve {self.label_curve}",
-                                                  (self.base.x_list[1], self.base.y_list[1], self.base.z_list[1]),
-                                                  fontsize=10))
-                        self.plots.append(ax.text(self.dot[0], self.dot[1], self.dot[2] + 1,
-                                                  "{}: ({}; {}; {})".format(self.label_point, self.dot[0], self.dot[1],
-                                                                            self.dot[2]), fontsize=10))
-                        self.plots.append(ax.text(self.dot[0] + self.vector[0], self.dot[1] + self.vector[1],
-                                                  self.dot[2] + self.vector[2],
-                                                  "{}: ({}; {}; {})".format(self.label_vector, self.vector[0],
-                                                                            self.vector[1], self.vector[2]),
-                                                  (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
-                        self.plots.append(ax.text(-self.vector[0] * 2 + self.dot[0], -self.vector[1] * 2 + self.dot[1],
-                                                  -self.vector[2] * 2 + self.dot[2], "Line l",
-                                                  (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
-                    self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=9))
-                    self.plots.append(ax.scatter(*self.dot, color='red', s=40))
-                    self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
-                    self.plots.append(
-                        ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
-                    self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=_color, alpha=0.4))
-                except Exception as e:
-                    print(e)
+                if self.flag_text:
+                    self.plots.append(ax.text(self.base.x_list[0], self.base.y_list[0], self.base.z_list[0],
+                                              f"Curve {self.label_curve}",
+                                              (self.base.x_list[1], self.base.y_list[1], self.base.z_list[1]),
+                                              fontsize=10))
+                    self.plots.append(ax.text(self.dot[0], self.dot[1], self.dot[2] + 1,
+                                              "{}: ({}; {}; {})".format(self.label_point, self.dot[0], self.dot[1],
+                                                                        self.dot[2]), fontsize=10))
+                    self.plots.append(ax.text(self.dot[0] + self.vector[0], self.dot[1] + self.vector[1],
+                                              self.dot[2] + self.vector[2],
+                                              "{}: ({}; {}; {})".format(self.label_vector, self.vector[0],
+                                                                        self.vector[1], self.vector[2]),
+                                              (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
+                    self.plots.append(ax.text(-self.vector[0] * 2 + self.dot[0], -self.vector[1] * 2 + self.dot[1],
+                                              -self.vector[2] * 2 + self.dot[2], "Line l",
+                                              (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
+                self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=7))
+                self.plots.append(ax.scatter(*self.dot, color='red', s=40))
+                self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
+                self.plots.append(
+                    ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
+                self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=_color, alpha=0.4))
+
                 canvas.draw()
 
 
