@@ -33,6 +33,6 @@ class RotationalSurfaceLayout:
             if curve is None or point is None or vector is None:
                 return None
             
-            return rotate_surface(curve, [point.x, point.y, point.z], [vector.x, vector.y, vector.z])
+            return rotate_surface(curve, point, vector)
         except:
             return None

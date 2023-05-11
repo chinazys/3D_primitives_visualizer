@@ -33,6 +33,6 @@ class CylindricalSurfaceLayout:
             if curve is None or point is None or vector is None:
                 return None
 
-            return curve_line(curve, [point.x, point.y, point.z], [vector.x, vector.y, vector.z])
+            return curve_line(curve, point, vector)
         except:
             return None

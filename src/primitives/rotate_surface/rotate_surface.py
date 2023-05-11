@@ -4,19 +4,22 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 import time
 class rotate_surface(Primitive):
-    def __init__(self, base: Curve, dot: list, vector: list):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
-
-        if vector == [0, 0, 0]:
+    def __init__(self, base: Curve, dot, vector, flag_animation=1, flag_text=1):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
+        self.flag_animation=flag_animation
+        self.flag_text=flag_text
+        self.dot = [dot.x,dot.y,dot.z]
+        self.vector = [vector.x,vector.y,vector.z]
+        print(self.vector)
+        if self.vector == [0, 0, 0]:
             raise Exception('vector is invalid = [0,0,0]')
-        assert len(dot) == 3, "dot is invalid"
-        assert len(vector) == 3, "vector is invalid"
+        assert len(self.dot) == 3, "dot is invalid"
+        assert len(self.vector) == 3, "vector is invalid"
 
         self.base = base
         self.base.build()
 
-        self.dot = dot
 
-        self.vector = vector
+
 
         # self.main_line = Line([dot, vector + dot])
 
@@ -35,9 +38,12 @@ class rotate_surface(Primitive):
         self.PAUSE = 1  # sets pause time in seconds between fixdot, base curve and the surface plots
         self.INTERVAL = 100
         # bias is required because during first several frames we build fixdot, base curve, P dot and connecting line
-        self.BIAS = 3
+        self.BIAS = 4
         self.plots = []
 
+        self.label_point=dot.primitive_name
+        self.label_vector = vector.primitive_name
+        self.label_curve=base.primitive_name
 
     def build(self):
 
@@ -104,34 +110,59 @@ class rotate_surface(Primitive):
         self.z_list = z_
 
     def plot(self, ax, canvas, fig, _color):
-        
+
 
         def animate(i):
                 #print(len(self.x_list[i-self.BIAS]),len(self.y_list[i-self.BIAS]),len(self.z_list[i-self.BIAS]))
-                if i==6:
-                    return
+
                 
                 # firstly, plot the fixdot
                 if i == 0:
+                    if self.flag_text:
+                        self.plots.append(ax.text(self.dot[0], self.dot[1], self.dot[2] + 1,
+                                                  "{}: ({}; {}; {})".format(self.label_point, self.dot[0], self.dot[1],
+                                                                            self.dot[2]), fontsize=10))
+
                     self.plots.append(ax.scatter(*self.dot, color='red', s=40))
                     canvas.draw()
                     
                     
                                   
-                    
+                elif i==1:
+                    x2, y2, z2 = self.dot
+                    x3, y3, z3 = [self.vector[i] + self.dot[i] for i in range(3)]
+                    if self.flag_text:
+                        self.plots.append(ax.text(self.dot[0] + self.vector[0], self.dot[1] + self.vector[1],
+                                              self.dot[2] + self.vector[2],
+                                              "{}: ({}; {}; {})".format(self.label_vector, self.vector[0],
+                                                                        self.vector[1], self.vector[2]),
+                                              (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
+                    self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=9))
+                    canvas.draw()
+
                 # next, plot the base curve                
-                elif i == 1:
+                elif i == 2:
                     x0, y0, z0 = [-self.vector[i]*20 +self.dot[i] for i in range(3) ]
                     x1, y1, z1 = [self.vector[i]*20+self.dot[i] for i in range(3) ]
-                    self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color=_color, linewidth=5))
+                    if self.flag_text:
+                        self.plots.append(ax.text(-self.vector[0] * 2 + self.dot[0], -self.vector[1] * 2 + self.dot[1],
+                                                  -self.vector[2] * 2 + self.dot[2], "Line l",
+                                                  (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
+                    self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
                     canvas.draw()
+
                     
                     
                     
                     
                 # finally, plot connecting line between P dot and fixdot
-                elif i == 2:
-                    self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5))
+                elif i == 3:
+                    if self.flag_text:
+                        self.plots.append(ax.text(self.base.x_list[0], self.base.y_list[0], self.base.z_list[0],
+                                                  f"Curve {self.label_curve}",
+                                                  (self.base.x_list[1], self.base.y_list[1], self.base.z_list[1]),
+                                                  fontsize=10))
+                    self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
                     canvas.draw()
                     
                     
@@ -141,7 +172,7 @@ class rotate_surface(Primitive):
                     self._x.append(self.x_list[-1])
                     self._y.append(self.y_list[-1])
                     self._z.append(self.z_list[-1])
-                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color='b'))
+                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color=_color))
                     canvas.draw()
                     
                     
@@ -159,16 +190,40 @@ class rotate_surface(Primitive):
                     if len(self._x)==2:
                         #print(self._x,self._y,self._z)
                         #print(self._x,'\n')
-                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color='b'))
+                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color=_color))
                         self._x.pop(0)
-                        
                         self._y.pop(0)
                         self._z.pop(0)
                         canvas.draw()
                 
                         
                 
-        
-        anim = FuncAnimation(fig, animate, frames=(len(self.x_list)+self.BIAS), repeat=False, interval=750,cache_frame_data=False, save_count=0)
+        if self.flag_animation:
+            anim = FuncAnimation(fig, animate, frames=(len(self.x_list)+self.BIAS), repeat=False, interval=750,cache_frame_data=False, save_count=0)
+            canvas.draw()
 
-        canvas.draw()
+        else:
+
+            x0, y0, z0 = [-self.vector[i] * 20 + self.dot[i] for i in range(3)]
+            x1, y1, z1 = [self.vector[i] * 20 + self.dot[i] for i in range(3)]
+            x2, y2, z2 = self.dot
+            x3, y3, z3 = [self.vector[i]  + self.dot[i] for i in range(3)]
+            if self.flag_text:
+                self.plots.append(ax.text(self.base.x_list[0],self.base.y_list[0],self.base.z_list[0],f"Curve {self.label_curve}",(self.base.x_list[1],self.base.y_list[1],self.base.z_list[1]), fontsize=10))
+                self.plots.append(ax.text(self.dot[0], self.dot[1], self.dot[2]+1,
+                                          "{}: ({}; {}; {})".format(self.label_point, self.dot[0], self.dot[1],
+                                                                    self.dot[2]), fontsize=10))
+                self.plots.append(ax.text(self.dot[0]+self.vector[0],self.dot[1]+self.vector[1],self.dot[2]+self.vector[2],"{}: ({}; {}; {})".format(self.label_vector,self.vector[0], self.vector[1], self.vector[2]),(self.vector[0],self.vector[1],self.vector[2]),fontsize=10))
+                self.plots.append(ax.text(-self.vector[0]*2+self.dot[0], -self.vector[1]*2+self.dot[1], -self.vector[2]*2+self.dot[2], "Line l",
+                                          (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
+            self.plots.append(ax.plot([x2,x3],[y2,y3],[z2,z3],color='green', linewidth=9))
+            self.plots.append(ax.scatter(*self.dot, color='red', s=40))
+            self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
+            self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
+            self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=_color, alpha=0.4))
+            canvas.draw()
+
+
+
+
+        #canvas.draw()
