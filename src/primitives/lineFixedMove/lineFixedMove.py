@@ -92,7 +92,7 @@ class lineFixedMove(Primitive):
                     Y = np.array(self._y)
                     Z = np.array(self._z)
                     surf = ax.plot_surface(X, Y, Z, color=_color, alpha=self.ALPHA, picker=False)
-                    self.plots.append(surf)
+                    # self.plots.append(surf)
                     self.surfaces.append(surf)
                     self._x.clear()
                     self._y.clear()
@@ -106,8 +106,8 @@ class lineFixedMove(Primitive):
                     self.surf = ax.plot_surface(self.X, self.Y, self.Z, label=lbl, alpha=self.ALPHA, color=_color, picker=True, zorder=1)
                     crds = [(self.fixdot.x+self.base.x_list[0])/2+5, (self.fixdot.y+self.base.y_list[0])/2+5, (self.fixdot.z+self.base.z_list[0])/2+5]
                     self.plots.append(ax.text(*crds, f"{self.primitive_name}", fontsize=15))
-                    canvas.draw()
                     self.plots.append(self.surf)
+                    canvas.draw()
                     return True                
                 # usually, we just add another set of dots to the list
                 else:
@@ -143,7 +143,7 @@ class lineFixedMove(Primitive):
                     Z = np.array(self._z)
                     surf = ax.plot_surface(X, Y, Z, color=_color, alpha=self.ALPHA)
                     self.surfaces.append(surf)
-                    self.plots.append(self.surf)
+                    # self.plots.append(self.surf)
                     tmp = [self._x[1], self._y[1], self._z[1]]
                     self._x.clear()
                     self._y.clear()
