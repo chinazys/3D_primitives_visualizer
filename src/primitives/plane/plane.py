@@ -1,11 +1,12 @@
 from primitives.curve.curve import Curve
 from primitives.primitive import Primitive
+from primitives.point.point import Point
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
 
 class Plane(Primitive):
-    def __init__(self, M: tuple, n: tuple):
+    def __init__(self, M: Point, n: Point):
         self.M = M
         self.n = n
         # ANIMATION PARAMETERS
@@ -19,8 +20,8 @@ class Plane(Primitive):
         self.y_list = np.linspace(-100, 100, 2)
         self.X_list, self.Y_list = np.meshgrid(self.x_list, self.y_list)
 
-        m1, m2, m3 = self.M
-        n1, n2, n3 = self.n
+        m1, m2, m3 = self.M.x, self.M.y, self.M.z
+        n1, n2, n3 = self.n.x, self.n.y, self.n.z
         
         self.Z_list = (-n1*self.X_list+n1*m1-n2*self.Y_list+n2*m2+n3*m3) / n3
 
@@ -38,20 +39,20 @@ class Plane(Primitive):
         try:
             def animate(i):
                 if i == 0:
-                    label = "M: ({}; {}; {})".format(self.M[0], self.M[1], self.M[2])
-                    self.plots.append(ax.scatter(self.M[0], self.M[1], self.M[2], s=15, color='red'))
-                    self.plots.append(ax.text(self.M[0]+3, self.M[1]+3, self.M[2]+3, label, fontsize=15))
+                    label = "{}: ({}; {}; {})".format(self.M.primitive_name, self.M.x, self.M.y, self.M.z)
+                    self.plots.append(ax.scatter(self.M.x, self.M.y, self.M.z, s=15, color='red'))
+                    self.plots.append(ax.text(self.M.x+3, self.M.y+3, self.M.z+3, label, fontsize=15))
                     canvas.draw()
                 elif i == 1:
-                    label = "n: ({}; {}; {})".format(self.n[0], self.n[1], self.n[2])
-                    self.plots.append(ax.quiver(self.M[0], self.M[1], self.M[2], self.n[0], self.n[1], self.n[2], color='g'))
-                    self.plots.append(ax.text(self.M[0]+self.n[0]+3, self.M[1]+self.n[1]+3, self.M[2]+self.n[2]+3, label, fontsize=15))
+                    label = "{}: ({}; {}; {})".format(self.n.primitive_name, self.n.x, self.n.y, self.n.z)
+                    self.plots.append(ax.quiver(self.M.x, self.M.y, self.M.z, self.n.x, self.n.y, self.n.z, color='g'))
+                    self.plots.append(ax.text(self.M.x+self.n.x+3, self.M.y+self.n.y+3, self.M.z+self.n.z+3, label, fontsize=15))
                     canvas.draw()
                 elif i == 2:
-                    label = "Plane alpha"
+                    label = "Plane {}".format(self.primitive_name)
                     lbl = "plot " + _color
                     self.plots.append(ax.plot_surface(self.X_list, self.Y_list, self.Z_list, label=lbl, color=_color, alpha=.4, picker=True, zorder=0))
-                    self.plots.append(ax.text(self.M[0]+20, self.M[1]+20, self.M[2]+20, label, fontsize=15))
+                    self.plots.append(ax.text(self.M.x+20, self.M.y+20, self.M.z+20, label, fontsize=15))
                     canvas.draw()
 
             plane_anim = FuncAnimation(fig, animate, frames=self.FRAMES, repeat=False, interval=self.INTERVAL)

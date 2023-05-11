@@ -1,12 +1,13 @@
 from primitives.curve.curve import Curve
 from primitives.primitive import Primitive
+from primitives.point.point import Point
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
 # class defining fixed move of a line
 # 2 input params: curve 'base' and fixation dot 'fixdot'
 class lineFixedMove(Primitive):
-    def __init__(self, base: Curve, fixdot: list):
+    def __init__(self, base: Curve, fixdot: Point):
         self.base = base
         self.base.build()
         self.fixdot = fixdot
@@ -49,12 +50,16 @@ class lineFixedMove(Primitive):
             def animate(i):
                 # firstly, plot the fixdot
                 if i == 0:                    
-                    self.plots.append(ax.scatter(*self.fixdot, color='red', s=40))
+                    self.plots.append(ax.scatter(self.fixdot.x, self.fixdot.y, self.fixdot.z, color='red', s=40))
+                    crds = [self.fixdot.x, self.fixdot.y, self.fixdot.z+5]
+                    self.plots.append(ax.text(*crds, f"{self.fixdot.primitive_name}", fontsize=15))
                     canvas.draw()
                     return
                 # next, plot the base curve                
                 elif i == 1:
                     self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5))
+                    crds = [self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]-15]
+                    self.plots.append(ax.text(*crds, f"{self.base.primitive_name}", fontsize=15))
                     canvas.draw()
                     return
                 # then, plot P dot (the first base-curve dot in the list)
@@ -65,7 +70,7 @@ class lineFixedMove(Primitive):
                     return
                 # finally, plot connecting line between P dot and fixdot
                 elif i == 3:
-                    x0, y0, z0 = self.fixdot
+                    x0, y0, z0 = self.fixdot.x, self.fixdot.y, self.fixdot.z
                     x1, y1, z1 = self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]
                     self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color=_color, linewidth=5))
                     canvas.draw()
@@ -73,7 +78,7 @@ class lineFixedMove(Primitive):
                     return
                 # if it's the last dot, unite all the fragments into single surface
                 if (i-self.BIAS)*(self.STEP) >= self.DOTS-1:
-                    x0, y0, z0 = self.fixdot
+                    x0, y0, z0 = self.fixdot.x, self.fixdot.y, self.fixdot.z
                     xx = np.linspace(x0, self.base.x_list[self.DOTS-1], self.TMP_RESOLUTION)
                     yy = np.linspace(y0, self.base.y_list[self.DOTS-1], self.TMP_RESOLUTION)
                     zz = np.linspace(z0, self.base.z_list[self.DOTS-1], self.TMP_RESOLUTION)
@@ -99,13 +104,15 @@ class lineFixedMove(Primitive):
                         s.remove()
                     lbl = "plot " + _color
                     self.surf = ax.plot_surface(self.X, self.Y, self.Z, label=lbl, alpha=self.ALPHA, color=_color, picker=True, zorder=1)
+                    crds = [(self.fixdot.x+self.base.x_list[0])/2+5, (self.fixdot.y+self.base.y_list[0])/2+5, (self.fixdot.z+self.base.z_list[0])/2+5]
+                    self.plots.append(ax.text(*crds, f"{self.primitive_name}", fontsize=15))
                     canvas.draw()
                     self.plots.append(self.surf)
                     return True                
                 # usually, we just add another set of dots to the list
                 else:
                     i -= self.BIAS
-                    x0, y0, z0 = self.fixdot
+                    x0, y0, z0 = self.fixdot.x, self.fixdot.y, self.fixdot.z
                     xx = np.linspace(x0, self.base.x_list[i*self.STEP], self.TMP_RESOLUTION)
                     yy = np.linspace(y0, self.base.y_list[i*self.STEP], self.TMP_RESOLUTION)
                     zz = np.linspace(z0, self.base.z_list[i*self.STEP], self.TMP_RESOLUTION)

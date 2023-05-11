@@ -26,6 +26,6 @@ class ConicalSurfaceLayout:
             if curve is None or point is None:
                 return None
             
-            return lineFixedMove(curve, [point.x, point.y, point.z])
+            return lineFixedMove(curve, point)
         except:
             return None
