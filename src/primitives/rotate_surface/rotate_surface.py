@@ -137,7 +137,7 @@ class rotate_surface(Primitive):
                                               "{}: ({}; {}; {})".format(self.label_vector, self.vector[0],
                                                                         self.vector[1], self.vector[2]),
                                               (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
-                    self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=9))
+                    self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=7))
                     canvas.draw()
 
                 # next, plot the base curve                
@@ -216,7 +216,7 @@ class rotate_surface(Primitive):
                 self.plots.append(ax.text(self.dot[0]+self.vector[0],self.dot[1]+self.vector[1],self.dot[2]+self.vector[2],"{}: ({}; {}; {})".format(self.label_vector,self.vector[0], self.vector[1], self.vector[2]),(self.vector[0],self.vector[1],self.vector[2]),fontsize=10))
                 self.plots.append(ax.text(-self.vector[0]*2+self.dot[0], -self.vector[1]*2+self.dot[1], -self.vector[2]*2+self.dot[2], "Line l",
                                           (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
-            self.plots.append(ax.plot([x2,x3],[y2,y3],[z2,z3],color='green', linewidth=9))
+            self.plots.append(ax.plot([x2,x3],[y2,y3],[z2,z3],color='green', linewidth=7))
             self.plots.append(ax.scatter(*self.dot, color='red', s=40))
             self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
             self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
