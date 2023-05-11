@@ -20,12 +20,8 @@ class curve_line(Primitive):
         self.base = base
         self.base.build()
 
-        
         flag = self.base.contains_point(dot)
-        if flag:
-            # do sth
-            pass
-        else:
+        if not flag:
             raise Exception("curve does not contain the given point")
 
         self._x=[]
