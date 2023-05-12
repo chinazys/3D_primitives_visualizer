@@ -25,7 +25,7 @@ class AppWindow(QMainWindow):
                 font-size: 32px;
             }
         ''')        
-
+        self.setWindowTitle('3D Primitives Visualizer')
         self.figure = Figure(figsize=(20, 20))
         self.central_widget = QWidget()
         

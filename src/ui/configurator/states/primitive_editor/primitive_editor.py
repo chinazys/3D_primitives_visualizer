@@ -96,10 +96,10 @@ class PrimitiveEditor(QWidget):
     def set_flags_layout(self):
         self.flags_horizontal_layout = QHBoxLayout()
 
-        self.flag_animation_check_box_layout = CheckBoxLayout(" Enable animation")
+        self.flag_animation_check_box_layout = CheckBoxLayout("Enable animation ")
         self.flags_horizontal_layout.addLayout(self.flag_animation_check_box_layout.base)
 
-        self.flag_text_check_box_layout = CheckBoxLayout(" Enable labels")
+        self.flag_text_check_box_layout = CheckBoxLayout("Enable labels")
         self.flags_horizontal_layout.addLayout(self.flag_text_check_box_layout.base)
 
     def on_primitive_type_changed(self, primitive_type):
@@ -124,11 +124,12 @@ class PrimitiveEditor(QWidget):
     def on_confirm_button_click(self):
         primitive_name = self.name_layout.get_name()
         if primitive_name is None:
+            self.configurator.window.show_error('Primitive Name Error', 'Primitive name was not set correctly. Please fill the corresponding field and try again.')
             return
         
         primitive = self.primitive_parameters_layout.get_primitive()
         if primitive is None:
-            print('Invalid primitive parameters')
+            self.configurator.window.show_error('Input Error', 'Primitive parameters were not set correctly. Please re-check your input and try again.')
             return
         
         # if self.primitive_type == CONFIGURATOR_TYPE_LINE:
