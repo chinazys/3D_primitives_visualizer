@@ -4,19 +4,22 @@ from primitives.curve.curve import Curve
 from ui.configurator.states.primitive_editor.text_field.text_field import TextField
                              
 class CurveLayout:
-    def __init__(self, curve_id='Curve:'):
+    def __init__(self, curve_id="Curve:"):
+        self.curve_id = curve_id
+
         self.layout = QVBoxLayout()
 
-        self.curve_name_layout = QHBoxLayout()
-        self.curve_name_layout.setAlignment(Qt.AlignLeft)
-        self.curve_name_label = QLabel(curve_id)
-        self.curve_name_label.setFixedWidth(100)
-        self.curve_name_layout.addWidget(self.curve_name_label)
-        self.curve_name_input = TextField(hint='m')
-        self.curve_name_input.text_field.setAlignment(Qt.AlignCenter)
-        self.curve_name_input.text_field.setFixedWidth(60)
-        self.curve_name_layout.addWidget(self.curve_name_input.text_field)
-        self.layout.addLayout(self.curve_name_layout)
+        if not self.curve_id is None:
+            self.curve_name_layout = QHBoxLayout()
+            self.curve_name_layout.setAlignment(Qt.AlignLeft)
+            self.curve_name_label = QLabel(curve_id)
+            self.curve_name_label.setFixedWidth(100)
+            self.curve_name_layout.addWidget(self.curve_name_label)
+            self.curve_name_input = TextField(hint='m')
+            self.curve_name_input.text_field.setAlignment(Qt.AlignCenter)
+            self.curve_name_input.text_field.setFixedWidth(60)
+            self.curve_name_layout.addWidget(self.curve_name_input.text_field)
+            self.layout.addLayout(self.curve_name_layout)
 
         self.x_layout = QHBoxLayout()
         self.x_layout.addWidget(QLabel('x(t) = '))
@@ -47,13 +50,17 @@ class CurveLayout:
         self.layout.addLayout(self.t_layout)
     
     def get_primitive(self):
-        curve_name = self.curve_name_input.text
-        if len(curve_name) < 1:
-            return None
+        if not self.curve_id is None:
+            curve_name = self.curve_name_input.text
+            if len(curve_name) < 1:
+                return None
+        
         curve = Curve([self.x_input.text, self.y_input.text, self.z_input.text, self.t_min_input.text, self.t_max_input.text, '100'])
+        
         try:
             curve.build()
-            curve.primitive_name = curve_name
+            if not self.curve_id is None:
+                curve.primitive_name = curve_name
             return curve
         except:
             return None

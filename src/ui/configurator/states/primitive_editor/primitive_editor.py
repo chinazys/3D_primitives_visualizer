@@ -84,7 +84,7 @@ class PrimitiveEditor(QWidget):
         if self.primitive_type == CONFIGURATOR_TYPE_LINE:
             self.primitive_layout = LineLayout()
         elif self.primitive_type == CONFIGURATOR_TYPE_CURVE:
-            self.primitive_layout = CurveLayout()
+            self.primitive_layout = CurveLayout(curve_id=None)
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
             self.primitive_layout = CylindricalSurfaceLayout()
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
