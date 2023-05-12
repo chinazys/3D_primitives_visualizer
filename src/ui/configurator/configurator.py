@@ -13,7 +13,7 @@ class Configurator:
         self.window.horizontal_layout.addLayout(self.active_configurator.vertical_layout, CONFIGURATOR_LAYOUT_RELATIVE_WIDTH)
     
     def on_configurator_state_changed(self, isEditor):
-        self.window.horizontal_layout.itemAt(1).layout().deleteLater()
+        self.window.horizontal_layout.itemAt(2).layout().deleteLater()
 
         Configurator.clear_layout(self.active_configurator.vertical_layout)
 

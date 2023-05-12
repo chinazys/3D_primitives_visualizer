@@ -2,7 +2,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 from PyQt5.QtWidgets import (QVBoxLayout)
 
-from ui.tool_bar.tool_bar import ToolBar
+from ui.canvas.tool_bar.tool_bar import ToolBar
 
 from PyQt5.QtCore import Qt
 
