@@ -44,7 +44,7 @@ class lineFixedMove(Primitive):
         pass
     
     # Updated plot() function with implemented animation
-    def plot(self, ax, canvas, fig, _color):
+    def plot(self, ax, canvas, fig, _color, flag_animation, flag_text):
         try:            
             # defined function for creating i-th frame of animation
             def animate(i):

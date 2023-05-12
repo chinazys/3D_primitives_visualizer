@@ -35,7 +35,7 @@ class Plane(Primitive):
         self._fill_points_list()
         pass
 
-    def plot(self, ax, canvas, fig, _color):
+    def plot(self, ax, canvas, fig, _color, flag_animation, flag_text):
         try:
             def animate(i):
                 if i == 0:

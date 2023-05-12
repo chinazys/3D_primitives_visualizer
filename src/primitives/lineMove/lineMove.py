@@ -8,9 +8,7 @@ from matplotlib.animation import FuncAnimation
 
 class curve_line(Primitive):
 
-    def __init__(self, base: Curve, dot , vector,flag_animation=1, flag_text=1):# line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
-        self.flag_animation = flag_animation
-        self.flag_text = flag_text
+    def __init__(self, base: Curve, dot , vector):# line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
         self.dot = [dot.x, dot.y, dot.z]
         self.vector = [vector.x, vector.y, vector.z]
         if self.vector ==[0,0,0]:
@@ -55,7 +53,9 @@ class curve_line(Primitive):
         self.z_list = np.array(
             [[self.base.z_list[i], self.base.z_list[i] + self.vector[2] *5] for i in range(len(self.base.x_list))])
 
-    def plot(self, ax, canvas, fig, _color):
+    def plot(self, ax, canvas, fig, _color, flag_animation=1, flag_text=1):
+            self.flag_animation = flag_animation
+            self.flag_text = flag_text
             
             def animate(i):
                 

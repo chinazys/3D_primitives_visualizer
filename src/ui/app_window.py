@@ -116,9 +116,9 @@ class AppWindow(QMainWindow):
         if event.key == 'shift':
             self.muiltipick = False
 
-    def on_primitive_added(self, primitive):
+    def on_primitive_added(self, primitive, flag_animation, flag_text):
         primitive.build()
-        primitive.plot(self.ax, self.canvas_layout.canvas, self.figure, self.default_colors[len(self.all_primitives)])
+        primitive.plot(self.ax, self.canvas_layout.canvas, self.figure, self.default_colors[len(self.all_primitives)], flag_animation, flag_text)
         
         self.all_primitives.append(primitive)
 

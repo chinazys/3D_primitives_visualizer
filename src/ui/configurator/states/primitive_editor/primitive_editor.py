@@ -9,9 +9,10 @@ from ui.configurator.states.primitive_editor.line_layout.line_layout import Line
 from ui.configurator.states.primitive_editor.plane_layout.plane_layout import PlaneLayout
 from ui.configurator.states.primitive_editor.rotational_surface_layout.rotational_surface_layout import RotationalSurfaceLayout
 from ui.configurator.states.primitive_editor.separator.separator import PaddedSeparator
-from ui.configurator.states.primitive_editor.name_layout.name_layout import NameLayout
 from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
+from ui.configurator.states.primitive_editor.name_layout.name_layout import NameLayout
+from ui.configurator.states.primitive_editor.check_box.check_box import CheckBoxLayout
 from primitives.line.line import Line
 from primitives.curve.curve import Curve
 from primitives.lineMove.lineMove import curve_line
@@ -50,15 +51,21 @@ class PrimitiveEditor(QWidget):
         
         self.name_layout = NameLayout()
         self.center_vertical_layout.addLayout(self.name_layout.layout)
-        
-        self.name_separator = PaddedSeparator()
-        self.center_vertical_layout.addLayout(self.name_separator.layout)
+
+        self.set_flags_layout()
+        self.center_vertical_layout.addLayout(self.flags_horizontal_layout)
+
+        self.separator = PaddedSeparator()
+        self.center_vertical_layout.addLayout(self.separator.layout)
 
         self.set_primitive_parameters_layout()
         self.center_vertical_layout.addLayout(self.primitive_parameters_layout.layout)
-        
-        self.bottom_horizontal_layout = QHBoxLayout()
+
+        self.set_bottom_buttons_layout()
         self.bottom_vertical_layout.addLayout(self.bottom_horizontal_layout)
+        
+    def set_bottom_buttons_layout(self):  
+        self.bottom_horizontal_layout = QHBoxLayout()
 
         self.cancel_button = QPushButton('Cancel', self)
         self.cancel_button.setToolTip('Click to go back')
@@ -86,6 +93,14 @@ class PrimitiveEditor(QWidget):
         else:
             raise Exception('Unknown primitive type')
 
+    def set_flags_layout(self):
+        self.flags_horizontal_layout = QHBoxLayout()
+
+        self.flag_animation_check_box_layout = CheckBoxLayout(" Enable animation")
+        self.flags_horizontal_layout.addLayout(self.flag_animation_check_box_layout.base)
+
+        self.flag_text_check_box_layout = CheckBoxLayout(" Enable labels")
+        self.flags_horizontal_layout.addLayout(self.flag_text_check_box_layout.base)
 
     def on_primitive_type_changed(self, primitive_type):
         self.primitive_type = primitive_type
@@ -141,5 +156,5 @@ class PrimitiveEditor(QWidget):
         primitive.primitive_name = primitive_name
         primitive.primitive_type = self.primitive_type
 
-        self.configurator.window.on_primitive_added(primitive)
+        self.configurator.window.on_primitive_added(primitive, self.flag_animation_check_box_layout.check_box.isChecked(), self.flag_text_check_box_layout.check_box.isChecked())
         self.configurator.on_configurator_state_changed(False)

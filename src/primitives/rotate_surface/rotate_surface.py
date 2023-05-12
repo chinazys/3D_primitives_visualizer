@@ -4,9 +4,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 import time
 class rotate_surface(Primitive):
-    def __init__(self, base: Curve, dot, vector, flag_animation=1, flag_text=1):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
-        self.flag_animation=flag_animation
-        self.flag_text=flag_text
+    def __init__(self, base: Curve, dot, vector):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
         self.dot = [dot.x,dot.y,dot.z]
         self.vector = [vector.x,vector.y,vector.z]
         print(self.vector)
@@ -109,8 +107,9 @@ class rotate_surface(Primitive):
         self.y_list = y_
         self.z_list = z_
 
-    def plot(self, ax, canvas, fig, _color):
-
+    def plot(self, ax, canvas, fig, _color, flag_animation=1, flag_text=1):
+        self.flag_animation=flag_animation
+        self.flag_text=flag_text
 
         def animate(i):
                 #print(len(self.x_list[i-self.BIAS]),len(self.y_list[i-self.BIAS]),len(self.z_list[i-self.BIAS]))
