@@ -20,6 +20,7 @@ from primitives.lineFixedMove.lineFixedMove import lineFixedMove
 # from primitives.linesByCurve.lineByCurve import LineByCurve
 from primitives.rotate_surface.rotate_surface import rotate_surface
 from primitives.plane.plane import Plane
+from util.clear_qt_layout import clear_qt_layout
 
 class PrimitiveEditor(QWidget):
     def __init__(self, configurator):
@@ -55,11 +56,8 @@ class PrimitiveEditor(QWidget):
         self.set_flags_layout()
         self.center_vertical_layout.addLayout(self.flags_horizontal_layout)
 
-        self.separator = PaddedSeparator()
-        self.center_vertical_layout.addLayout(self.separator.layout)
-
-        self.set_primitive_parameters_layout()
-        self.center_vertical_layout.addLayout(self.primitive_parameters_layout.layout)
+        self.set_primitive_layout()
+        self.center_vertical_layout.addLayout(self.primitive_vertical_layout)
 
         self.set_bottom_buttons_layout()
         self.bottom_vertical_layout.addLayout(self.bottom_horizontal_layout)
@@ -77,45 +75,50 @@ class PrimitiveEditor(QWidget):
         self.confirm_button.clicked.connect(self.on_confirm_button_click)
         self.bottom_horizontal_layout.addWidget(self.confirm_button)
 
-    def set_primitive_parameters_layout(self):
+    def set_primitive_layout(self):
+        self.primitive_vertical_layout = QVBoxLayout()
+
+        self.separator = PaddedSeparator()
+        self.primitive_vertical_layout.addLayout(self.separator.layout)
+
         if self.primitive_type == CONFIGURATOR_TYPE_LINE:
-            self.primitive_parameters_layout = LineLayout()
+            self.primitive_layout = LineLayout()
         elif self.primitive_type == CONFIGURATOR_TYPE_CURVE:
-            self.primitive_parameters_layout = CurveLayout()
+            self.primitive_layout = CurveLayout()
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
-            self.primitive_parameters_layout = CylindricalSurfaceLayout()
+            self.primitive_layout = CylindricalSurfaceLayout()
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            self.primitive_parameters_layout = ConicalSurfaceLayout()
+            self.primitive_layout = ConicalSurfaceLayout()
         elif self.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
-            self.primitive_parameters_layout = RotationalSurfaceLayout()
+            self.primitive_layout = RotationalSurfaceLayout()
         elif self.primitive_type == CONFIGURATOR_TYPE_PLANE:
-            self.primitive_parameters_layout = PlaneLayout()
+            self.primitive_layout = PlaneLayout()
         else:
-            raise Exception('Unknown primitive type')
+            raise Exception('Unknown primitive type')        
+        self.primitive_vertical_layout.addLayout(self.primitive_layout.layout)
 
     def set_flags_layout(self):
         self.flags_horizontal_layout = QHBoxLayout()
 
-        self.flag_animation_check_box_layout = CheckBoxLayout("Enable animation ")
-        self.flags_horizontal_layout.addLayout(self.flag_animation_check_box_layout.base)
-
-        self.flag_text_check_box_layout = CheckBoxLayout("Enable labels")
+        self.flag_text_check_box_layout = CheckBoxLayout("Enable labels  ")
         self.flags_horizontal_layout.addLayout(self.flag_text_check_box_layout.base)
+
+        self.flag_animation_check_box_layout = CheckBoxLayout("Enable animation")
+        if not (self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE): 
+            self.flags_horizontal_layout.addLayout(self.flag_animation_check_box_layout.base)
 
     def on_primitive_type_changed(self, primitive_type):
         self.primitive_type = primitive_type
-        PrimitiveEditor.clear_layout(self.primitive_parameters_layout.layout)
-        self.set_primitive_parameters_layout()
-        self.center_vertical_layout.addLayout(self.primitive_parameters_layout.layout)
+
+        clear_qt_layout(self.primitive_vertical_layout)
+        clear_qt_layout(self.flags_horizontal_layout)
+
+        self.set_flags_layout()
+        self.center_vertical_layout.addLayout(self.flags_horizontal_layout)
+
+        self.set_primitive_layout()
+        self.center_vertical_layout.addLayout(self.primitive_vertical_layout)
     
-    def clear_layout(layout):
-        while layout.count():
-            item = layout.takeAt(0)
-            widget = item.widget()
-            if widget is not None:
-                widget.deleteLater()
-            else:
-                PrimitiveEditor.clear_layout(item.layout())
     @pyqtSlot()
     def on_cancel_button_click(self):
         self.configurator.on_configurator_state_changed(False)
@@ -127,7 +130,7 @@ class PrimitiveEditor(QWidget):
             self.configurator.window.show_error('Primitive Name Error', 'Primitive name was not set correctly. Please fill the corresponding field and try again.')
             return
         
-        primitive = self.primitive_parameters_layout.get_primitive()
+        primitive = self.primitive_layout.get_primitive()
         if primitive is None:
             self.configurator.window.show_error('Input Error', 'Primitive parameters were not set correctly. Please re-check your input and try again.')
             return
