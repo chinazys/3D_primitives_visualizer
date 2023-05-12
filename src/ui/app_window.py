@@ -2,13 +2,14 @@ from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import numpy as np
 
-from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget)
+from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget, QMessageBox)
 from PyQt5.QtCore import Qt
 
 from ui.configurator.configurator import Configurator 
 from ui.configurator.configurator_types import *
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
+
 
 APP_WINDOW_ABSOLUTE_WIDTH = 1920
 APP_WINDOW_ABSOLUTE_HEIGHT = 1080
@@ -70,6 +71,9 @@ class AppWindow(QMainWindow):
         self.figure.canvas.mpl_connect('pick_event', self.on_pick)
         self.figure.canvas.mpl_connect('key_press_event', self.press_key)
         self.figure.canvas.mpl_connect('key_release_event', self.release_key)
+
+    def show_error(self, title:str="Error", text:str="None"):
+        QMessageBox.critical(self, title, text)
 
     def on_pick(self, event):
         artist = event.artist
