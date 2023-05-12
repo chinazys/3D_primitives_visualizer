@@ -1,8 +1,10 @@
 from primitives.primitive import Primitive
 from util.expression_parser import string_to_expression, evaluate_parametric_expression
 
-# Curve is built as a dense consequence of points, which are generated for each possible ti: xi = x(ti), yi = y(ti), zi = z(ti).
 class Curve(Primitive):
+    '''
+    Curve is built as a dense consequence of points, which are generated for each possible ti: xi = x(ti), yi = y(ti), zi = z(ti).
+    '''
     def _fill_points_list(self):
         self.x_list = []
         self.y_list = []
