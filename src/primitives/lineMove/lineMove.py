@@ -90,7 +90,7 @@ class curve_line(Primitive):
                     x1, y1, z1 = [self.vector[i] * 5 + self.dot[i] for i in range(3)]
                     if self.flag_text:
                         self.plots.append(ax.text(-self.vector[0] * 2 + self.dot[0], -self.vector[1] * 2 + self.dot[1],
-                                                  -self.vector[2] * 2 + self.dot[2], "Line l",
+                                                  -self.vector[2] * 2 + self.dot[2], self.label_vector,
                                                   (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
                     self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
                     canvas.draw()
@@ -99,7 +99,7 @@ class curve_line(Primitive):
                 elif i == 0:
                     if self.flag_text:
                         self.plots.append(ax.text(self.base.x_list[0], self.base.y_list[0], self.base.z_list[0],
-                                                  f"Curve {self.label_curve}",
+                                                  f"{self.label_curve}",
                                                   (self.base.x_list[1], self.base.y_list[1], self.base.z_list[1]),
                                                   fontsize=10))
                     self.plots.append(
@@ -156,7 +156,7 @@ class curve_line(Primitive):
                 x3, y3, z3 = [self.vector[i] + self.dot[i] for i in range(3)]
                 if self.flag_text:
                     self.plots.append(ax.text(self.base.x_list[0], self.base.y_list[0], self.base.z_list[0],
-                                              f"Curve {self.label_curve}",
+                                              self.label_curve,
                                               (self.base.x_list[1], self.base.y_list[1], self.base.z_list[1]),
                                               fontsize=10))
                     self.plots.append(ax.text(self.dot[0], self.dot[1], self.dot[2] + 1,
@@ -168,7 +168,7 @@ class curve_line(Primitive):
                                                                         self.vector[1], self.vector[2]),
                                               (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
                     self.plots.append(ax.text(-self.vector[0] * 2 + self.dot[0], -self.vector[1] * 2 + self.dot[1],
-                                              -self.vector[2] * 2 + self.dot[2], "Line l",
+                                              -self.vector[2] * 2 + self.dot[2], self.label_vector,
                                               (self.vector[0], self.vector[1], self.vector[2]), fontsize=10))
                 self.plots.append(ax.plot([x2, x3], [y2, y3], [z2, z3], color='green', linewidth=7))
                 self.plots.append(ax.scatter(*self.dot, color='red', s=40))

@@ -55,6 +55,11 @@ class Line(Primitive):
             if self.flag_text:
                 self.plots.append(ax.text(self.b_point.x + 3, self.b_point.y + 3, self.b_point.z + 3, b_label, fontsize=10))
 
+            if self.flag_text:
+                name_x, name_y, name_z = (self.a_point.x + self.b_point.x) / 3, (self.a_point.y + self.b_point.y) / 3, (self.a_point.z + self.b_point.z) / 3
+                name_direction = (self.b_point.x - self.a_point.x, self.b_point.y - self.a_point.y, self.b_point.z - self.a_point.z)
+                self.plots.append(ax.text(name_x, name_y, name_z, self.primitive_name, name_direction, fontsize=10))
+            
             self.plots.append(ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]], color=_color))
             canvas.draw()
         except Exception as e:

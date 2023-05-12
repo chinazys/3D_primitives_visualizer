@@ -61,7 +61,10 @@ class Curve(Primitive):
         self.flag_text = flag_text
         
         try:
+            if self.flag_text:
+                self.plots.append(ax.text(self.x_list[len(self.x_list) // 2], self.x_list[len(self.y_list) // 2], self.x_list[len(self.z_list) // 2], self.primitive_name, fontsize=10))
+
             self.plots.append(ax.plot(self.x_list, self.y_list, self.z_list, color=_color))
             canvas.draw()
-        except:
-            print('Curve is invalid => cannot plot')
+        except Exception as e:
+            print(e)
