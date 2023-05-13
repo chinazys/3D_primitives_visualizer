@@ -160,5 +160,8 @@ class PrimitiveEditor(QWidget):
         primitive.primitive_name = primitive_name
         primitive.primitive_type = self.primitive_type
 
-        self.configurator.window.on_primitive_added(primitive, self.flag_animation_check_box_layout.check_box.isChecked(), self.flag_text_check_box_layout.check_box.isChecked())
-        self.configurator.on_configurator_state_changed(False)
+        try:
+            self.configurator.window.on_primitive_added(primitive, self.flag_animation_check_box_layout.check_box.isChecked(), self.flag_text_check_box_layout.check_box.isChecked())
+            self.configurator.on_configurator_state_changed(False)
+        except:
+            self.configurator.window.show_error('Plotting Error', 'Primitive with the given parameters can not be plotted. Please re-check your input and try again.')

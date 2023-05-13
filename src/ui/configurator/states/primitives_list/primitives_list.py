@@ -28,7 +28,7 @@ class PrimitivesList(QWidget):
 
         for i, primitive in enumerate(self.configurator.window.all_primitives):
             self.primitive_info_list.append(
-                PrimitiveInfo(primitv_type=primitive.primitive_type, primitiv_name=primitive.primitive_name, index=i, primitives_list=self)
+                PrimitiveInfo(primitive_type=primitive.primitive_type, primitive_name=primitive.primitive_name, index=i, primitives_list=self)
             )
             self.top_vertical_layout.addLayout(self.primitive_info_list[-1].base)
 
