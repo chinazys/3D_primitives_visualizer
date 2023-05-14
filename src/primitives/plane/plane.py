@@ -39,23 +39,30 @@ class Plane(Primitive):
         try:
             def animate(i):
                 if i == 0:
-                    label = "{}: ({}; {}; {})".format(self.M.primitive_name, self.M.x, self.M.y, self.M.z)
                     self.plots.append(ax.scatter(self.M.x, self.M.y, self.M.z, s=15, color='red'))
-                    self.plots.append(ax.text(self.M.x+3, self.M.y+3, self.M.z+3, label, fontsize=15))
+                    if flag_text == True:
+                        label = "{}: ({}; {}; {})".format(self.M.primitive_name, self.M.x, self.M.y, self.M.z)
+                        self.plots.append(ax.text(self.M.x+3, self.M.y+3, self.M.z+3, label, fontsize=15))
                     canvas.draw()
                 elif i == 1:
-                    label = "{}: ({}; {}; {})".format(self.n.primitive_name, self.n.x, self.n.y, self.n.z)
                     self.plots.append(ax.quiver(self.M.x, self.M.y, self.M.z, self.n.x, self.n.y, self.n.z, color='g'))
-                    self.plots.append(ax.text(self.M.x+self.n.x+3, self.M.y+self.n.y+3, self.M.z+self.n.z+3, label, fontsize=15))
+                    if flag_text == True:
+                        label = "{}: ({}; {}; {})".format(self.n.primitive_name, self.n.x, self.n.y, self.n.z)
+                        self.plots.append(ax.text(self.M.x+self.n.x+3, self.M.y+self.n.y+3, self.M.z+self.n.z+3, label, fontsize=15))
                     canvas.draw()
                 elif i == 2:
-                    label = "Plane {}".format(self.primitive_name)
                     lbl = "plot " + _color
                     self.plots.append(ax.plot_surface(self.X_list, self.Y_list, self.Z_list, label=lbl, color=_color, alpha=.4, picker=True, zorder=0))
-                    self.plots.append(ax.text(self.M.x+20, self.M.y+20, self.M.z+20, label, fontsize=15))
+                    if flag_text == True:
+                        label = "Plane {}".format(self.primitive_name)
+                        self.plots.append(ax.text(self.M.x+20, self.M.y+20, self.M.z+20, label, fontsize=15))
                     canvas.draw()
 
-            plane_anim = FuncAnimation(fig, animate, frames=self.FRAMES, repeat=False, interval=self.INTERVAL)
+            if flag_animation == True:
+                plane_anim = FuncAnimation(fig, animate, frames=self.FRAMES, repeat=False, interval=self.INTERVAL)
+            else:
+                for i in range(3):
+                    animate(i)
             canvas.draw()
         except:
             print('Surface is invalid => cannot plot')

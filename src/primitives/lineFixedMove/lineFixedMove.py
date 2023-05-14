@@ -51,15 +51,17 @@ class lineFixedMove(Primitive):
                 # firstly, plot the fixdot
                 if i == 0:                    
                     self.plots.append(ax.scatter(self.fixdot.x, self.fixdot.y, self.fixdot.z, color='red', s=40))
-                    crds = [self.fixdot.x, self.fixdot.y, self.fixdot.z+5]
-                    self.plots.append(ax.text(*crds, f"{self.fixdot.primitive_name}", fontsize=15))
+                    if flag_text == True:
+                        crds = [self.fixdot.x, self.fixdot.y, self.fixdot.z+5]
+                        self.plots.append(ax.text(*crds, f"{self.fixdot.primitive_name}", fontsize=15))
                     canvas.draw()
                     return
                 # next, plot the base curve                
                 elif i == 1:
                     self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5))
-                    crds = [self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]-15]
-                    self.plots.append(ax.text(*crds, f"{self.base.primitive_name}", fontsize=15))
+                    if flag_text == True:
+                        crds = [self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]-15]
+                        self.plots.append(ax.text(*crds, f"{self.base.primitive_name}", fontsize=15))
                     canvas.draw()
                     return
                 # then, plot P dot (the first base-curve dot in the list)
@@ -104,8 +106,9 @@ class lineFixedMove(Primitive):
                         s.remove()
                     lbl = "plot " + _color
                     self.surf = ax.plot_surface(self.X, self.Y, self.Z, label=lbl, alpha=self.ALPHA, color=_color, picker=True, zorder=1)
-                    crds = [(self.fixdot.x+self.base.x_list[0])/2+5, (self.fixdot.y+self.base.y_list[0])/2+5, (self.fixdot.z+self.base.z_list[0])/2+5]
-                    self.plots.append(ax.text(*crds, f"{self.primitive_name}", fontsize=15))
+                    if flag_text == True:
+                        crds = [(self.fixdot.x+self.base.x_list[0])/2+5, (self.fixdot.y+self.base.y_list[0])/2+5, (self.fixdot.z+self.base.z_list[0])/2+5]
+                        self.plots.append(ax.text(*crds, f"{self.primitive_name}", fontsize=15))
                     self.plots.append(self.surf)
                     canvas.draw()
                     return True                
@@ -143,6 +146,7 @@ class lineFixedMove(Primitive):
                     Z = np.array(self._z)
                     surf = ax.plot_surface(X, Y, Z, color=_color, alpha=self.ALPHA)
                     self.surfaces.append(surf)
+                    self.plots.append(surf)
                     # self.plots.append(self.surf)
                     tmp = [self._x[1], self._y[1], self._z[1]]
                     self._x.clear()
@@ -152,7 +156,12 @@ class lineFixedMove(Primitive):
                     self._y.append(tmp[1])
                     self._z.append(tmp[2])
                     canvas.draw()
-            anim = FuncAnimation(fig, animate, frames=self.LENGTH+1+self.BIAS, repeat=False, interval=self.INTERVAL, cache_frame_data=False, save_count=0)
+            
+            if flag_animation == True:
+                anim = FuncAnimation(fig, animate, frames=self.LENGTH+1+self.BIAS, repeat=False, interval=self.INTERVAL, cache_frame_data=False, save_count=0)
+            else:
+                for i in range(self.LENGTH+1+self.BIAS):
+                    animate(i)
             canvas.draw()            
         except:
             print('Surface is invalid => cannot plot')
