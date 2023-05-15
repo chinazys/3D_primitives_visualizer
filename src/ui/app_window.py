@@ -109,9 +109,9 @@ class AppWindow(QMainWindow):
         if event.key == 'shift':
             self.muiltipick = False
 
-    def on_primitive_added(self, primitive, flag_animation, flag_text):
+    def on_primitive_added(self, primitive):
         primitive.build()
-        primitive.plot(self.ax, self.canvas_layout.canvas, self.figure, flag_animation, flag_text)
+        primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
         
         self.all_primitives.append(primitive)
 
@@ -119,6 +119,12 @@ class AppWindow(QMainWindow):
             others = [p for p in self.all_primitives if str(type(p)) != "<class 'primitives.plane.plane.Plane'>"]
             for p in others:
                 self.plot_intersection(primitive, p)
+
+    # def on_primitive_edited(self, primitive):
+    #     primitive.build()
+    #     primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
+        
+    #     self.all_primitives.append(primitive)
 
     def on_primitive_removed(self, index):
         for plot in self.all_primitives[index].plots:

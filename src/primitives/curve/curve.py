@@ -58,10 +58,7 @@ class Curve(Primitive):
 
         self._fill_points_list()
     
-    def plot(self, ax, canvas, figure, flag_animation, flag_text):
-        self.flag_animation = flag_animation
-        self.flag_text = flag_text
-        
+    def plot(self, ax, canvas, figure):        
         try:
             if self.flag_text:
                 self.plots.append(ax.text(self.x_list[len(self.x_list) // 2], self.x_list[len(self.y_list) // 2], self.x_list[len(self.z_list) // 2], self.primitive_name, fontsize=10))

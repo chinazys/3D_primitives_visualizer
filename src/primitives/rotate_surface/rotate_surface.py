@@ -107,10 +107,7 @@ class rotate_surface(Primitive):
         self.y_list = y_
         self.z_list = z_
 
-    def plot(self, ax, canvas, fig, flag_animation=1, flag_text=1):
-        self.flag_animation=flag_animation
-        self.flag_text=flag_text
-
+    def plot(self, ax, canvas, fig):
         def animate(i):
                 #print(len(self.x_list[i-self.BIAS]),len(self.y_list[i-self.BIAS]),len(self.z_list[i-self.BIAS]))
 

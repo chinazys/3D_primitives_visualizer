@@ -40,10 +40,7 @@ class Line(Primitive):
         self.a_end_point = Line._get_end_point([self.a_point.x, self.a_point.y, self.a_point.z], [self.b_point.x, self.b_point.y, self.b_point.z])
         self.b_end_point = Line._get_end_point([self.b_point.x, self.b_point.y, self.b_point.z], [self.a_point.x, self.a_point.y, self.a_point.z])
 
-    def plot(self, ax, canvas, figure, flag_animation, flag_text):
-        self.flag_animation = flag_animation
-        self.flag_text = flag_text
-
+    def plot(self, ax, canvas, figure):
         try:
             a_label = "{}: ({}; {}; {})".format(self.a_point.primitive_name, self.a_point.x, self.a_point.y, self.a_point.z)
             self.plots.append(ax.scatter(self.a_point.x, self.a_point.y, self.a_point.z, s=15, color=self.primitive_color))

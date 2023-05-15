@@ -170,10 +170,11 @@ class PrimitiveEditor(QWidget):
         primitive.primitive_type = self.primitive_type
         primitive.primitive_color = self.color_opacity_picker.get_color_hex()
         primitive.primitive_opacity = self.color_opacity_picker.get_opacity()
-        # print(primitive.primitive_color, primitive.primitive_opacity)
+        primitive.flag_text = self.flag_text_check_box_layout.check_box.isChecked()
+        primitive.flag_animation = self.flag_animation_check_box_layout.check_box.isChecked()
 
         try:
-            self.configurator.window.on_primitive_added(primitive, self.flag_animation_check_box_layout.check_box.isChecked(), self.flag_text_check_box_layout.check_box.isChecked())
+            self.configurator.window.on_primitive_added(primitive)
             self.configurator.on_configurator_state_changed(False)
         except:
             self.configurator.window.show_error('Plotting Error', 'Primitive with the given parameters can not be plotted. Please re-check your input and try again.')

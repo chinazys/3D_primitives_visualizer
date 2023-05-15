@@ -44,14 +44,14 @@ class lineFixedMove(Primitive):
         pass
     
     # Updated plot() function with implemented animation
-    def plot(self, ax, canvas, fig, flag_animation, flag_text):
+    def plot(self, ax, canvas, fig):
         try:            
             # defined function for creating i-th frame of animation
             def animate(i):
                 # firstly, plot the fixdot
                 if i == 0:                    
                     self.plots.append(ax.scatter(self.fixdot.x, self.fixdot.y, self.fixdot.z, color='red', s=40))
-                    if flag_text == True:
+                    if self.flag_text == True:
                         crds = [self.fixdot.x, self.fixdot.y, self.fixdot.z+5]
                         self.plots.append(ax.text(*crds, f"{self.fixdot.primitive_name}", fontsize=15))
                     canvas.draw()
@@ -59,7 +59,7 @@ class lineFixedMove(Primitive):
                 # next, plot the base curve                
                 elif i == 1:
                     self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color='green', linewidth=5))
-                    if flag_text == True:
+                    if self.flag_text == True:
                         crds = [self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]-15]
                         self.plots.append(ax.text(*crds, f"{self.base.primitive_name}", fontsize=15))
                     canvas.draw()
@@ -106,7 +106,7 @@ class lineFixedMove(Primitive):
                         s.remove()
                     lbl = "plot " + self.primitive_color
                     self.surf = ax.plot_surface(self.X, self.Y, self.Z, label=lbl, alpha=self.primitive_opacity, color=self.primitive_color, picker=True, zorder=1)
-                    if flag_text == True:
+                    if self.flag_text == True:
                         crds = [(self.fixdot.x+self.base.x_list[0])/2+5, (self.fixdot.y+self.base.y_list[0])/2+5, (self.fixdot.z+self.base.z_list[0])/2+5]
                         self.plots.append(ax.text(*crds, f"{self.primitive_name}", fontsize=15))
                     self.plots.append(self.surf)
@@ -157,7 +157,7 @@ class lineFixedMove(Primitive):
                     self._z.append(tmp[2])
                     canvas.draw()
             
-            if flag_animation == True:
+            if self.flag_animation == True:
                 anim = FuncAnimation(fig, animate, frames=self.LENGTH+1+self.BIAS, repeat=False, interval=self.INTERVAL, cache_frame_data=False, save_count=0)
             else:
                 for i in range(self.LENGTH+1+self.BIAS):

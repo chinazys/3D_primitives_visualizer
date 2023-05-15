@@ -53,10 +53,7 @@ class curve_line(Primitive):
         self.z_list = np.array(
             [[self.base.z_list[i], self.base.z_list[i] + self.vector[2] *5] for i in range(len(self.base.x_list))])
 
-    def plot(self, ax, canvas, fig, flag_animation=1, flag_text=1):
-            self.flag_animation = flag_animation
-            self.flag_text = flag_text
-            
+    def plot(self, ax, canvas, fig):
             def animate(i):
                 
                 

@@ -35,30 +35,30 @@ class Plane(Primitive):
         self._fill_points_list()
         pass
 
-    def plot(self, ax, canvas, fig, flag_animation, flag_text):
+    def plot(self, ax, canvas, fig):
         try:
             def animate(i):
                 if i == 0:
                     self.plots.append(ax.scatter(self.M.x, self.M.y, self.M.z, s=15, color='red'))
-                    if flag_text == True:
+                    if self.flag_text == True:
                         label = "{}: ({}; {}; {})".format(self.M.primitive_name, self.M.x, self.M.y, self.M.z)
                         self.plots.append(ax.text(self.M.x+3, self.M.y+3, self.M.z+3, label, fontsize=15))
                     canvas.draw()
                 elif i == 1:
                     self.plots.append(ax.quiver(self.M.x, self.M.y, self.M.z, self.n.x, self.n.y, self.n.z, color='g'))
-                    if flag_text == True:
+                    if self.flag_text == True:
                         label = "{}: ({}; {}; {})".format(self.n.primitive_name, self.n.x, self.n.y, self.n.z)
                         self.plots.append(ax.text(self.M.x+self.n.x+3, self.M.y+self.n.y+3, self.M.z+self.n.z+3, label, fontsize=15))
                     canvas.draw()
                 elif i == 2:
                     lbl = "plot " + self.primitive_color
                     self.plots.append(ax.plot_surface(self.X_list, self.Y_list, self.Z_list, label=lbl, color=self.primitive_color, alpha=self.primitive_opacity, picker=True, zorder=0))
-                    if flag_text == True:
+                    if self.flag_text == True:
                         label = "Plane {}".format(self.primitive_name)
                         self.plots.append(ax.text(self.M.x+20, self.M.y+20, self.M.z+20, label, fontsize=15))
                     canvas.draw()
 
-            if flag_animation == True:
+            if self.flag_animation == True:
                 plane_anim = FuncAnimation(fig, animate, frames=self.FRAMES, repeat=False, interval=self.INTERVAL)
             else:
                 for i in range(3):
