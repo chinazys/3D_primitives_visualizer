@@ -79,16 +79,15 @@ class AppWindow(QMainWindow):
         artist = event.artist
 
         # print("multipick:", self.muiltipick)
-        if self.muiltipick == False:
-            # print("kids:", len(self.ax.get_children()))
-            primitives = self.ax.get_children()
-            prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
-            for i, p in enumerate(prims):
-                p.set_edgecolor(None)
-                if p == artist:
-                    p.set_alpha(min(self.all_primitives[i].primitive_opacitys * 1.6, 1))
-                else:    
-                    p.set_alpha(self.all_primitives[i].primitive_opacity)
+        # print("kids:", len(self.ax.get_children()))
+        primitives = self.ax.get_children()
+        prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
+        for i, p in enumerate(prims):
+            p.set_edgecolor(None)
+            if p == artist:
+                p.set_alpha(min(self.all_primitives[i].primitive_opacity * 1.6, 1))
+            elif self.muiltipick == False:
+                p.set_alpha(self.all_primitives[i].primitive_opacity)
 
         # Обновляем фигуру
         self.figure.canvas.draw()
@@ -101,7 +100,6 @@ class AppWindow(QMainWindow):
             primitives = self.ax.get_children()
             prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
             for i, p in enumerate(prims):
-                p.set_facecolor(str(p.get_label()).split()[1])
                 p.set_edgecolor(None)
                 p.set_alpha(self.all_primitives[i].primitive_opacity)
             self.figure.canvas.draw()
