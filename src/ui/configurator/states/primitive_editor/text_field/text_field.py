@@ -1,11 +1,19 @@
 from PyQt5.QtWidgets import (QLineEdit)
 
 class TextField:
-        def __init__(self, hint='some hint'):
+        def __init__(self, initial_value=None, hint=None):
                 self.text_field=QLineEdit()
-                self.text=''
-                self.text_field.setPlaceholderText(hint) 
+                self.initial_value = initial_value
+                self.hint = hint
+                
+                if not self.initial_value is None:
+                        self.text = self.initial_value
+                        self.text_field.setText(self.initial_value)
+                if not self.hint is None:
+                        self.text = ''
+                        self.text_field.setPlaceholderText(self.hint) 
+                        
                 self.text_field.textChanged.connect(self.text_changed)
 
         def text_changed(self, text):
-                self.text=text
+                self.text = text

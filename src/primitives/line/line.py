@@ -40,18 +40,18 @@ class Line(Primitive):
         self.a_end_point = Line._get_end_point([self.a_point.x, self.a_point.y, self.a_point.z], [self.b_point.x, self.b_point.y, self.b_point.z])
         self.b_end_point = Line._get_end_point([self.b_point.x, self.b_point.y, self.b_point.z], [self.a_point.x, self.a_point.y, self.a_point.z])
 
-    def plot(self, ax, canvas, figure, _color, flag_animation, flag_text):
+    def plot(self, ax, canvas, figure, flag_animation, flag_text):
         self.flag_animation = flag_animation
         self.flag_text = flag_text
 
         try:
             a_label = "{}: ({}; {}; {})".format(self.a_point.primitive_name, self.a_point.x, self.a_point.y, self.a_point.z)
-            self.plots.append(ax.scatter(self.a_point.x, self.a_point.y, self.a_point.z, s=15, color=_color))
+            self.plots.append(ax.scatter(self.a_point.x, self.a_point.y, self.a_point.z, s=15, color=self.primitive_color))
             if self.flag_text:
                 self.plots.append(ax.text(self.a_point.x + 3, self.a_point.y + 3, self.a_point.z + 3, a_label, fontsize=10))
 
             b_label = "{}: ({}; {}; {})".format(self.b_point.primitive_name, self.b_point.x, self.b_point.y, self.b_point.z)
-            self.plots.append(ax.scatter(self.b_point.x, self.b_point.y, self.b_point.z, s=15, color=_color))
+            self.plots.append(ax.scatter(self.b_point.x, self.b_point.y, self.b_point.z, s=15, color=self.primitive_color))
             if self.flag_text:
                 self.plots.append(ax.text(self.b_point.x + 3, self.b_point.y + 3, self.b_point.z + 3, b_label, fontsize=10))
 
@@ -60,7 +60,7 @@ class Line(Primitive):
                 name_direction = (self.b_point.x - self.a_point.x, self.b_point.y - self.a_point.y, self.b_point.z - self.a_point.z)
                 self.plots.append(ax.text(name_x, name_y, name_z, self.primitive_name, name_direction, fontsize=10))
             
-            self.plots.append(ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]], color=_color))
+            self.plots.append(ax.plot([self.a_end_point[0], self.b_end_point[0]], [self.a_end_point[1], self.b_end_point[1]], [self.a_end_point[2], self.b_end_point[2]], color=self.primitive_color, alpha=self.primitive_opacity))
             canvas.draw()
         except Exception as e:
             print(e)

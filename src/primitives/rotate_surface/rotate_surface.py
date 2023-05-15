@@ -107,7 +107,7 @@ class rotate_surface(Primitive):
         self.y_list = y_
         self.z_list = z_
 
-    def plot(self, ax, canvas, fig, _color, flag_animation=1, flag_text=1):
+    def plot(self, ax, canvas, fig, flag_animation=1, flag_text=1):
         self.flag_animation=flag_animation
         self.flag_text=flag_text
 
@@ -161,7 +161,7 @@ class rotate_surface(Primitive):
                                                   self.label_curve,
                                                   (self.base.x_list[1], self.base.y_list[1], self.base.z_list[1]),
                                                   fontsize=10))
-                    self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
+                    self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=self.primitive_color, linewidth=5))
                     canvas.draw()
                     
                     
@@ -171,7 +171,7 @@ class rotate_surface(Primitive):
                     self._x.append(self.x_list[-1])
                     self._y.append(self.y_list[-1])
                     self._z.append(self.z_list[-1])
-                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color=_color))
+                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=self.primitive_opacity,color=self.primitive_color))
                     canvas.draw()
                     
                     
@@ -189,7 +189,7 @@ class rotate_surface(Primitive):
                     if len(self._x)==2:
                         #print(self._x,self._y,self._z)
                         #print(self._x,'\n')
-                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=0.4,color=_color))
+                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=self.primitive_opacity,color=self.primitive_color))
                         self._x.pop(0)
                         self._y.pop(0)
                         self._z.pop(0)
@@ -218,8 +218,8 @@ class rotate_surface(Primitive):
             self.plots.append(ax.plot([x2,x3],[y2,y3],[z2,z3],color='green', linewidth=7))
             self.plots.append(ax.scatter(*self.dot, color='red', s=40))
             self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
-            self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
-            self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=_color, alpha=0.4))
+            self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=self.primitive_color, linewidth=5))
+            self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=self.primitive_color, alpha=self.primitive_opacity))
             canvas.draw()
 
 

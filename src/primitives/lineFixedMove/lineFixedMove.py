@@ -44,7 +44,7 @@ class lineFixedMove(Primitive):
         pass
     
     # Updated plot() function with implemented animation
-    def plot(self, ax, canvas, fig, _color, flag_animation, flag_text):
+    def plot(self, ax, canvas, fig, flag_animation, flag_text):
         try:            
             # defined function for creating i-th frame of animation
             def animate(i):
@@ -74,7 +74,7 @@ class lineFixedMove(Primitive):
                 elif i == 3:
                     x0, y0, z0 = self.fixdot.x, self.fixdot.y, self.fixdot.z
                     x1, y1, z1 = self.base.x_list[0], self.base.y_list[0], self.base.z_list[0]
-                    self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color=_color, linewidth=5))
+                    self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color=self.primitive_color, linewidth=5))
                     canvas.draw()
                     self.INTERVAL = 100
                     return
@@ -93,7 +93,7 @@ class lineFixedMove(Primitive):
                     X = np.array(self._x)
                     Y = np.array(self._y)
                     Z = np.array(self._z)
-                    surf = ax.plot_surface(X, Y, Z, color=_color, alpha=self.ALPHA, picker=False)
+                    surf = ax.plot_surface(X, Y, Z, color=self.primitive_color, alpha=self.primitive_opacity, picker=False)
                     # self.plots.append(surf)
                     self.surfaces.append(surf)
                     self._x.clear()
@@ -104,8 +104,8 @@ class lineFixedMove(Primitive):
                     self.Z = np.array(self.tmp_z)
                     for s in self.surfaces:
                         s.remove()
-                    lbl = "plot " + _color
-                    self.surf = ax.plot_surface(self.X, self.Y, self.Z, label=lbl, alpha=self.ALPHA, color=_color, picker=True, zorder=1)
+                    lbl = "plot " + self.primitive_color
+                    self.surf = ax.plot_surface(self.X, self.Y, self.Z, label=lbl, alpha=self.primitive_opacity, color=self.primitive_color, picker=True, zorder=1)
                     if flag_text == True:
                         crds = [(self.fixdot.x+self.base.x_list[0])/2+5, (self.fixdot.y+self.base.y_list[0])/2+5, (self.fixdot.z+self.base.z_list[0])/2+5]
                         self.plots.append(ax.text(*crds, f"{self.primitive_name}", fontsize=15))
@@ -144,7 +144,7 @@ class lineFixedMove(Primitive):
                     X = np.array(self._x)
                     Y = np.array(self._y)
                     Z = np.array(self._z)
-                    surf = ax.plot_surface(X, Y, Z, color=_color, alpha=self.ALPHA)
+                    surf = ax.plot_surface(X, Y, Z, color=self.primitive_color, alpha=self.primitive_opacity)
                     self.surfaces.append(surf)
                     self.plots.append(surf)
                     # self.plots.append(self.surf)

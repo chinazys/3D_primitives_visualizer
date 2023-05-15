@@ -35,7 +35,7 @@ class Plane(Primitive):
         self._fill_points_list()
         pass
 
-    def plot(self, ax, canvas, fig, _color, flag_animation, flag_text):
+    def plot(self, ax, canvas, fig, flag_animation, flag_text):
         try:
             def animate(i):
                 if i == 0:
@@ -51,8 +51,8 @@ class Plane(Primitive):
                         self.plots.append(ax.text(self.M.x+self.n.x+3, self.M.y+self.n.y+3, self.M.z+self.n.z+3, label, fontsize=15))
                     canvas.draw()
                 elif i == 2:
-                    lbl = "plot " + _color
-                    self.plots.append(ax.plot_surface(self.X_list, self.Y_list, self.Z_list, label=lbl, color=_color, alpha=.4, picker=True, zorder=0))
+                    lbl = "plot " + self.primitive_color
+                    self.plots.append(ax.plot_surface(self.X_list, self.Y_list, self.Z_list, label=lbl, color=self.primitive_color, alpha=self.primitive_opacity, picker=True, zorder=0))
                     if flag_text == True:
                         label = "Plane {}".format(self.primitive_name)
                         self.plots.append(ax.text(self.M.x+20, self.M.y+20, self.M.z+20, label, fontsize=15))

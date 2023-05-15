@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import (QHBoxLayout,QPushButton)
+from PyQt5.QtWidgets import (QHBoxLayout, QPushButton)
 from PyQt5.QtGui import QIcon
 from os import getcwd
 
@@ -57,7 +57,7 @@ class PrimitiveInfo:
         print('toggle visibility')
 
     def name_button_click(self):
-        print('edit')
+        self.primitives_list.configurator.on_configurator_state_changed(True)
 
     def delete_button_click(self):
         self.primitives_list.on_delete_primitive_button_click(self.index)

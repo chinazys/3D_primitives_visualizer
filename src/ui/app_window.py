@@ -77,23 +77,18 @@ class AppWindow(QMainWindow):
 
     def on_pick(self, event):
         artist = event.artist
-        color = str(artist.get_label()).split(' ')[1]
-
-        # Меняем цвет выбранной плоскости
-        artist.set_facecolor(self.pick_colors[color])
-        artist.set_edgecolor(None)
-        artist.set_alpha(.8)
 
         # print("multipick:", self.muiltipick)
         if self.muiltipick == False:
             # print("kids:", len(self.ax.get_children()))
             primitives = self.ax.get_children()
             prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
-            for p in prims:
-                if p != artist:
-                    p.set_facecolor(str(p.get_label()).split()[1])
-                    p.set_edgecolor(None)
-                    p.set_alpha(.4)
+            for i, p in enumerate(prims):
+                p.set_edgecolor(None)
+                if p == artist:
+                    p.set_alpha(min(self.all_primitives[i].primitive_opacitys * 1.6, 1))
+                else:    
+                    p.set_alpha(self.all_primitives[i].primitive_opacity)
 
         # Обновляем фигуру
         self.figure.canvas.draw()
@@ -105,10 +100,10 @@ class AppWindow(QMainWindow):
         if event.key == 'u':
             primitives = self.ax.get_children()
             prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
-            for p in prims:
+            for i, p in enumerate(prims):
                 p.set_facecolor(str(p.get_label()).split()[1])
                 p.set_edgecolor(None)
-                p.set_alpha(.4)
+                p.set_alpha(self.all_primitives[i].primitive_opacity)
             self.figure.canvas.draw()
 
     def release_key(self, event):
@@ -118,7 +113,7 @@ class AppWindow(QMainWindow):
 
     def on_primitive_added(self, primitive, flag_animation, flag_text):
         primitive.build()
-        primitive.plot(self.ax, self.canvas_layout.canvas, self.figure, self.default_colors[len(self.all_primitives)], flag_animation, flag_text)
+        primitive.plot(self.ax, self.canvas_layout.canvas, self.figure, flag_animation, flag_text)
         
         self.all_primitives.append(primitive)
 

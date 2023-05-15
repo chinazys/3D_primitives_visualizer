@@ -13,6 +13,7 @@ from ui.configurator.states.primitive_editor.point_layout.point_layout import Po
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
 from ui.configurator.states.primitive_editor.name_layout.name_layout import NameLayout
 from ui.configurator.states.primitive_editor.check_box.check_box import CheckBoxLayout
+from ui.configurator.states.primitive_editor.color_opacity_picker.color_opacity_picker import ColorOpacityPicker
 from primitives.line.line import Line
 from primitives.curve.curve import Curve
 from primitives.lineMove.lineMove import curve_line
@@ -53,6 +54,9 @@ class PrimitiveEditor(QWidget):
         self.name_layout = NameLayout()
         self.center_vertical_layout.addLayout(self.name_layout.layout)
 
+        self.color_opacity_picker = ColorOpacityPicker(line_or_curve=(self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE))
+        self.center_vertical_layout.addLayout(self.color_opacity_picker.layout)
+        
         self.set_flags_layout()
         self.center_vertical_layout.addLayout(self.flags_horizontal_layout)
 
@@ -94,7 +98,8 @@ class PrimitiveEditor(QWidget):
         elif self.primitive_type == CONFIGURATOR_TYPE_PLANE:
             self.primitive_layout = PlaneLayout()
         else:
-            raise Exception('Unknown primitive type')        
+            raise Exception('Unknown primitive type')   
+             
         self.primitive_vertical_layout.addLayout(self.primitive_layout.layout)
 
     def set_flags_layout(self):
@@ -110,15 +115,19 @@ class PrimitiveEditor(QWidget):
     def on_primitive_type_changed(self, primitive_type):
         self.primitive_type = primitive_type
 
+        clear_qt_layout(self.color_opacity_picker.layout)
         clear_qt_layout(self.primitive_vertical_layout)
         clear_qt_layout(self.flags_horizontal_layout)
+
+        self.color_opacity_picker = ColorOpacityPicker(line_or_curve=(self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE))
+        self.center_vertical_layout.addLayout(self.color_opacity_picker.layout)
 
         self.set_flags_layout()
         self.center_vertical_layout.addLayout(self.flags_horizontal_layout)
 
         self.set_primitive_layout()
         self.center_vertical_layout.addLayout(self.primitive_vertical_layout)
-    
+        
     @pyqtSlot()
     def on_cancel_button_click(self):
         self.configurator.on_configurator_state_changed(False)
@@ -159,6 +168,9 @@ class PrimitiveEditor(QWidget):
 
         primitive.primitive_name = primitive_name
         primitive.primitive_type = self.primitive_type
+        primitive.primitive_color = self.color_opacity_picker.get_color_hex()
+        primitive.primitive_opacity = self.color_opacity_picker.get_opacity()
+        # print(primitive.primitive_color, primitive.primitive_opacity)
 
         try:
             self.configurator.window.on_primitive_added(primitive, self.flag_animation_check_box_layout.check_box.isChecked(), self.flag_text_check_box_layout.check_box.isChecked())

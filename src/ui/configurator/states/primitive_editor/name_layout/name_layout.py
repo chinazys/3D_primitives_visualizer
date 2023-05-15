@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import (QVBoxLayout, QLabel)
+from PyQt5.QtWidgets import (QHBoxLayout, QLabel)
 
 from ui.configurator.states.primitive_editor.text_field.text_field import TextField
 
 class NameLayout:
-    def __init__(self, name_id='Name:'):
-        self.layout = QVBoxLayout()
+    def __init__(self, name_id='Name:  '):
+        self.layout = QHBoxLayout()
+        self.layout.setSpacing(0)
 
         self.layout.addWidget(QLabel(name_id))
 

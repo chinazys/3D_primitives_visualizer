@@ -53,7 +53,7 @@ class curve_line(Primitive):
         self.z_list = np.array(
             [[self.base.z_list[i], self.base.z_list[i] + self.vector[2] *5] for i in range(len(self.base.x_list))])
 
-    def plot(self, ax, canvas, fig, _color, flag_animation=1, flag_text=1):
+    def plot(self, ax, canvas, fig, flag_animation=1, flag_text=1):
             self.flag_animation = flag_animation
             self.flag_text = flag_text
             
@@ -103,7 +103,7 @@ class curve_line(Primitive):
                                                   (self.base.x_list[1], self.base.y_list[1], self.base.z_list[1]),
                                                   fontsize=10))
                     self.plots.append(
-                        ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
+                        ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=self.primitive_color, linewidth=5))
                     canvas.draw()
 
                 # if it's the last dot, unite all the fragments into single surface
@@ -111,7 +111,7 @@ class curve_line(Primitive):
                     self._x.append(self.x_list[-1])
                     self._y.append(self.y_list[-1])
                     self._z.append(self.z_list[-1])
-                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),color=_color,alpha=0.4))
+                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),color=self.primitive_color,alpha=self.primitive_opacity))
                     canvas.draw()
                 else:
                        
@@ -126,7 +126,7 @@ class curve_line(Primitive):
                     
                     if len(self._x)==2:
                         #print(self._x,self._y,self._z)
-                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),color=_color,alpha=0.4))
+                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),color=self.primitive_color,alpha=self.primitive_opacity))
                         self._x.pop(0)
                         
                         self._y.pop(0)
@@ -174,8 +174,8 @@ class curve_line(Primitive):
                 self.plots.append(ax.scatter(*self.dot, color='red', s=40))
                 self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
                 self.plots.append(
-                    ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=_color, linewidth=5))
-                self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=_color, alpha=0.4))
+                    ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=self.primitive_color, linewidth=5))
+                self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=self.primitive_color, alpha=self.primitive_opacity))
 
                 canvas.draw()
 
