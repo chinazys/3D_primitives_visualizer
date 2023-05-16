@@ -9,6 +9,7 @@ from ui.configurator.configurator import Configurator
 from ui.configurator.configurator_types import *
 from ui.canvas.canvas import Canvas
 from ui.settings import AXIS_MAX_SIZE
+from util.shift_color import shift_color
 
 
 APP_WINDOW_ABSOLUTE_WIDTH = 1920
@@ -86,8 +87,10 @@ class AppWindow(QMainWindow):
             p.set_edgecolor(None)
             if p == artist:
                 p.set_alpha(min(self.all_primitives[i].primitive_opacity * 1.6, 1))
+                p.set_facecolor(shift_color(self.all_primitives[i].primitive_color))
             elif self.muiltipick == False:
                 p.set_alpha(self.all_primitives[i].primitive_opacity)
+                p.set_facecolor(self.all_primitives[i].primitive_color)
 
         # Обновляем фигуру
         self.figure.canvas.draw()
@@ -102,6 +105,7 @@ class AppWindow(QMainWindow):
             for i, p in enumerate(prims):
                 p.set_edgecolor(None)
                 p.set_alpha(self.all_primitives[i].primitive_opacity)
+                p.set_facecolor(self.all_primitives[i].primitive_color)
             self.figure.canvas.draw()
 
     def release_key(self, event):
