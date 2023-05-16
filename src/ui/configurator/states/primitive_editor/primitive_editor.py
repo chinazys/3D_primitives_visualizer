@@ -8,7 +8,7 @@ from ui.configurator.states.primitive_editor.cylindrical_surface_layout.cylindri
 from ui.configurator.states.primitive_editor.line_layout.line_layout import LineLayout
 from ui.configurator.states.primitive_editor.plane_layout.plane_layout import PlaneLayout
 from ui.configurator.states.primitive_editor.rotational_surface_layout.rotational_surface_layout import RotationalSurfaceLayout
-from ui.configurator.states.primitive_editor.separator.separator import PaddedSeparator
+from ui.configurator.separator.separator import PaddedSeparator
 from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
 from ui.configurator.states.primitive_editor.name_layout.name_layout import NameLayout

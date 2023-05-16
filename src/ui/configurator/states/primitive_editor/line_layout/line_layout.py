@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import (QVBoxLayout)
 
 from primitives.line.line import Line
 from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
-from ui.configurator.states.primitive_editor.separator.separator import PaddedSeparator
+from ui.configurator.separator.separator import PaddedSeparator
 
 class LineLayout:
     def __init__(self):

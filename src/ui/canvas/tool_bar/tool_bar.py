@@ -4,11 +4,7 @@ from PyQt5.QtCore import QSize
 
 from os import getcwd
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.backend_tools import ToolBase
 
 from ui.help_panel.help_panel import HelpPanel
 

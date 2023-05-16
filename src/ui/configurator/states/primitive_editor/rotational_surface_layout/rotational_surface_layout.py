@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (QVBoxLayout)
 from primitives.rotate_surface.rotate_surface import rotate_surface
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
 from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
-from ui.configurator.states.primitive_editor.separator.separator import PaddedSeparator
+from ui.configurator.separator.separator import PaddedSeparator
 
 class RotationalSurfaceLayout:
     def __init__(self):

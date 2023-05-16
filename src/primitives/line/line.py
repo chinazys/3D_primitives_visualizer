@@ -34,7 +34,7 @@ class Line(Primitive):
         self.a_point = self.params[0]
         self.b_point = self.params[1]
 
-        if self.a_point == self.b_point:
+        if self.a_point.x == self.b_point.x and self.a_point.y == self.b_point.y and self.a_point.z == self.b_point.z:
             raise Exception("Points must be distinct")
 
         self.a_end_point = Line._get_end_point([self.a_point.x, self.a_point.y, self.a_point.z], [self.b_point.x, self.b_point.y, self.b_point.z])
