@@ -126,6 +126,22 @@ class AppWindow(QMainWindow):
         
     #     self.all_primitives.append(primitive)
 
+    def on_primitive_visibility_changed(self, index, is_visible):
+        for plot in self.all_primitives[index].plots:
+            try:
+                if is_visible:
+                    plot.set_alpha(self.all_primitives[index].primitive_opacity)
+                else:
+                    plot.set_alpha(0.0)
+            except:
+                for subplot in plot:
+                    if is_visible:
+                        subplot.set_alpha(self.all_primitives[index].primitive_opacity)
+                    else:
+                        subplot.set_alpha(0.0)
+        
+        self.figure.canvas.draw()
+
     def on_primitive_removed(self, index):
         for plot in self.all_primitives[index].plots:
             try:

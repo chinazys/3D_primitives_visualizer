@@ -17,8 +17,8 @@ class PrimitivesList(QWidget):
         self.vertical_layout.setContentsMargins(1, 1, 1, 1)
 
         self.top_vertical_layout = QVBoxLayout()
-        self.vertical_layout.addLayout(self.top_vertical_layout)
         self.top_vertical_layout.setAlignment(Qt.AlignTop)
+        self.vertical_layout.addLayout(self.top_vertical_layout)
 
         self.set_top_label_layout()
         self.top_vertical_layout.addLayout(self.top_label_layout)
@@ -62,3 +62,5 @@ class PrimitivesList(QWidget):
         clear_qt_layout(self.primitive_info_list[primitive_index].base)
 
         del(self.primitive_info_list[primitive_index])
+
+        self.configurator.on_configurator_state_changed(False)

@@ -13,6 +13,7 @@ class PrimitiveInfo:
         self.primitive = primitive
         self.index = index
         self.primitives_list = primitives_list
+        self.is_visible = True
 
         self.base=QHBoxLayout()
         self.base.setSpacing(0)
@@ -23,7 +24,7 @@ class PrimitiveInfo:
         self.button_primitive_type.setFixedHeight(self.BUTTON_SIZE)
         self.button_primitive_type.setIcon(QIcon(getcwd() + self.get_icon_relative_path()))
         self.button_primitive_type.setIconSize(QSize(int(self.BUTTON_SIZE * self.ICON_RELATIVE_SIZE), int(self.BUTTON_SIZE * self.ICON_RELATIVE_SIZE)))
-        self.button_primitive_type.setStyleSheet("QPushButton{ background-color: " + primitive.primitive_color + "; border:2px solid rgb(0, 0, 0); }")
+        self.button_primitive_type.setStyleSheet("QPushButton{ background-color: " + self.primitive.primitive_color + "; border:2px solid rgb(0, 0, 0); }")
         self.button_primitive_type.clicked.connect(self.primitive_type_button_click)
         self.base.addWidget(self.button_primitive_type)
 
@@ -59,8 +60,13 @@ class PrimitiveInfo:
             raise Exception('Unknown primitive type') 
 
     def primitive_type_button_click(self):
-        print('toggle visibility')
-
+        self.is_visible = not self.is_visible
+        self.primitives_list.configurator.window.on_primitive_visibility_changed(self.index, self.is_visible)
+        if self.is_visible:
+            self.button_primitive_type.setStyleSheet("QPushButton{ background-color: " + self.primitive.primitive_color + "; border:2px solid rgb(0, 0, 0); }")
+        else:
+            self.button_primitive_type.setStyleSheet("QPushButton{ background-color: transparent; border:2px solid rgb(0, 0, 0); }")
+        
     def name_button_click(self):
         self.primitives_list.configurator.on_configurator_state_changed(True)
 
