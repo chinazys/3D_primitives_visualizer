@@ -3,7 +3,6 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import numpy as np
 
 from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget, QMessageBox)
-from PyQt5.QtCore import Qt
 
 from ui.configurator.configurator import Configurator 
 from ui.configurator.configurator_types import *
@@ -96,7 +95,6 @@ class AppWindow(QMainWindow):
         self.figure.canvas.draw()
 
     def press_key(self, event):
-        print("pressed key")
         if event.key == 'shift':
             self.muiltipick = True
         if event.key == 'u':
@@ -109,26 +107,26 @@ class AppWindow(QMainWindow):
             self.figure.canvas.draw()
 
     def release_key(self, event):
-        print("released key")
         if event.key == 'shift':
             self.muiltipick = False
 
-    def on_primitive_added(self, primitive):
+    def on_primitive_added(self, primitive, index=-1):
         primitive.build()
         primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
         
-        self.all_primitives.append(primitive)
+        if index == -1:
+            self.all_primitives.append(primitive)
+        else:
+            self.all_primitives.insert(index, primitive)
 
         if str(type(primitive)) == "<class 'primitives.plane.plane.Plane'>":
             others = [p for p in self.all_primitives if str(type(p)) != "<class 'primitives.plane.plane.Plane'>"]
             for p in others:
                 self.plot_intersection(primitive, p)
 
-    # def on_primitive_edited(self, primitive):
-    #     primitive.build()
-    #     primitive.plot(self.ax, self.canvas_layout.canvas, self.figure)
-        
-    #     self.all_primitives.append(primitive)
+    def on_primitive_edited(self, primitive, primitive_index):
+        self.on_primitive_removed(primitive_index)
+        self.on_primitive_added(primitive, index=primitive_index)
 
     def on_primitive_visibility_changed(self, index, is_visible):
         for plot in self.all_primitives[index].plots:
@@ -173,8 +171,6 @@ class AppWindow(QMainWindow):
         # concatenating coordinates
         c1 = np.stack((x1f, y1f, z1f), axis=-1)
         c2 = np.stack((x2f, y2f, z2f), axis=-1)
-        print("c1.shape:", c1.shape)
-        print("c2.shape:", c2.shape)
 
         intersection = np.array([1, 1, 1])
 
@@ -205,8 +201,7 @@ class AppWindow(QMainWindow):
             fs.append([1, i, i+1])
         faces = np.array(fs)
 
-        print("shape:", intersection.shape)
         if intersection.shape[1] > 2:
             self.ax.plot(intersection[1:, 0], intersection[1:, 1], intersection[1:, 2], color='#8C47C6', linewidth=5)
-            poly3d = Poly3DCollection(intersection[faces], facecolor='#8C47C6', edgecolors=None, alpha=.8)
+            poly3d = Poly3DCollection(intersection[faces], facecolor='#8C47C6', edgecolors=None, alpha=.9)
             self.ax.add_collection3d(poly3d)

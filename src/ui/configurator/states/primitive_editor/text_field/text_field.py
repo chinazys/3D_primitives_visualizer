@@ -6,14 +6,20 @@ class TextField:
                 self.initial_value = initial_value
                 self.hint = hint
                 
-                if not self.initial_value is None:
-                        self.text = self.initial_value
-                        self.text_field.setText(self.initial_value)
+                self.text = ''
                 if not self.hint is None:
-                        self.text = ''
                         self.text_field.setPlaceholderText(self.hint) 
+                if not self.initial_value is None:
+                        self.text = initial_value
+                        self.text_field.setText(self.initial_value)
                         
                 self.text_field.textChanged.connect(self.text_changed)
+
+        def set_text(self, text):
+                self.text_field.setText(text)
+
+        def get_text(self):
+                return self.text
 
         def text_changed(self, text):
                 self.text = text

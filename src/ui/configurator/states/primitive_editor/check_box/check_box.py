@@ -7,6 +7,12 @@ class CheckBoxLayout:
         self.check_box.setStyleSheet("QCheckBox::indicator { width: 24 px; height: 24 px;}")
         self.base.addWidget(self.check_box)
         self.check_box.stateChanged.connect(lambda: self.change_state(self.check_box))
+    
+    def set_state(self, state:bool):
+        self.check_box.setChecked(state)
+    
+    def get_state(self):
+        return self.check_box.isChecked()
 
     def change_state(self, c):
         if c.isChecked() == True:

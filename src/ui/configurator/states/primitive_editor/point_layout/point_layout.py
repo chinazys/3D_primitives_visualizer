@@ -57,8 +57,26 @@ class PointLayout:
     def text_changed_z(self, text):
         self.z = text
 
+    def set_point(self, point):
+        if point.x % 1 == 0:
+            self.X_field.setText(str(int(point.x)))
+        else:
+            self.X_field.setText(str(point.x))
+
+        if point.y % 1 == 0:
+            self.Y_field.setText(str(int(point.y)))
+        else:
+            self.X_field.setText(str(point.y))
+
+        if point.z % 1 == 0:
+            self.Z_field.setText(str(int(point.z)))
+        else:
+            self.Z_field.setText(str(point.z))
+
+        self.point_name_input.set_text(point.primitive_name)
+
     def get_primitive(self):
-        point_name = self.point_name_input.text
+        point_name = self.point_name_input.get_text()
         if len(point_name) < 1:
             return None
         

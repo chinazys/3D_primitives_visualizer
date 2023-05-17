@@ -5,16 +5,20 @@ from ui.configurator.states.primitive_editor.point_layout.point_layout import Po
 from ui.configurator.separator.separator import PaddedSeparator
 
 class LineLayout:
-    def __init__(self):
+    def __init__(self, initial_primitive):
         self.layout = QVBoxLayout()
         
         self.point_a_layout = PointLayout(point_letter='A', point_id='Start Point:')
+        self.point_b_layout = PointLayout(point_letter='B', point_id='End Point:')
+        if not initial_primitive is None:
+            self.point_a_layout.set_point(initial_primitive.a_point)
+            self.point_b_layout.set_point(initial_primitive.b_point)
+
         self.layout.addLayout(self.point_a_layout.layout)
 
         self.separator = PaddedSeparator()
         self.layout.addLayout(self.separator.layout)
 
-        self.point_b_layout = PointLayout(point_letter='B', point_id='End Point:')
         self.layout.addLayout(self.point_b_layout.layout)
 
     def get_primitive(self):

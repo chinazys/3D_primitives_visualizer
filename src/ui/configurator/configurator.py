@@ -14,13 +14,13 @@ class Configurator:
         self.active_configurator = self.primitives_list
         self.window.horizontal_layout.addLayout(self.active_configurator.vertical_layout, self.CONFIGURATOR_LAYOUT_RELATIVE_WIDTH)
     
-    def on_configurator_state_changed(self, is_editor):
+    def on_configurator_state_changed(self, is_editor, primitive=None, primitive_index=None):
         self.window.horizontal_layout.itemAt(2).layout().deleteLater()
 
         clear_qt_layout(self.active_configurator.vertical_layout)
 
         if is_editor:
-            self.active_configurator = PrimitiveEditor(self)
+            self.active_configurator = PrimitiveEditor(self, primitive, primitive_index)
         else:
             self.active_configurator = PrimitivesList(self)
 
