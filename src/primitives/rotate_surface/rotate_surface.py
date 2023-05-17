@@ -7,12 +7,12 @@ class rotate_surface(Primitive):
     def __init__(self, base: Curve, dot, vector):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
         self.dot = [dot.x,dot.y,dot.z]
         self.vector = [vector.x,vector.y,vector.z]
-        print(self.vector)
+        #print(self.vector)
         if self.vector == [0, 0, 0]:
             raise Exception('vector is invalid = [0,0,0]')
         assert len(self.dot) == 3, "dot is invalid"
         assert len(self.vector) == 3, "vector is invalid"
-
+        self.surfaces=[]
         self.base = base
         self.base.build()
 
@@ -163,14 +163,15 @@ class rotate_surface(Primitive):
                     
                     
                 # if it's the last dot, unite all the fragments into single surface
-                elif (len(self.x_list)+self.BIAS) ==i:
-                    
-                    self._x.append(self.x_list[-1])
-                    self._y.append(self.y_list[-1])
-                    self._z.append(self.z_list[-1])
-                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=self.primitive_opacity,color=self.primitive_color))
+                elif len(self.x_list)+self.BIAS == i+1:
+
+                    for s in self.surfaces:
+                        s.remove()
+
+                    self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list),label = "plot ", color=self.primitive_color, alpha=self.primitive_opacity,picker=True ))
+
                     canvas.draw()
-                    
+
                     
                 else:
                     
@@ -186,7 +187,13 @@ class rotate_surface(Primitive):
                     if len(self._x)==2:
                         #print(self._x,self._y,self._z)
                         #print(self._x,'\n')
-                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),alpha=self.primitive_opacity,color=self.primitive_color))
+
+                        surf = ax.plot_surface(np.array(self._x), np.array(self._y), np.array(self._z),
+                                                    alpha=self.primitive_opacity, color=self.primitive_color
+                                                    )
+                        self.surfaces.append(surf)
+                        self.plots.append(surf)
+
                         self._x.pop(0)
                         self._y.pop(0)
                         self._z.pop(0)
@@ -196,6 +203,7 @@ class rotate_surface(Primitive):
                 
         if self.flag_animation:
             anim = FuncAnimation(fig, animate, frames=(len(self.x_list)+self.BIAS), repeat=False, interval=750,cache_frame_data=False, save_count=0)
+
             canvas.draw()
 
         else:
@@ -216,7 +224,8 @@ class rotate_surface(Primitive):
             self.plots.append(ax.scatter(*self.dot, color='red', s=40))
             self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
             self.plots.append(ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=self.primitive_color, linewidth=5))
-            self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=self.primitive_color, alpha=self.primitive_opacity))
+
+            self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list),label = "plot ", color=self.primitive_color, alpha=self.primitive_opacity,picker=True, zorder=1))
             canvas.draw()
 
 

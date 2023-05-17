@@ -29,8 +29,8 @@ class curve_line(Primitive):
         # GENERAL PARAMETERS: are applied when plotting both animated and result surfaces
         self.ALPHA = .4  # sets capacity level
         self.DOTS = len(self.base.x_list)  # sets the number of curve dots
-
-        self.LENGTH = len(self.base.x_list)//2  # sets the number of dots we take from the curve to build the conical surface
+        self.surfaces=[]
+        self.LENGTH = len(self.base.x_list)  # sets the number of dots we take from the curve to build the conical surface
         self.STEP = self.DOTS//self.LENGTH  # calculates the step of taking next dot to expand the animated conical surface
         self.TMP_RESOLUTION = 2  # number of dots each line from curve to fixdot contains
         self.PAUSE = 1  # sets pause time in seconds between fixdot, base curve and the surface plots
@@ -104,26 +104,26 @@ class curve_line(Primitive):
                     canvas.draw()
 
                 # if it's the last dot, unite all the fragments into single surface
-                elif i == self.LENGTH+self.BIAS:
-                    self._x.append(self.x_list[-1])
-                    self._y.append(self.y_list[-1])
-                    self._z.append(self.z_list[-1])
-                    self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),color=self.primitive_color,alpha=self.primitive_opacity))
+                elif i+1 == self.LENGTH+self.BIAS:
+                    for s in self.surfaces:
+                        s.remove()
+                    self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list),label="plot ", color=self.primitive_color, alpha=self.primitive_opacity,picker=True))
                     canvas.draw()
                 else:
                        
                 # usually, we just add another set of dots to the list
-                    try:
-                        self._x.append(self.x_list[(i-self.BIAS)*4])
-                        self._y.append(self.y_list[(i-self.BIAS)*4])
-                        self._z.append(self.z_list[(i-self.BIAS)*4])
-                    except:
-                        return
+
+                    self._x.append(self.x_list[(i-self.BIAS)])
+                    self._y.append(self.y_list[(i-self.BIAS)])
+                    self._z.append(self.z_list[(i-self.BIAS)])
+
                     
                     
                     if len(self._x)==2:
                         #print(self._x,self._y,self._z)
-                        self.plots.append(ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),color=self.primitive_color,alpha=self.primitive_opacity))
+                        surf=ax.plot_surface(np.array(self._x),np.array(self._y),np.array(self._z),color=self.primitive_color,alpha=self.primitive_opacity)
+                        self.surfaces.append(surf)
+                        self.plots.append(surf)
                         self._x.pop(0)
                         
                         self._y.pop(0)
@@ -172,7 +172,7 @@ class curve_line(Primitive):
                 self.plots.append(ax.plot([x0, x1], [y0, y1], [z0, z1], color='blue', linewidth=5))
                 self.plots.append(
                     ax.plot(self.base.x_list, self.base.y_list, self.base.z_list, color=self.primitive_color, linewidth=5))
-                self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=self.primitive_color, alpha=self.primitive_opacity))
+                self.plots.append(ax.plot_surface(np.array(self.x_list), np.array(self.y_list), np.array(self.z_list), color=self.primitive_color,label="plot ", alpha=self.primitive_opacity,picker=True))
 
                 canvas.draw()
 
