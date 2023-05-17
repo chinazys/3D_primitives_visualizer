@@ -71,7 +71,7 @@ class PrimitiveInfo:
             self.button_primitive_type.setStyleSheet("QPushButton{ background-color: transparent; border:2px solid rgb(0, 0, 0); } QPushButton:hover {background-color: rgb(230,230,230);} ")
         
     def name_button_click(self):
-        self.primitives_list.configurator.on_configurator_state_changed(True)
+        self.primitives_list.configurator.on_configurator_state_changed(True, primitive=self.primitive, primitive_index=self.index)
 
     def delete_button_click(self):
         self.primitives_list.on_delete_primitive_button_click(self.index)

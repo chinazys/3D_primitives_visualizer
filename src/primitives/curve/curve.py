@@ -5,6 +5,7 @@ class Curve(Primitive):
     '''
     Curve is built as a dense consequence of points, which are generated for each possible ti: xi = x(ti), yi = y(ti), zi = z(ti).
     '''
+    DELTA_T_MAX = 1e6
     def _fill_points_list(self):
         self.x_list = []
         self.y_list = []
@@ -31,7 +32,7 @@ class Curve(Primitive):
             
             t += step
 
-    def contains_point(self, point, eps=1e-6):
+    def contains_point(self, point, eps=1e-3):
         try:
             self.build()
 
@@ -47,14 +48,18 @@ class Curve(Primitive):
     def build(self):
         assert len(self.params) == 6, "Curve params are invalid"
 
-        self.x_expression = string_to_expression(self.params[0])
-        self.y_expression = string_to_expression(self.params[1])
-        self.z_expression = string_to_expression(self.params[2])
+        self.x_string = self.params[0]
+        self.y_string = self.params[1]
+        self.z_string = self.params[2]
+
+        self.x_expression = string_to_expression(self.x_string)
+        self.y_expression = string_to_expression(self.y_string)
+        self.z_expression = string_to_expression(self.z_string)
         self.t_min = float(self.params[3])
         self.t_max = float(self.params[4])
         self.points_quantity = int(self.params[5])
 
-        assert self.t_min < self.t_max, 'Invalid t limits'
+        assert self.t_min < self.t_max and self.DELTA_T_MAX > self.t_max - self.t_min, 'Invalid t limits'
 
         self._fill_points_list()
     

@@ -9,6 +9,9 @@ from matplotlib.animation import FuncAnimation
 class curve_line(Primitive):
 
     def __init__(self, base: Curve, dot , vector):# line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
+        self.point_saved = dot
+        self.vector_saved = vector
+        
         self.dot = [dot.x, dot.y, dot.z]
         self.vector = [vector.x, vector.y, vector.z]
         if self.vector ==[0,0,0]:

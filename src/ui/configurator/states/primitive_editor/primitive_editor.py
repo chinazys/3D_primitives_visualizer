@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import (QComboBox, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QFrame)
+from PyQt5.QtWidgets import (QComboBox, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLabel)
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSlot
 
@@ -24,10 +25,12 @@ from primitives.plane.plane import Plane
 from util.clear_qt_layout import clear_qt_layout
 
 class PrimitiveEditor(QWidget):
-    def __init__(self, configurator):
+    def __init__(self, configurator, initial_primitive, initial_primitive_index):
         super().__init__()
 
         self.configurator = configurator
+        self.initial_primitive = initial_primitive
+        self.initial_primitive_index = initial_primitive_index
         
         self.vertical_layout = QVBoxLayout()
         
@@ -45,27 +48,46 @@ class PrimitiveEditor(QWidget):
         self.vertical_layout.addLayout(self.bottom_vertical_layout)
         self.bottom_vertical_layout.setAlignment(Qt.AlignBottom)
 
-        self.primitive_type_selector = QComboBox()
-        self.primitive_type_selector.addItems(CONFIGURATOR_TYPES)
-        self.primitive_type = CONFIGURATOR_TYPES[0]
-        self.primitive_type_selector.currentTextChanged.connect(self.on_primitive_type_changed)
-        self.top_vertical_layout.addWidget(self.primitive_type_selector)
+        if self.initial_primitive is None:
+            self.primitive_type_selector = QComboBox()
+            self.primitive_type_selector.addItems(CONFIGURATOR_TYPES)
+            self.primitive_type = CONFIGURATOR_TYPES[0]
+            self.primitive_type_selector.currentTextChanged.connect(self.on_primitive_type_changed)
+            self.top_vertical_layout.addWidget(self.primitive_type_selector)
+        else:
+            self.primitive_type = self.initial_primitive.primitive_type
+            
+            self.set_primitive_type_label_layout()
+            self.top_vertical_layout.addLayout(self.primitive_type_label_layout)
+
+            self.separator = PaddedSeparator(vertical_padding=8)
+            self.top_vertical_layout.addLayout(self.separator.layout)
         
-        self.name_layout = NameLayout()
+        self.name_layout = NameLayout(None if self.initial_primitive is None else self.initial_primitive.primitive_name)
         self.center_vertical_layout.addLayout(self.name_layout.layout)
 
-        self.color_opacity_picker = ColorOpacityPicker(line_or_curve=(self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE))
+        self.color_opacity_picker = ColorOpacityPicker(self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE,
+                                                        None if self.initial_primitive is None else self.initial_primitive.primitive_color,
+                                                        None if self.initial_primitive is None else self.initial_primitive.primitive_opacity)
         self.center_vertical_layout.addLayout(self.color_opacity_picker.layout)
         
         self.set_flags_layout()
         self.center_vertical_layout.addLayout(self.flags_horizontal_layout)
 
-        self.set_primitive_layout()
+        self.set_primitive_layout(self.initial_primitive)
         self.center_vertical_layout.addLayout(self.primitive_vertical_layout)
 
         self.set_bottom_buttons_layout()
         self.bottom_vertical_layout.addLayout(self.bottom_horizontal_layout)
-        
+    
+    def set_primitive_type_label_layout(self):
+        self.primitive_type_label_layout = QHBoxLayout()
+        self.primitive_type_label = QLabel(self.primitive_type)
+        self.primitive_type_label.setContentsMargins(0, 6, 0, 0)
+        self.primitive_type_label.setFont(QFont('Arial', 20))
+        self.primitive_type_label_layout.addWidget(self.primitive_type_label)     
+        self.primitive_type_label_layout.setAlignment(Qt.AlignCenter)
+
     def set_bottom_buttons_layout(self):  
         self.bottom_horizontal_layout = QHBoxLayout()
 
@@ -79,24 +101,24 @@ class PrimitiveEditor(QWidget):
         self.confirm_button.clicked.connect(self.on_confirm_button_click)
         self.bottom_horizontal_layout.addWidget(self.confirm_button)
 
-    def set_primitive_layout(self):
+    def set_primitive_layout(self, primitive=None):
         self.primitive_vertical_layout = QVBoxLayout()
 
         self.separator = PaddedSeparator()
         self.primitive_vertical_layout.addLayout(self.separator.layout)
 
         if self.primitive_type == CONFIGURATOR_TYPE_LINE:
-            self.primitive_layout = LineLayout()
+            self.primitive_layout = LineLayout(self.initial_primitive)
         elif self.primitive_type == CONFIGURATOR_TYPE_CURVE:
-            self.primitive_layout = CurveLayout(curve_id=None)
+            self.primitive_layout = CurveLayout(self.initial_primitive, curve_label=None)
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
-            self.primitive_layout = CylindricalSurfaceLayout()
+            self.primitive_layout = CylindricalSurfaceLayout(self.initial_primitive)
         elif self.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            self.primitive_layout = ConicalSurfaceLayout()
+            self.primitive_layout = ConicalSurfaceLayout(self.initial_primitive)
         elif self.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
-            self.primitive_layout = RotationalSurfaceLayout()
+            self.primitive_layout = RotationalSurfaceLayout(self.initial_primitive)
         elif self.primitive_type == CONFIGURATOR_TYPE_PLANE:
-            self.primitive_layout = PlaneLayout()
+            self.primitive_layout = PlaneLayout(self.initial_primitive)
         else:
             raise Exception('Unknown primitive type')   
              
@@ -112,6 +134,10 @@ class PrimitiveEditor(QWidget):
         if not (self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE): 
             self.flags_horizontal_layout.addLayout(self.flag_animation_check_box_layout.base)
 
+        if not self.initial_primitive is None:
+            self.flag_text_check_box_layout.set_state(self.initial_primitive.flag_text)
+            self.flag_animation_check_box_layout.set_state(self.initial_primitive.flag_animation)        
+
     def on_primitive_type_changed(self, primitive_type):
         self.primitive_type = primitive_type
 
@@ -119,7 +145,7 @@ class PrimitiveEditor(QWidget):
         clear_qt_layout(self.primitive_vertical_layout)
         clear_qt_layout(self.flags_horizontal_layout)
 
-        self.color_opacity_picker = ColorOpacityPicker(line_or_curve=(self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE))
+        self.color_opacity_picker = ColorOpacityPicker(self.primitive_type == CONFIGURATOR_TYPE_LINE or self.primitive_type == CONFIGURATOR_TYPE_CURVE)
         self.center_vertical_layout.addLayout(self.color_opacity_picker.layout)
 
         self.set_flags_layout()
@@ -170,11 +196,15 @@ class PrimitiveEditor(QWidget):
         primitive.primitive_type = self.primitive_type
         primitive.primitive_color = self.color_opacity_picker.get_color_hex()
         primitive.primitive_opacity = self.color_opacity_picker.get_opacity()
-        primitive.flag_text = self.flag_text_check_box_layout.check_box.isChecked()
-        primitive.flag_animation = self.flag_animation_check_box_layout.check_box.isChecked()
+        primitive.flag_text = self.flag_text_check_box_layout.get_state()
+        primitive.flag_animation = self.flag_animation_check_box_layout.get_state()
 
         try:
-            self.configurator.window.on_primitive_added(primitive)
-            self.configurator.on_configurator_state_changed(False)
+            if self.initial_primitive is None:
+                self.configurator.window.on_primitive_added(primitive)
+            else:
+                self.configurator.window.on_primitive_edited(primitive, self.initial_primitive_index)
         except:
             self.configurator.window.show_error('Plotting Error', 'Primitive with the given parameters can not be plotted. Please re-check your input and try again.')
+        
+        self.configurator.on_configurator_state_changed(False)

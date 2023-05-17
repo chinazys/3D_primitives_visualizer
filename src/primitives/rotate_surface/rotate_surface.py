@@ -5,6 +5,9 @@ from matplotlib.animation import FuncAnimation
 import time
 class rotate_surface(Primitive):
     def __init__(self, base: Curve, dot, vector):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
+        self.point_saved = dot
+        self.vector_saved = vector
+        
         self.dot = [dot.x,dot.y,dot.z]
         self.vector = [vector.x,vector.y,vector.z]
         print(self.vector)

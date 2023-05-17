@@ -1,18 +1,26 @@
 from PyQt5.QtWidgets import (QHBoxLayout, QPushButton, QLabel, QLineEdit)
 import numpy as np
 
-from ui.configurator.states.primitive_editor.color_opacity_picker.vcolorpicker.vcolorpicker import getColor, useAlpha, rgb2hex, useLightTheme
+from ui.configurator.states.primitive_editor.color_opacity_picker.vcolorpicker.vcolorpicker import getColor, useAlpha, rgb2hex, hex2rgb, useLightTheme
 
 class ColorOpacityPicker:
     DEFAULT_LINE_OPACITY = 100
     DEFAULT_SURFACE_OPACITY = 50
 
-    def __init__(self, line_or_curve=False):
-        self.color_opacity = list(np.random.choice(range(256), size=3))
-        if line_or_curve:
-            self.color_opacity.append(self.DEFAULT_LINE_OPACITY)
+    def __init__(self, line_or_curve, initial_color=None, initial_opacity=None):
+        if initial_color is None:
+            self.color_opacity = list(np.random.choice(range(256), size=3))
         else:
-            self.color_opacity.append(self.DEFAULT_SURFACE_OPACITY)
+            rgb_tuple = hex2rgb(initial_color[1:])
+            self.color_opacity = [int(c) for c in rgb_tuple]
+        
+        if initial_opacity is None:
+            if line_or_curve:
+                self.color_opacity.append(self.DEFAULT_LINE_OPACITY)
+            else:
+                self.color_opacity.append(self.DEFAULT_SURFACE_OPACITY)
+        else:
+            self.color_opacity.append(int(initial_opacity * 100))
             
         useAlpha(True)
         # useLightTheme(True)
@@ -25,6 +33,7 @@ class ColorOpacityPicker:
         
         self.color_button = QPushButton()
         self.color_button.clicked.connect(self._button_color_click)
+        
         self._update_color_button_style()
 
         self.color_button.setToolTip('Click to change color & opacity')
@@ -45,4 +54,3 @@ class ColorOpacityPicker:
            return
         self.color_opacity = color_opacity 
         self._update_color_button_style()
-        print(self.get_color_hex(), self.get_opacity())
