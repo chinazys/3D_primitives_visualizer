@@ -202,6 +202,12 @@ class AppWindow(QMainWindow):
         faces = np.array(fs)
 
         if intersection.shape[1] > 2:
-            self.ax.plot(intersection[1:, 0], intersection[1:, 1], intersection[1:, 2], color='#8C47C6', linewidth=5)
+            border_plot = self.ax.plot(intersection[1:, 0], intersection[1:, 1], intersection[1:, 2], color='#8C47C6', linewidth=5)
             poly3d = Poly3DCollection(intersection[faces], facecolor='#8C47C6', edgecolors=None, alpha=.9)
-            self.ax.add_collection3d(poly3d)
+            surface_plot = self.ax.add_collection3d(poly3d)
+
+            plane.plots.append(border_plot)
+            plane.plots.append(surface_plot)
+
+            prim.plots.append(border_plot)
+            prim.plots.append(surface_plot)
