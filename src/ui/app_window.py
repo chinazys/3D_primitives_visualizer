@@ -7,19 +7,16 @@ from PyQt5.QtWidgets import (QHBoxLayout, QMainWindow, QWidget, QMessageBox)
 from ui.configurator.configurator import Configurator 
 from ui.configurator.configurator_types import *
 from ui.canvas.canvas import Canvas
-from ui.settings import AXIS_MAX_SIZE
+from ui.settings import AXIS_MAX_SIZE, APP_WINDOW_MIN_WIDTH, APP_WINDOW_MIN_HEIGHT
 from util.shift_color import shift_color
-
-
-APP_WINDOW_ABSOLUTE_WIDTH = 1920
-APP_WINDOW_ABSOLUTE_HEIGHT = 1080
 
 class AppWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
-        self.window_width, self.window_height = APP_WINDOW_ABSOLUTE_WIDTH, APP_WINDOW_ABSOLUTE_HEIGHT
+        self.window_width, self.window_height = APP_WINDOW_MIN_WIDTH, APP_WINDOW_MIN_HEIGHT
         
         self.setMinimumSize(self.window_width, self.window_height)
+        self.showMaximized()
         self.setStyleSheet('''
             QWidget {
                 font-size: 32px;

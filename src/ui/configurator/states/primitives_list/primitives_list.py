@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from ui.configurator.states.primitives_list.primitive_info.primitive_info import PrimitiveInfo
 from ui.configurator.separator.separator import PaddedSeparator
 from util.clear_qt_layout import clear_qt_layout
+from ui.settings import PRIMITIVES_MAX_QUANTITY
 
 class PrimitivesList(QWidget):
     def __init__(self, configurator):
@@ -51,6 +52,9 @@ class PrimitivesList(QWidget):
 
     @pyqtSlot()
     def on_add_button_click(self):
+        if len(self.configurator.window.all_primitives) > PRIMITIVES_MAX_QUANTITY:
+            self.configurator.window.show_error('Primitives Quantity Error', f'You cannot plot more than {PRIMITIVES_MAX_QUANTITY} primitives at once')
+            return
         self.configurator.on_configurator_state_changed(True)
 
     def on_delete_primitive_button_click(self, primitive_index):
