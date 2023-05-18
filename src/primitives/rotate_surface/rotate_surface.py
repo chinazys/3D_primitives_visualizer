@@ -10,6 +10,11 @@ class rotate_surface(Primitive):
         
         self.dot = [dot.x,dot.y,dot.z]
         self.vector = [vector.x,vector.y,vector.z]
+
+        self.X_saved = []
+        self.Y_saved = []
+        self.Z_saved = []
+
         #print(self.vector)
         if self.vector == [0, 0, 0]:
             raise Exception('vector is invalid = [0,0,0]')
@@ -109,6 +114,10 @@ class rotate_surface(Primitive):
         self.x_list = x_
         self.y_list = y_
         self.z_list = z_
+        
+        self.X_saved = self.x_list
+        self.Y_saved = self.y_list
+        self.Z_saved = self.z_list
 
     def plot(self, ax, canvas, fig):
         def animate(i):
