@@ -10,15 +10,15 @@ class CurveLayout:
             initial_x_text = None
             initial_y_text = None
             initial_z_text = None
-            initial_t_min = None
-            initial_t_max = None
+            initial_t_min_text = None
+            initial_t_max_text = None
         else:
             initial_curve_name = initial_primitive.primitive_name
             initial_x_text = initial_primitive.x_string
             initial_y_text = initial_primitive.y_string
             initial_z_text = initial_primitive.z_string
-            initial_t_min = initial_primitive.t_min
-            initial_t_max = initial_primitive.t_max
+            initial_t_min_text = initial_primitive.t_min_string
+            initial_t_max_text = initial_primitive.t_max_string
 
         self.curve_label = curve_label
 
@@ -55,11 +55,11 @@ class CurveLayout:
         self.layout.addLayout(self.z_layout)
 
         self.t_layout = QHBoxLayout()
-        self.t_min_input = TextField(hint='left bound', initial_value=None if initial_t_min is None else str(int(initial_t_min) if initial_t_min % 1 == 0 else initial_t_min))
+        self.t_min_input = TextField(hint='left bound', initial_value=initial_t_min_text)
         self.t_min_input.text_field.setAlignment(Qt.AlignCenter)
         self.t_layout.addWidget(self.t_min_input.text_field)
         self.t_layout.addWidget(QLabel('< t <'))
-        self.t_max_input = TextField(hint='right bound', initial_value=None if initial_t_max is None else str(int(initial_t_max) if initial_t_max % 1 == 0 else initial_t_max))
+        self.t_max_input = TextField(hint='right bound', initial_value=initial_t_max_text)
         self.t_max_input.text_field.setAlignment(Qt.AlignCenter)
         self.t_layout.addWidget(self.t_max_input.text_field)
         self.layout.addLayout(self.t_layout)
