@@ -28,6 +28,11 @@ class curve_line(Primitive):
         self._x=[]
         self._y=[]
         self._z=[]
+
+        self.X_saved = []
+        self.Y_saved = []
+        self.Z_saved = []
+        
         self.build()
         # GENERAL PARAMETERS: are applied when plotting both animated and result surfaces
         self.ALPHA = .4  # sets capacity level
@@ -55,6 +60,13 @@ class curve_line(Primitive):
 
         self.z_list = np.array(
             [[self.base.z_list[i], self.base.z_list[i] + self.vector[2] *5] for i in range(len(self.base.x_list))])
+        
+        self.X_saved = np.array(
+            [np.linspace(self.base.x_list[i], self.base.x_list[i]+self.vector[0]*5, 200) for i in range(len(self.base.x_list))])
+        self.Y_saved = np.array(
+            [np.linspace(self.base.y_list[i], self.base.y_list[i]+self.vector[1]*5, 200) for i in range(len(self.base.y_list))])
+        self.Z_saved = np.array(
+            [np.linspace(self.base.z_list[i], self.base.z_list[i]+self.vector[2]*5, 200) for i in range(len(self.base.z_list))])
 
     def plot(self, ax, canvas, fig):
             def animate(i):
