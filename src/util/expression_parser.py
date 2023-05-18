@@ -9,3 +9,5 @@ PARAMETER = symbols('t')
 def evaluate_parametric_expression(expression, parameter):
     return float(expression.subs(PARAMETER, parameter))
 
+def evaluate_string_numerical_expression(string_expression: str):
+    return string_to_expression(string_expression).evalf()

@@ -1,5 +1,5 @@
 from primitives.primitive import Primitive
-from util.expression_parser import string_to_expression, evaluate_parametric_expression
+from util.expression_parser import string_to_expression, evaluate_parametric_expression, evaluate_string_numerical_expression
 
 class Curve(Primitive):
     '''
@@ -55,8 +55,8 @@ class Curve(Primitive):
         self.x_expression = string_to_expression(self.x_string)
         self.y_expression = string_to_expression(self.y_string)
         self.z_expression = string_to_expression(self.z_string)
-        self.t_min = float(self.params[3])
-        self.t_max = float(self.params[4])
+        self.t_min = evaluate_string_numerical_expression(self.params[3])
+        self.t_max = evaluate_string_numerical_expression(self.params[4])
         self.points_quantity = int(self.params[5])
 
         assert self.t_min < self.t_max and self.DELTA_T_MAX > self.t_max - self.t_min, 'Invalid t limits'

@@ -1,3 +1,7 @@
+Abbreviations:
+- pi -> PI number ~ 3.1416...
+- exp(1) -> Euler's number ~ 2.7183...
+
 Basic operations:
 - x + y -> add x to y
 - x - y -> substract y from x
