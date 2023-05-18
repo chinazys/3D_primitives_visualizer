@@ -39,7 +39,7 @@ class PrimitiveInfo:
         self.button_delete = QPushButton()
         self.button_delete.setFixedWidth(self.BUTTON_SIZE)
         self.button_delete.setFixedHeight(self.BUTTON_SIZE)
-        self.button_delete.setIcon(QIcon(getcwd() + "/src/ui/icons/trash.png"))
+        self.button_delete.setIcon(QIcon(getcwd() + "/icons/trash.png"))
         self.button_delete.setIconSize(QSize(int(self.BUTTON_SIZE * self.ICON_RELATIVE_SIZE), int(self.BUTTON_SIZE * self.ICON_RELATIVE_SIZE)))
         self.button_delete.setStyleSheet("QPushButton{background-color: rgb(255,0,0); margin:0px; border:2px solid rgb(0, 0, 0);} QPushButton:hover {background-color: rgb(210,0,0);}")
         self.button_delete.clicked.connect(self.delete_button_click)
@@ -47,17 +47,17 @@ class PrimitiveInfo:
 
     def get_icon_relative_path(self):
         if self.primitive.primitive_type == CONFIGURATOR_TYPE_LINE:
-            return "/src/ui/icons/line.png"
+            return "/icons/line.png"
         elif self.primitive.primitive_type == CONFIGURATOR_TYPE_CURVE:
-            return "/src/ui/icons/curve.png"
+            return "/icons/curve.png"
         elif self.primitive.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
-            return "/src/ui/icons/cylinder.png"
+            return "/icons/cylinder.png"
         elif self.primitive.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-            return "/src/ui/icons/cone.png"
+            return "/icons/cone.png"
         elif self.primitive.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
-            return "/src/ui/icons/hyperboloid.png"
+            return "/icons/hyperboloid.png"
         elif self.primitive.primitive_type == CONFIGURATOR_TYPE_PLANE:
-            return "/src/ui/icons/plane.png"
+            return "/icons/plane.png"
         else:
             raise Exception('Unknown primitive type') 
 

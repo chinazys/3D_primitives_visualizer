@@ -20,7 +20,7 @@ class ToolBar:
         self.button_help.setFixedWidth(45)
         self.button_help.setFixedHeight(45)
         self.button_help.setStyleSheet("QPushButton { background-color: transparent; margin: 0px; padding: 0px; border: 0px } QPushButton:hover {background-color: rgb(229,243,255); margin 0px; padding: 0px; border: 2px solid #cee9ff; border-radius: 4px;}")
-        self.button_help.setIcon(QIcon(getcwd() + "/src/ui/icons/help.png"))
+        self.button_help.setIcon(QIcon(getcwd() + "/icons/help.png"))
         self.button_help.setIconSize(QSize(35, 35))
         self.button_help.clicked.connect(self.help_button_click)
 

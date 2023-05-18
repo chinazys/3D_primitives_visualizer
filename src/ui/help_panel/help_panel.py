@@ -21,7 +21,7 @@ class SupportedFunctionsScrollable(QScrollArea):
 
         layout.addWidget(self.label)
         
-        with open('src/ui/help_panel/help.txt', 'r') as file:
+        with open('docs/help.txt', 'r') as file:
             help_text = file.read()
         
         self.label.setText(help_text)
