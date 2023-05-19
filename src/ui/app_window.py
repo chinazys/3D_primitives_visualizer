@@ -69,7 +69,7 @@ class AppWindow(QMainWindow):
         self.figure.canvas.mpl_connect('key_press_event', self.press_key)
         self.figure.canvas.mpl_connect('key_release_event', self.release_key)
 
-    def show_error(self, title:str="Error", text:str="None"):
+    def show_error(self, title:str="Error", text:str="Unknown"):
         QMessageBox.critical(self, title, text)
 
     def on_pick(self, event):
@@ -77,9 +77,17 @@ class AppWindow(QMainWindow):
 
         # print("multipick:", self.muiltipick)
         # print("kids:", len(self.ax.get_children()))
-        primitives = self.ax.get_children()
-        prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
+        artists = self.ax.get_children()
+        prims = [p for p in artists if str(p.get_label()).split(' ')[0] == "plot"]
+        
+        for i, primitive in enumerate(self.all_primitives):
+            if primitive.primitive_type == CONFIGURATOR_TYPE_LINE or primitive.primitive_type == CONFIGURATOR_TYPE_CURVE:
+                prims.insert(i, None)
+        
         for i, p in enumerate(prims):
+            if p is None:
+                continue
+
             p.set_edgecolor(None)
             if p == artist:
                 p.set_alpha(min(self.all_primitives[i].primitive_opacity * 1.6, 1))
@@ -94,10 +102,16 @@ class AppWindow(QMainWindow):
     def press_key(self, event):
         if event.key == 'shift':
             self.muiltipick = True
-        if event.key == 'u':
+        if event.key == 'escape':
             primitives = self.ax.get_children()
             prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
+            for i, primitive in enumerate(self.all_primitives):
+                if primitive.primitive_type == CONFIGURATOR_TYPE_LINE or primitive.primitive_type == CONFIGURATOR_TYPE_CURVE:
+                    prims.insert(i, None)
+
             for i, p in enumerate(prims):
+                if p is None:
+                    continue
                 p.set_edgecolor(None)
                 p.set_alpha(self.all_primitives[i].primitive_opacity)
                 p.set_facecolor(self.all_primitives[i].primitive_color)
@@ -116,10 +130,21 @@ class AppWindow(QMainWindow):
         else:
             self.all_primitives.insert(index, primitive)
 
-        if str(type(primitive)) == "<class 'primitives.plane.plane.Plane'>":
-            others = [p for p in self.all_primitives if str(type(p)) != "<class 'primitives.plane.plane.Plane'>"]
-            for p in others:
-                self.plot_intersection(primitive, p)
+        planes = [p for p in self.all_primitives if p.primitive_type == CONFIGURATOR_TYPE_PLANE]
+        others = [p for p in self.all_primitives if p.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE or p.primitive_type == CONFIGURATOR_TYPE_LINEMOVE or p.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE]
+
+        if primitive in planes:
+            for other in others:
+                try:
+                    self.plot_intersection(primitive, other)
+                except:
+                    pass
+        elif primitive in others:
+            for plane in planes:
+                try:
+                    self.plot_intersection(plane, primitive)
+                except:
+                    pass
 
     def on_primitive_edited(self, primitive, primitive_index):
         self.on_primitive_removed(primitive_index)
