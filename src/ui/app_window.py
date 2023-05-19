@@ -100,9 +100,9 @@ class AppWindow(QMainWindow):
         self.figure.canvas.draw()
 
     def press_key(self, event):
-        if event.key == 'shift':
+        if event.key == 'shift' or event.key == 'enter' or event.key == 'p':
             self.muiltipick = True
-        if event.key == 'escape':
+        if event.key == 'escape' or event.key == ' ' or event.key == 'u':
             primitives = self.ax.get_children()
             prims = [p for p in primitives if str(p.get_label()).split(' ')[0] == "plot"]
             for i, primitive in enumerate(self.all_primitives):
@@ -118,7 +118,7 @@ class AppWindow(QMainWindow):
             self.figure.canvas.draw()
 
     def release_key(self, event):
-        if event.key == 'shift':
+        if event.key == 'shift' or event.key == 'enter' or event.key == 'p':
             self.muiltipick = False
 
     def on_primitive_added(self, primitive, index=-1):
