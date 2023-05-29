@@ -49,3 +49,19 @@ git clone https://github.com/chinazys/3D_primitives_visualizer.git
 ```console
 your@username:/3DPrimitives_visualizer/src $ python3 src/main.py
 ```
+
+# Приклади побудованих фігур у застосунку
+## Пряма лінія
+![](demo/line_demo.png)
+## Крива лінія
+![](demo/curve_demo.png)
+## Поверхня обертання
+![](demo/rotational_surface_demo.png)
+## Циліндрична поверхня
+![](demo/cylindrical_surface_demo.png)
+## Конічна поверхня
+![](demo/conical_surface_demo.png)
+## Площина
+![](demo/plane_demo.png)
+## Переріз поверхонь площиною
+![](demo/intersections_demo.png)
