@@ -4,6 +4,29 @@ from primitives.curve.curve import Curve
 from ui.configurator.states.primitive_editor.text_field.text_field import TextField
                              
 class CurveLayout:
+    """A layout for configuring a curve primitive.
+
+    - Attributes:
+        - layout (QVBoxLayout): The main layout for the curve layout.
+        - curve_label (str): The label for the curve.
+        - curve_name_layout (QHBoxLayout): The layout for configuring the curve name.
+        - curve_name_label (QLabel): The label for the curve name.
+        - curve_name_input (TextField): The input field for the curve name.
+        - x_layout (QHBoxLayout): The layout for configuring the x(t) equation.
+        - x_input (TextField): The input field for the x(t) equation.
+        - y_layout (QHBoxLayout): The layout for configuring the y(t) equation.
+        - y_input (TextField): The input field for the y(t) equation.
+        - z_layout (QHBoxLayout): The layout for configuring the z(t) equation.
+        - z_input (TextField): The input field for the z(t) equation.
+        - t_layout (QHBoxLayout): The layout for configuring the t bounds.
+        - t_min_input (TextField): The input field for the left bound of t.
+        - t_max_input (TextField): The input field for the right bound of t.
+
+    - Methods:
+        - __init__(initial_primitive, curve_label): Initialize a CurveLayout object.
+        - get_primitive() -> Curve: Get the configured curve primitive.
+
+    """
     def __init__(self, initial_primitive, curve_label="Curve:"):
         if initial_primitive is None:
             initial_curve_name = None
@@ -70,7 +93,12 @@ class CurveLayout:
             if len(curve_name) < 1:
                 return None
         
-        curve = Curve([self.x_input.get_text(), self.y_input.get_text(), self.z_input.get_text(), self.t_min_input.get_text(), self.t_max_input.get_text(), '100'])
+        if self.curve_label is None:
+            points_quantity = 400
+        else:
+            points_quantity = 100
+
+        curve = Curve([self.x_input.get_text(), self.y_input.get_text(), self.z_input.get_text(), self.t_min_input.get_text(), self.t_max_input.get_text(), str(points_quantity)])
         
         try:
             curve.build()

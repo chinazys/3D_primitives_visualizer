@@ -8,6 +8,23 @@ from util.clear_qt_layout import clear_qt_layout
 from ui.settings import PRIMITIVES_MAX_QUANTITY
 
 class PrimitivesList(QWidget):
+    """
+    This module defines the `PrimitivesList` class, which is a widget used to display a list of active primitives in the configurator.
+
+    The `PrimitivesList` widget displays a label indicating the section title, a separator, a list of `PrimitiveInfo` widgets representing each primitive, and an "Add" button to add new primitives.
+
+    The `PrimitivesList` class has the following main components:
+    - `top_label`: QLabel that displays the section title.
+    - `primitive_info_list`: A list of `PrimitiveInfo` instances representing each primitive.
+    - `add_button`: QPushButton that triggers the addition of a new primitive.
+    - `on_add_button_click`: Slot that handles the click event of the "Add" button.
+    - `on_delete_primitive_button_click`: Method that handles the deletion of a primitive.
+
+    Usage:
+    1. Create an instance of `PrimitivesList` by passing the configurator widget.
+    2. Add the `PrimitivesList` widget to the layout or container where you want to display the list of primitives.
+    3. Connect the appropriate signals to handle the addition and deletion of primitives.
+    """
     def __init__(self, configurator):
         super().__init__()
         

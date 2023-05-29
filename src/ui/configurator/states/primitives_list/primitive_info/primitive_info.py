@@ -7,6 +7,21 @@ from ui.configurator.configurator_types import *
 from util.shift_color import shift_color
 
 class PrimitiveInfo:
+    """
+    This module defines the `PrimitiveInfo` class, which is a widget used to display information about a primitive in the configurator.
+
+    The `PrimitiveInfo` widget displays the primitive type icon, primitive name, and a delete button. It allows the user to toggle the visibility of the primitive, edit its name, and delete it.
+
+    The `PrimitiveInfo` class has the following main components:
+    - `button_primitive_type`: QPushButton that displays the primitive type icon and toggles the visibility of the primitive.
+    - `button_name`: QPushButton that displays the primitive name and allows the user to edit it.
+    - `button_delete`: QPushButton that triggers the deletion of the primitive.
+
+    Usage:
+    1. Create an instance of `PrimitiveInfo` by passing the primitive, index, and the `primitives_list` widget.
+    2. Add the `PrimitiveInfo` widget to the layout or container where you want to display the primitive information.
+    3. Connect the appropriate signals to handle the visibility toggle, name editing, and deletion of the primitive.
+    """
     BUTTON_SIZE = 60
     ICON_RELATIVE_SIZE = 0.7
 
@@ -50,9 +65,9 @@ class PrimitiveInfo:
             return "/icons/line.png"
         elif self.primitive.primitive_type == CONFIGURATOR_TYPE_CURVE:
             return "/icons/curve.png"
-        elif self.primitive.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
+        elif self.primitive.primitive_type == CONFIGURATOR_TYPE_CYLINDRICAL_SURFACE:
             return "/icons/cylinder.png"
-        elif self.primitive.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
+        elif self.primitive.primitive_type == CONFIGURATOR_TYPE_CONICAL_SURFACE:
             return "/icons/cone.png"
         elif self.primitive.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
             return "/icons/hyperboloid.png"

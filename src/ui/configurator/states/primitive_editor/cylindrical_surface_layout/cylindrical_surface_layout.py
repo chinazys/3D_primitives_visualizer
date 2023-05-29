@@ -1,11 +1,26 @@
 from PyQt5.QtWidgets import (QVBoxLayout)
 
-from primitives.lineMove.lineMove import curve_line
+from primitives.cylindrical_surface.cylindrical_surface import CylindricalSurface
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
 from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
 from ui.configurator.separator.separator import PaddedSeparator
 
 class CylindricalSurfaceLayout:
+    """A layout for configuring a cylindrical surface primitive.
+
+    - Attributes:
+        - layout (QVBoxLayout): The main layout for the cylindrical surface layout.
+        - curve_layout (CurveLayout): The layout for configuring the base curve.
+        - separator1 (PaddedSeparator): The separator between the base curve and point layout.
+        - point_layout (PointLayout): The layout for configuring the point.
+        - separator2 (PaddedSeparator): The separator between the point layout and vector layout.
+        - vector_layout (PointLayout): The layout for configuring the vector.
+
+    - Methods:
+        - __init__(initial_primitive): Initialize a CylindricalSurfaceLayout object.
+        - get_primitive() -> CylindricalSurface: Get the configured cylindrical surface primitive.
+
+    """
     def __init__(self, initial_primitive):
         if initial_primitive is None:
             curve = None
@@ -46,6 +61,6 @@ class CylindricalSurfaceLayout:
             if curve is None or point is None or vector is None:
                 return None
 
-            return curve_line(curve, point, vector)
+            return CylindricalSurface(curve, point, vector)
         except:
             return None

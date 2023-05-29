@@ -5,6 +5,16 @@ from PyQt5.QtCore import Qt
 HELP_PANEL_LAYOUT_RELATIVE_WIDTH = 50
 
 class SupportedFunctionsScrollable(QScrollArea):
+    """
+    This module defines the `SupportedFunctionsScrollable` class, which is a scrollable area that displays supported functions and their descriptions.
+
+    The `SupportedFunctionsScrollable` class inherits from `QScrollArea` and has the following main components:
+    - `label`: A `QLabel` that displays the text content inside the scrollable area.
+
+    Usage:
+    1. Create an instance of `SupportedFunctionsScrollable`.
+    2. The scrollable area is populated with text content from the 'docs/help.txt' file.
+    """
     def __init__(self, *args, **kwargs):
         QScrollArea.__init__(self, *args, **kwargs)
  
@@ -27,6 +37,20 @@ class SupportedFunctionsScrollable(QScrollArea):
         self.label.setText(help_text)
 
 class HelpPanel:
+    """
+    This module defines the `HelpPanel` class, which represents a panel that displays help information.
+
+    The `HelpPanel` class has the following main components:
+    - `frame`: An instance of the `QFrame` class, representing the frame that contains the help panel.
+    - `vertical_layout`: An instance of the `QVBoxLayout` class, defining the vertical layout of the help panel.
+    - `title`: A `QLabel` that displays the title of the help panel.
+    - `supported_functions_scrollable`: An instance of the `SupportedFunctionsScrollable` class, which is a scrollable area displaying supported functions and their descriptions.
+
+    Usage:
+    1. Create an instance of `HelpPanel` by passing the window widget.
+    2. Use the `show` method to display the help panel.
+    3. Use the `hide` method to hide the help panel.
+    """
     def __init__(self, window):
         self.frame = QFrame()
         

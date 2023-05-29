@@ -6,6 +6,22 @@ from matplotlib.animation import FuncAnimation
 
 
 class Plane(Primitive):
+    """
+    - Represents a plane primitive inheriting from the Primitive class.
+
+    - Attributes:
+        - M (Point): The point on the plane.
+        - n (Point): The normal vector of the plane.
+        - FRAMES (int): The number of animation frames.
+        - INTERVAL (int): The interval between animation frames in milliseconds.
+        - plots (list): A list to store plot objects.
+
+    - Methods:
+        - _fill_points_list(): Fills the points list for plotting.
+        - build(): Builds the plane.
+        - plot(ax, canvas, fig): Plots the plane on the given axes and canvas.
+    """
+    
     def __init__(self, M: Point, n: Point):
         self.M = M
         self.n = n
@@ -54,7 +70,7 @@ class Plane(Primitive):
                     lbl = "plot " + self.primitive_color
                     self.plots.append(ax.plot_surface(self.X_list, self.Y_list, self.Z_list, label=lbl, color=self.primitive_color, alpha=self.primitive_opacity, picker=True, zorder=0))
                     if self.flag_text == True:
-                        label = "Plane {}".format(self.primitive_name)
+                        label = "{}".format(self.primitive_name)
                         self.plots.append(ax.text(self.M.x+20, self.M.y+20, self.M.z+20, label, fontsize=15))
                     canvas.draw()
 

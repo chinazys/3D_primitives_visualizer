@@ -2,9 +2,19 @@ from primitives.primitive import Primitive
 from util.expression_parser import string_to_expression, evaluate_parametric_expression, evaluate_string_numerical_expression
 
 class Curve(Primitive):
-    '''
+    """A class representing a curve in three-dimensional space.
     Curve is built as a dense consequence of points, which are generated for each possible ti: xi = x(ti), yi = y(ti), zi = z(ti).
-    '''
+    
+    - Attributes:
+        - DELTA_T_MAX (float): The maximum delta t value for the curve.
+
+    - Methods:
+        - _fill_points_list(): Fills the points list of the curve.
+        - contains_point(point, eps): Checks if a point lies on the curve.
+        - build(): Builds the curve using the provided parameters.
+        - plot(ax, canvas, figure): Plots the curve on the given axes, canvas, and figure.
+
+    """
     DELTA_T_MAX = 1e6
     def _fill_points_list(self):
         self.x_list = []

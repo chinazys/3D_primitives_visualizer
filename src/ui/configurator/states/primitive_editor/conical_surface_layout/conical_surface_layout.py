@@ -1,11 +1,24 @@
 from PyQt5.QtWidgets import (QVBoxLayout)
 
-from primitives.lineFixedMove.lineFixedMove import lineFixedMove
+from primitives.conical_surface.conical_surface import ConicalSurface
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
 from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
 from ui.configurator.separator.separator import PaddedSeparator
 
 class ConicalSurfaceLayout:
+    """A layout for configuring a conical surface primitive.
+
+    - Attributes:
+        - layout (QVBoxLayout): The main layout for the conical surface layout.
+        - curve_layout (CurveLayout): The layout for configuring the curve.
+        - separator (PaddedSeparator): The separator layout.
+        - point_layout (PointLayout): The layout for configuring the fixed point.
+
+    - Methods:
+        - __init__(initial_primitive): Initialize a ConicalSurfaceLayout object.
+        - get_primitive() -> ConicalSurface: Get the configured conical surface primitive.
+
+    """
     def __init__(self, initial_primitive):
         if initial_primitive is None:
             curve = None
@@ -35,6 +48,6 @@ class ConicalSurfaceLayout:
             if curve is None or point is None:
                 return None
             
-            return lineFixedMove(curve, point)
+            return ConicalSurface(curve, point)
         except:
             return None

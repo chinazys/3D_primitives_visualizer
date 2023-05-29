@@ -2,8 +2,46 @@ from primitives.curve.curve import Curve
 from primitives.primitive import Primitive
 import numpy as np
 from matplotlib.animation import FuncAnimation
-import time
-class rotate_surface(Primitive):
+
+class RotateSurface(Primitive):
+    """
+    - Represents a rotational surface created by rotating a curve around an axis defined by a point and a vector.
+
+    - Parameters:
+        - base (Curve): The base curve to be rotated.
+        - dot (Point): The point that defines the axis of rotation.
+        - vector (Vector): The vector that defines the axis of rotation.
+
+    - Attributes:
+        - point_saved (Point): The saved copy of the input point.
+        - vector_saved (Vector): The saved copy of the input vector.
+        - dot (List[float]): The coordinates [x, y, z] of the axis point.
+        - vector (List[float]): The components [a, b, c] of the rotation vector.
+        - X_saved (List[List[float]]): The saved copy of the x-coordinates of the surface points.
+        - Y_saved (List[List[float]]): The saved copy of the y-coordinates of the surface points.
+        - Z_saved (List[List[float]]): The saved copy of the z-coordinates of the surface points.
+        - surfaces (List[Artist]): The list of surface objects created during the animation.
+        - base (Curve): The base curve to be rotated.
+        - DOTS (int): The number of dots in the base curve.
+        - LENGTH (int): The number of dots to take from the base curve to build the surface.
+        - STEP (int): The step size for taking dots from the base curve.
+        - TMP_RESOLUTION (int): The number of dots each line from the curve to the fixed dot contains.
+        - PAUSE (int): The pause time in seconds between plot updates.
+        - INTERVAL (int): The interval in milliseconds between animation frames.
+        - BIAS (int): The bias value used during the initial frames of the animation.
+        - plots (List[Artist]): The list of plot objects created during the animation.
+        - label_point (str): The label for the axis point.
+        - label_vector (str): The label for the rotation vector.
+        - label_curve (str): The label for the base curve.
+
+    - Raises:
+        - Exception: If the input vector is [0, 0, 0].
+        - AssertionError: If the length of the input dot is not 3 or the length of the input vector is not 3.
+
+    - Methods:
+        - build(): Builds the rotational surface by creating coordinate arrays for plotting.
+        - plot(ax, canvas, fig): Plots the rotational surface animation or the final result on the given axes.
+    """
     def __init__(self, base: Curve, dot, vector):  # line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
         self.point_saved = dot
         self.vector_saved = vector
@@ -23,9 +61,6 @@ class rotate_surface(Primitive):
         self.surfaces=[]
         self.base = base
         self.base.build()
-
-
-
 
         # self.main_line = Line([dot, vector + dot])
 

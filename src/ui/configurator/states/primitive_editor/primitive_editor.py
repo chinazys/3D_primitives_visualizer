@@ -10,21 +10,29 @@ from ui.configurator.states.primitive_editor.line_layout.line_layout import Line
 from ui.configurator.states.primitive_editor.plane_layout.plane_layout import PlaneLayout
 from ui.configurator.states.primitive_editor.rotational_surface_layout.rotational_surface_layout import RotationalSurfaceLayout
 from ui.configurator.separator.separator import PaddedSeparator
-from ui.configurator.states.primitive_editor.point_layout.point_layout import PointLayout
 from ui.configurator.states.primitive_editor.curve_layout.curve_layout import CurveLayout
 from ui.configurator.states.primitive_editor.name_layout.name_layout import NameLayout
 from ui.configurator.states.primitive_editor.check_box.check_box import CheckBoxLayout
 from ui.configurator.states.primitive_editor.color_opacity_picker.color_opacity_picker import ColorOpacityPicker
-from primitives.line.line import Line
-from primitives.curve.curve import Curve
-from primitives.lineMove.lineMove import curve_line
-from primitives.lineFixedMove.lineFixedMove import lineFixedMove
-# from primitives.linesByCurve.lineByCurve import LineByCurve
-from primitives.rotate_surface.rotate_surface import rotate_surface
-from primitives.plane.plane import Plane
 from util.clear_qt_layout import clear_qt_layout
 
 class PrimitiveEditor(QWidget):
+    """
+    This module defines the `PrimitiveEditor` class, which is a PyQt5 widget used for configuring and editing different types of primitives.
+
+    The `PrimitiveEditor` widget provides a user interface for setting various parameters of a primitive, such as its name, color, opacity, flags, and specific parameters based on the selected primitive type. It allows the user to select a primitive type from a dropdown menu (or displays the type label if editing an existing primitive), set the primitive name, choose a color and opacity, enable/disable flags like text and animation, and configure the parameters specific to each primitive type.
+
+    The `PrimitiveEditor` class has the following main components:
+    - Top Section: Contains a combo box (QComboBox) for selecting the primitive type.
+    - Center Section: Contains layouts for configuring the name, color, flags, and primitive-specific parameters.
+    - Bottom Section: Contains buttons for canceling or confirming the changes made to the primitive.
+
+    Usage:
+    1. Create an instance of `PrimitiveEditor` by passing the configurator, initial primitive, and initial primitive index (if editing an existing primitive).
+    2. Add the `PrimitiveEditor` widget to your application's layout or dialog.
+    3. Handle the `on_cancel_button_click` and `on_confirm_button_click` signals to perform actions when the user cancels or confirms the changes.
+    4. Retrieve the configured primitive using the `get_primitive()` method.
+    """
     def __init__(self, configurator, initial_primitive, initial_primitive_index):
         super().__init__()
 
@@ -111,9 +119,9 @@ class PrimitiveEditor(QWidget):
             self.primitive_layout = LineLayout(self.initial_primitive)
         elif self.primitive_type == CONFIGURATOR_TYPE_CURVE:
             self.primitive_layout = CurveLayout(self.initial_primitive, curve_label=None)
-        elif self.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
+        elif self.primitive_type == CONFIGURATOR_TYPE_CYLINDRICAL_SURFACE:
             self.primitive_layout = CylindricalSurfaceLayout(self.initial_primitive)
-        elif self.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
+        elif self.primitive_type == CONFIGURATOR_TYPE_CONICAL_SURFACE:
             self.primitive_layout = ConicalSurfaceLayout(self.initial_primitive)
         elif self.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
             self.primitive_layout = RotationalSurfaceLayout(self.initial_primitive)
@@ -170,28 +178,6 @@ class PrimitiveEditor(QWidget):
             self.configurator.window.show_error('Input Error', 'Primitive parameters were not set correctly. Please re-check your input and try again.')
             return
         
-        # if self.primitive_type == CONFIGURATOR_TYPE_LINE:
-        #     primitive = Line([(0, 0, 0), (10, 10, 10)])
-        # elif self.primitive_type == CONFIGURATOR_TYPE_CURVE:
-        #     primitive = Curve(['(t^2 + 1) * sin(t)', '(t^2 + 1) * cos(t)', 't', '-4', '12', '100'])
-        # elif self.primitive_type == CONFIGURATOR_TYPE_LINEMOVE:
-        #     curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
-        #     primitive = curve_line(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
-        # # elif self.primitive_type == CONFIGURATOR_TYPE_LINEBYCURVE:
-        # #     curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
-        # #     line = Line([(-0.5, -0.5, -0.5), [0.5, 0.5, 0.5]])
-        # #     primitive = LineByCurve(curve,line)
-        # elif self.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE:
-        #     curve = Curve(['50*cos(t)', '50*sin(t)', '-20', '0', '6.29', '100'])
-        #     primitive = lineFixedMove(curve, [0,0,100])
-        # elif self.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE:
-        #     curve = Curve(['t', 'sin(t)', '5', '1', '10', '100'])
-        #     primitive = rotate_surface(curve, [1, 0.8414709848078965, 5], [1, 1, 1])
-        # elif self.primitive_type == CONFIGURATOR_TYPE_PLANE:
-        #     primitive = Plane((5, 2, 30), (10, 10, 50))
-        # else:
-        #     raise Exception('Unknown primitive type')
-
         primitive.primitive_name = primitive_name
         primitive.primitive_type = self.primitive_type
         primitive.primitive_color = self.color_opacity_picker.get_color_hex()

@@ -5,6 +5,28 @@ from primitives.point.point import Point
 from ui.configurator.states.primitive_editor.text_field.text_field import TextField
 
 class PointLayout:
+    """A layout for configuring a point primitive.
+
+    - Attributes:
+        - layout (QVBoxLayout): The main layout for the point layout.
+        - base (QHBoxLayout): The layout for configuring the point.
+        - point_name_input (TextField): The input field for the point name.
+        - X_field (QLineEdit): The input field for the x coordinate.
+        - Y_field (QLineEdit): The input field for the y coordinate.
+        - Z_field (QLineEdit): The input field for the z coordinate.
+        - x (str): The value of the x coordinate.
+        - y (str): The value of the y coordinate.
+        - z (str): The value of the z coordinate.
+
+    - Methods:
+        - __init__(point_letter, point_id): Initialize a PointLayout object.
+        - text_changed_x(text): Update the x coordinate value.
+        - text_changed_y(text): Update the y coordinate value.
+        - text_changed_z(text): Update the z coordinate value.
+        - set_point(point): Set the values of the point coordinates.
+        - get_primitive() -> Point: Get the configured point primitive.
+
+    """
     def __init__(self, point_letter="A", point_id='Point:'):
         self.layout = QVBoxLayout()
         # self.layout.setAlignment(Qt.AlignLeft)

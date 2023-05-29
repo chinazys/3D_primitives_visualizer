@@ -2,12 +2,19 @@ from primitives.primitive import Primitive
 from ui.settings import AXIS_MAX_SIZE
 
 class Line(Primitive):
-    """
+    """A class representing a line in three-dimensional space.
     Line is defined with two points, let's say A and B. To cover full canvas we may need to extend it from the both end to the canvas sizes.
     Let's say we want to extend the line from the A point side. Then out directional vector is BA(ax - bx, ay - by, az - cz).
     For each xyz coordinate of B point we build a proportional vector Ci * BA (where Ci is some scalar), so that the resulting corresponding
     coordinate is located on the canvas bounds. The minimum of the determined Ci values is used to determine the end point.
     Line extending from B point side is absolutely symmetric.
+    
+    - Methods:
+        - _get_multiplier(directional_coor, anchor_coor): Calculate the multiplier for extending the line.
+        - _get_end_point(directional_point, anchor_point): Calculate the end point of the line.
+        - build(): Build the line using the provided parameters.
+        - plot(ax, canvas, figure): Plot the line on the given axes, canvas, and figure.
+
     """
     def _get_multiplier(directional_coor, anchor_coor):
         if directional_coor == 0:

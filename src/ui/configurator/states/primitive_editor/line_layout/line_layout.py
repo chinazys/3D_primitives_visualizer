@@ -5,6 +5,19 @@ from ui.configurator.states.primitive_editor.point_layout.point_layout import Po
 from ui.configurator.separator.separator import PaddedSeparator
 
 class LineLayout:
+    """A layout for configuring a line primitive.
+
+    - Attributes:
+        - layout (QVBoxLayout): The main layout for the line layout.
+        - point_a_layout (PointLayout): The layout for configuring the start point.
+        - point_b_layout (PointLayout): The layout for configuring the end point.
+        - separator (PaddedSeparator): The separator between the start point and end point layouts.
+
+    - Methods:
+        - __init__(initial_primitive): Initialize a LineLayout object.
+        - get_primitive() -> Line: Get the configured line primitive.
+
+    """
     def __init__(self, initial_primitive):
         self.layout = QVBoxLayout()
         

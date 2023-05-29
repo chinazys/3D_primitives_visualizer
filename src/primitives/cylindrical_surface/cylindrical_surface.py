@@ -4,10 +4,48 @@ from primitives.line.line import Line
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
+class CylindricalSurface(Primitive):
+    """
+    - Represents a cylindrical surface defined by a base curve, a point on the curve, and a vector.
+    
+    - Parameters:
+        - base (Curve): The base curve that defines the shape of the cylindrical surface.
+        - dot (Point): A point on the base curve, which serves as the center of the cylindrical surface.
+        - vector (Vector): The vector that determines the direction and length of the cylindrical surface.
+    
+    - Attributes:
+        - point_saved (Point): The saved copy of the input point on the base curve.
+        - vector_saved (Vector): The saved copy of the input vector.
+        - dot (List[float]): The coordinates [x, y, z] of the point on the base curve.
+        - vector (List[float]): The components [a, b, c] of the vector.
+        - base (Curve): The base curve that defines the shape of the cylindrical surface.
+        - X_saved (ndarray): An array of x-coordinates for the surface points.
+        - Y_saved (ndarray): An array of y-coordinates for the surface points.
+        - Z_saved (ndarray): An array of z-coordinates for the surface points.
+        - ALPHA (float): The transparency level of the surface.
+        - DOTS (int): The number of dots in the base curve.
+        - surfaces (List[Artist]): The list of surface objects created during the animation.
+        - LENGTH (int): The number of dots used to build the conical surface.
+        - STEP (int): The step size for taking dots from the base curve.
+        - TMP_RESOLUTION (int): The number of dots each line from the curve to the fixed dot contains.
+        - PAUSE (int): The pause time in seconds between plot updates.
+        - INTERVAL (int): The interval in milliseconds between animation frames.
+        - BIAS (int): The bias value used during the initial frames of animation.
+        - plots (List[Artist]): The list of plot objects created during the animation.
+        - label_point (str): The label for the point on the base curve.
+        - label_vector (str): The label for the vector.
+        - label_curve (str): The label for the base curve.
 
-
-class curve_line(Primitive):
-
+    - Raises:
+        - Exception: If the input vector is [0, 0, 0].
+        - AssertionError: If the length of the input dot is not 3 or the length of the input vector is not 3.
+        - Exception: If the base curve does not contain the given point.
+    
+    - Methods:
+        - build(): Builds the surface by creating coordinate arrays for plotting.
+        - plot(ax, canvas, fig): Plots the cylindrical surface animation or the final result on the given axes.
+    """
+    
     def __init__(self, base: Curve, dot , vector):# line= dot P(a,b,c) + vector s(n,m,p)    (P in curve)
         self.point_saved = dot
         self.vector_saved = vector

@@ -6,6 +6,19 @@ from util.clear_qt_layout import clear_qt_layout
 
 
 class Configurator:
+    """
+    This module defines the `Configurator` class, which manages the state and layout of the configurator widget.
+
+    The `Configurator` class has the following main components:
+    - `primitives_list`: An instance of the `PrimitivesList` class, representing the list of active primitives.
+    - `active_configurator`: A reference to the currently active configurator, which can be either `PrimitivesList` or `PrimitiveEditor`.
+    - `on_configurator_state_changed`: Method that handles the state change in the configurator, updating the active configurator based on the mode (editor or list).
+
+    Usage:
+    1. Create an instance of `Configurator` by passing the window widget.
+    2. The `Configurator` class manages the layout of the configurator, including the `PrimitivesList` widget as the initial active configurator.
+    3. Call the `on_configurator_state_changed` method to switch between the editor and list mode.
+    """
     CONFIGURATOR_LAYOUT_RELATIVE_WIDTH = 25
     
     def __init__(self, window):

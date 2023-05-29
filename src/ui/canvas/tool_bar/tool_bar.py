@@ -9,6 +9,20 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 from ui.help_panel.help_panel import HelpPanel
 
 class ToolBar:
+    """A toolbar containing interactive buttons for a graphical user interface.
+
+    - Attributes:
+        - window: The main window object.
+        - help_is_shown (bool): A flag indicating whether the help panel is currently shown.
+        - help_panel: An instance of the HelpPanel class, representing the help panel.
+        - button_help: A QPushButton object for displaying the help panel.
+        - toolbar: An instance of the NavigationToolbar class, providing navigation and toolbar functionalities.
+
+    - Methods:
+        - __init__(canvas, window): Initialize a ToolBar object.
+        - help_button_click(): Handle the button click event for the help button.
+
+    """
     def __init__(self, canvas, window):
         self.window = window
 

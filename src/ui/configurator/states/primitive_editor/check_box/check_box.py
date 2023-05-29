@@ -1,6 +1,19 @@
 from PyQt5.QtWidgets import (QHBoxLayout, QCheckBox)
 
 class CheckBoxLayout:
+    """A layout containing a checkbox widget.
+
+    - Attributes:
+        - base (QHBoxLayout): The base layout for the checkbox.
+        - check_box (QCheckBox): The checkbox widget.
+
+    - Methods:
+        - __init__(text: str): Initialize a CheckBoxLayout object.
+        - set_state(state: bool): Set the state of the checkbox.
+        - get_state() -> bool: Get the state of the checkbox.
+        - change_state(c): Handle the state change event of the checkbox.
+
+    """
     def __init__(self, text:str):
         self.base = QHBoxLayout()
         self.check_box=QCheckBox(text)

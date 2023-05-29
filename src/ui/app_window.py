@@ -11,6 +11,30 @@ from ui.settings import AXIS_MAX_SIZE, APP_WINDOW_MIN_WIDTH, APP_WINDOW_MIN_HEIG
 from util.shift_color import shift_color
 
 class AppWindow(QMainWindow):
+    """
+    This module defines the `AppWindow` class, which represents the main application window.
+
+    The `AppWindow` class has the following main components:
+    - `window_width`: The width of the application window.
+    - `window_height`: The height of the application window.
+    - `figure`: An instance of the `Figure` class from Matplotlib, representing the figure for the 3D visualization.
+    - `central_widget`: An instance of the `QWidget` class, representing the central widget of the application window.
+    - `canvas_layout`: An instance of the `Canvas` class, representing the layout for the 3D canvas.
+    - `configurator_layout`: An instance of the `Configurator` class, representing the layout for the configurator.
+    - `ax`: An instance of the `Axes3D` class from Matplotlib, representing the 3D axes for plotting.
+    - `default_colors`: A list of default colors for the primitives.
+    - `pick_colors`: A dictionary mapping default colors to picked-on colors.
+    - `muiltipick`: A boolean indicating whether the multi-pick mode is active.
+    - `all_primitives`: A list of all the primitives added to the visualization.
+
+    Usage:
+    1. Create an instance of `AppWindow` by passing the `app` object.
+    2. Use the `on_primitive_added` method to add a primitive to the visualization.
+    3. Use the `on_primitive_edited` method to edit a primitive in the visualization.
+    4. Use the `on_primitive_visibility_changed` method to change the visibility of a primitive.
+    5. Use the `on_primitive_removed` method to remove a primitive from the visualization.
+    6. Use the `show_error` method to display an error message dialog.
+    """
     def __init__(self, app):
         super().__init__()
         self.window_width, self.window_height = APP_WINDOW_MIN_WIDTH, APP_WINDOW_MIN_HEIGHT
@@ -131,7 +155,7 @@ class AppWindow(QMainWindow):
             self.all_primitives.insert(index, primitive)
 
         planes = [p for p in self.all_primitives if p.primitive_type == CONFIGURATOR_TYPE_PLANE]
-        others = [p for p in self.all_primitives if p.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE or p.primitive_type == CONFIGURATOR_TYPE_LINEMOVE or p.primitive_type == CONFIGURATOR_TYPE_LINEFIXEDMOVE]
+        others = [p for p in self.all_primitives if p.primitive_type == CONFIGURATOR_TYPE_ROTATE_SURFACE or p.primitive_type == CONFIGURATOR_TYPE_CYLINDRICAL_SURFACE or p.primitive_type == CONFIGURATOR_TYPE_CONICAL_SURFACE]
 
         if primitive in planes:
             for other in others:

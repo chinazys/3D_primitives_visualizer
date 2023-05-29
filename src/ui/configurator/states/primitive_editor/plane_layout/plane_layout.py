@@ -5,6 +5,19 @@ from ui.configurator.states.primitive_editor.point_layout.point_layout import Po
 from ui.configurator.separator.separator import PaddedSeparator
 
 class PlaneLayout:
+    """A layout for configuring a plane primitive.
+
+    - Attributes:
+        - layout (QVBoxLayout): The main layout for the plane layout.
+        - point_layout (PointLayout): The layout for configuring the point on the plane.
+        - vector_layout (PointLayout): The layout for configuring the normal vector of the plane.
+        - separator (PaddedSeparator): The separator between the point and vector layouts.
+
+    - Methods:
+        - __init__(initial_primitive): Initialize a PlaneLayout object.
+        - get_primitive() -> Plane: Get the configured plane primitive.
+
+    """
     def __init__(self, initial_primitive):
         if initial_primitive is None:
             point = None
