@@ -49,6 +49,9 @@ class PlaneLayout:
             if point is None or vector is None:
                 return None
             
-            return Plane(point, vector)
+            plane = Plane(point, vector)
+            plane.build()
+
+            return plane
         except:
             return None
